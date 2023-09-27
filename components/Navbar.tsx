@@ -1,10 +1,10 @@
 import React from "react";
 
-type NavbarProp = { textColour: string; backgroundTheme: string; svgFill: string };
+type NavbarProp = { textColour: string; backgroundTheme: string; svgFill: string; hoverColour: string };
 
-function Navbar({ textColour, backgroundTheme, svgFill }: NavbarProp) {
-  const modifiedClass = `flex flex-col items-center justify-center gap-14 text-base h-2/3 w-44 rounded-2xl ${textColour} ${backgroundTheme}`;
-  const innerClass = `flex flex-row gap-3 items-center w-36`;
+function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarProp) {
+  const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 rounded-2xl border-2 overflow-hidden ${textColour} ${backgroundTheme}`;
+  const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-y-2 pl-4 cursor-pointer ${backgroundTheme} hover:${hoverColour}`;
 
   return (
     <div className={modifiedClass}>

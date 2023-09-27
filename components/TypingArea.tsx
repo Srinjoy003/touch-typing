@@ -5,7 +5,7 @@ import Cursor from "./cursor";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string };
+type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string  };
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
   let charList = [];
@@ -142,8 +142,9 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     [textColour] // Include textColour as a dependency if it's used inside CreateFinalDiv
   );
 
-  const initialCursorX = 0;
-  const initialCursorY = -134;
+  const initialCursorX = -500;
+  const initialCursorY = 0;
+  const changeCursorY = 40;
 
   const [punc, setPunc] = useState(false);
   const [num, setNum] = useState(false);
@@ -205,7 +206,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     setTranslateY(initialCursorY);
     setJumpIndex(0);
     setLineIndex(0);
-  }, [punc, num, caps, CreateFinalDiv, initialCursorY])
+  }, [punc, num, caps, CreateFinalDiv, initialCursorY, initialCursorX])
 
   useEffect(() => {
     moveCursor();
@@ -290,7 +291,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 
             if (lineIndex < widthList.length - 1) {
               setTranslateY((prevTranslateY) => {
-                return prevTranslateY + 37;
+                return prevTranslateY + changeCursorY;
               });
             } 
             

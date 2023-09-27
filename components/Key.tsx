@@ -37,7 +37,7 @@ function NumKey({ topLetter, bottomLetter, addClassDiv, addClassText, keyMap, th
     // };
   }, [keyMap]);
   
-  const modifiedDivClass = `flex flex-col items-center focus:outline-none mt-1 ml-0.5 ${isPressed ? pressedTheme: theme} ${addClassDiv || "h-10 w-10"}`.trim();
+  const modifiedDivClass = `flex flex-col items-center gap-1 focus:outline-none mt-1 ml-0.5 ${isPressed ? pressedTheme: theme} ${addClassDiv || "h-10 w-10"}`.trim();
   const modifiedTextClass = `text-xs ${addClassText || ""} ${isPressed ? pressedTextTheme: textTheme}`.trim();
 
   return (
@@ -118,7 +118,7 @@ function SpecialKey({ letter, addClassDiv, keyMap, theme, pressedTheme, textThem
   
 
   const modifiedDivClass = `flex items-center mt-1 ml-0.5 h-10   focus:outline-none h-10 ${addClassDiv || "w-10"} ${isPressed ? pressedTheme: theme}`.trim();
-  const modifiedTextClass = `w-full text-xs text-center  ${isPressed ? pressedTextTheme: textTheme}`.trim();
+  const modifiedTextClass = `w-full text-[11px] text-center  ${isPressed ? pressedTextTheme: textTheme}`.trim();
   
   return (
     <div className={modifiedDivClass}>
@@ -193,9 +193,9 @@ function NumPadKey({ topLetter, bottomLetter, addClassDiv, addClassTopText, addC
   }, [keyMap]);
 
   
-  const modifiedDivClass = `flex flex-col items-center mt-1 ml-0.5 focus:outline-none ${addClassDiv || "h-10 w-10"} ${isPressed ? pressedTheme: theme}`.trim();
+  const modifiedDivClass = `flex flex-col items-center gap-1 mt-1 ml-0.5 focus:outline-none ${addClassDiv || "h-10 w-10"} ${isPressed ? pressedTheme: theme}`.trim();
   const classTopText = `text-sm ${addClassTopText || ""} ${isPressed ? pressedTextTheme: textTheme}`.trim();
-  const classBottomText = `text-xs ${addClassBottomText || ""} ${isPressed ? pressedTextTheme: textTheme}`.trim();
+  const classBottomText = `text-[9px] ${addClassBottomText || ""} ${isPressed ? pressedTextTheme: textTheme}`.trim();
   
 
   return (
