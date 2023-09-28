@@ -1,7 +1,7 @@
-type CursorProp = {textRef ?: any; translateY ?: number; translateX ?: number; newLine ?: Array<number>; colour ?: string};
+type CaretProp = {textRef ?: any; translateY ?: number; translateX ?: number; newLine ?: Array<number>; colour ?: string};
   
 
-function Cursor({ translateX, translateY}: CursorProp) {
+function Caret({ translateX, translateY}: CaretProp) {
     
 
     const modifiedStyle = {transform: `translateX(${translateX}px) translateY(${translateY}px)`,};
@@ -13,4 +13,4 @@ function Cursor({ translateX, translateY}: CursorProp) {
     );
 }
 
-export default Cursor;
+export default Caret;

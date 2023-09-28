@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import Cursor from "./cursor";
+import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string };
+type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string; cursorColour };
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
   let charList = [];
@@ -306,10 +306,9 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
         {...finalDiv}
       </div>
 
-      <Cursor translateX={translateX} translateY={translateY} />
+      <Caret translateX={translateX} translateY={translateY} />
     </div>
   );
 }
 
 export default TypingArea;
-export {};
