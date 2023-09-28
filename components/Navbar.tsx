@@ -3,8 +3,8 @@ import React from "react";
 type NavbarProp = { textColour: string; backgroundTheme: string; svgFill: string; hoverColour: string };
 
 function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarProp) {
-  const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 rounded-2xl border-2 overflow-hidden ${textColour} ${backgroundTheme}`;
-  const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-y-2 pl-4 cursor-pointer ${backgroundTheme} ${hoverColour}`;
+  const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 rounded-2xl border-x-0 overflow-hidden ${textColour} ${backgroundTheme}`;
+  const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-y-0 pl-4 cursor-pointer ${backgroundTheme} ${hoverColour}`;
 
   return (
     <div className={modifiedClass}>
@@ -38,7 +38,7 @@ function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarPro
 
       <div className={innerClass}>
         <svg width="30px" height="28px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g className={svgFill} id="Dribbble-Light-Preview" transform="translate(-220.000000, -7759.000000)">
               <g id="icons" transform="translate(56.000000, 160.000000)">
                 <path d="M174,7611 L178,7611 L178,7607 L174,7607 L174,7611 Z M170,7607 L174,7607 L174,7603 L170,7603 L170,7607 Z M174,7603 L178,7603 L178,7599 L174,7599 L174,7603 Z M182,7599 L182,7603 L178,7603 L178,7607 L182,7607 L182,7619 L184,7619 L184,7599 L182,7599 Z M166,7607 L170,7607 L170,7611 L166,7611 L166,7619 L164,7619 L164,7599 L170,7599 L170,7603 L166,7603 L166,7607 Z" id="finish_line-[#104]"></path>
@@ -51,8 +51,8 @@ function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarPro
 
       <div className={innerClass}>
         <svg  width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-            <g className={svgFill} id="ic_fluent_dark_theme_24_filled" fill="#212121" fill-rule="nonzero">
+          <g id="🔍-Product-Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+            <g className={svgFill} id="ic_fluent_dark_theme_24_filled" fill="#212121" fillRule="nonzero">
               <path d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20 L12,4 C16.418278,4 20,7.581722 20,12 C20,16.418278 16.418278,20 12,20 Z" id="🎨-Color"></path>
             </g>
           </g>

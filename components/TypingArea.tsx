@@ -5,7 +5,7 @@ import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string; cursorColour };
+type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string; caretColour: string};
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
   let charList = [];
@@ -124,7 +124,7 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
   return finalDiv;
 }
 
-function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorDivColour, selectorTextColour, selectorSelectedColour, selectorHoverColour }: textAreaProp) {
+function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorDivColour, selectorTextColour, selectorSelectedColour, selectorHoverColour, caretColour }: textAreaProp) {
   // const CreateFinalDiv = (isPunc: boolean, isNum: boolean, isCaps: boolean) => {
   //   return FinalDiv(100, 4, 60, textColour, isPunc, isNum, isCaps);
   // }; //30,10,60
@@ -138,13 +138,14 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   );
 
   const initialCursorX = -500;
-  const initialCursorY = 0;
+  const initialCursorY = -4;
   const changeCursorY = 40;
 
   const [punc, setPunc] = useState(false);
   const [num, setNum] = useState(false);
   const [caps, setCaps] = useState(false);
 
+  const [hydrated, setHydrated] = useState(false);
   const [finalDiv, setFinalDiv] = useState(() => CreateFinalDiv(punc, num, caps));
   const [finalDivSpans, setFinalDivSpans] = useState<HTMLSpanElement[][]>([]);
   const [translateX, setTranslateX] = useState(initialCursorX);
@@ -152,7 +153,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   const [widthList, setWidthList] = useState<any>([]);
   const [jumpIndex, setJumpIndex] = useState(0);
   const [lineIndex, setLineIndex] = useState(0);
-
+  const [totalWords, setTotalWords] = useState(0);
   const [wordCount, setWordCount] = useState(0);
   // const [wpm, setWpm] = useState(0);
 
@@ -163,8 +164,14 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   const textSelectorRef = useRef(null)
 
   // let isWrong = false;
-  let totalWords = 30;
+  // let totalWords = 30;
   let correctChar = 0;
+  const spaceChar = String.fromCharCode(8194);
+
+  useEffect(() => {
+      setHydrated(true);
+  }, []);
+  
 
   const moveCursor = useCallback(() => {
     if (cursorRef.current) {
@@ -209,7 +216,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 
     if (textDiv) {
       const outerSpans: any = textDiv.childNodes; // Select outer spans
-
+      
       const newWidthList = Array.from(outerSpans).map((outerSpan: any) => {
         const innerSpans = outerSpan.getElementsByTagName("span"); // Select nested spans within the outer span
         const widths = Array.from(innerSpans).map((span: any) => span.getBoundingClientRect().width);
@@ -220,10 +227,29 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
         return outerSpan.getElementsByTagName("span"); // Select nested spans within the outer span
       });
 
+    
+      let spaceCount = 0;
+
+      for(let i of outerSpans){
+        const spanList: any = i.childNodes;
+        console.log(spanList)
+
+        for(let j of spanList){
+          if(j.innerHTML === spaceChar){
+            spaceCount++;
+          }
+        }
+        spaceCount++;
+
+      }
+
+      setTotalWords(spaceCount)
       setWidthList(newWidthList);
       setFinalDivSpans(newFinalDivSpans);
+
     }
-  }, [textDivRef, finalDiv]);
+  }, [textDivRef, finalDiv, spaceChar]);
+
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -233,7 +259,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 
       if (event.key === " ") event.preventDefault();
 
-      if ((event.key === "Enter" && jumpIndex === currentLineWidthList.length) || (curSpan && event.key === curSpan.innerHTML) || (curSpan && event.key === " " && curSpan.innerHTML === String.fromCharCode(8194))) {
+      if ((event.key === "Enter" && jumpIndex === currentLineWidthList.length) || (curSpan && event.key === curSpan.innerHTML) || (curSpan && event.key === " " && curSpan.innerHTML === spaceChar)) {
         if ((curSpan && event.key === " " && curSpan.innerHTML === String.fromCharCode(8194)) || (event.key === "Enter" && jumpIndex === currentLineWidthList.length)) {
           setWordCount((curWordCount) => {
             return curWordCount + 1;
@@ -283,8 +309,9 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
         isWrongRef.current = true;
       }
     },
-    [widthList, lineIndex, finalDivSpans, jumpIndex, textColour, textColourIncorrect, textColourCorrect, punc, num, caps, initialCursorX, initialCursorY, setTranslateX, setTranslateY, setLineIndex, setJumpIndex, setWordCount, setFinalDiv, CreateFinalDiv]
+    [widthList, lineIndex, finalDivSpans, jumpIndex, textColour, textColourIncorrect, textColourCorrect, punc, num, caps, initialCursorX, initialCursorY, setTranslateX, setTranslateY, setLineIndex, setJumpIndex, setWordCount, setFinalDiv, CreateFinalDiv, spaceChar]
   );
+
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
@@ -294,19 +321,27 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     };
   }, [widthList, jumpIndex, lineIndex, handleKeyPress]);
 
+
+
+  if (!hydrated) {
+    // Returns null on first render, so the client and server match
+    return null;
+  } 
+
   const modifiedClass = `flex flex-col items-center gap-2 justify-center text-2xl tracking-widest w-fit h-fit text-left`;
 
   return (
     <div className="flex flex-col items-center justify-center w-96 gap-20">
       <TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} divColour={selectorDivColour} textColour={selectorTextColour} textSelectColour={selectorSelectedColour} hoverColour={selectorHoverColour} puncState={punc} numState={num} capsState={caps} />
-      {/* <div className="text-2xl text-dolphin-btn">
-        {wordCount} / {totalWords}
-      </div> */}
+
       <div ref={textDivRef} className={modifiedClass}>
         {...finalDiv}
       </div>
 
-      <Caret translateX={translateX} translateY={translateY} />
+      <Caret translateX={translateX} translateY={translateY} colour={caretColour}/>
+      <div className="absolute text-2xl text-dolphin-btn top-20 -left-80 translate-x-3">
+        {wordCount} / {totalWords}
+      </div>
     </div>
   );
 }

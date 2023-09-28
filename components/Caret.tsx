@@ -1,16 +1,15 @@
-type CaretProp = {textRef ?: any; translateY ?: number; translateX ?: number; newLine ?: Array<number>; colour ?: string};
-  
+import { useState, useRef } from "react";
 
-function Caret({ translateX, translateY}: CaretProp) {
-    
+type CaretProp = { translateY: number; translateX: number; colour: string };
 
-    const modifiedStyle = {transform: `translateX(${translateX}px) translateY(${translateY}px)`,};
+function Caret({ translateX, translateY, colour }: CaretProp) {
 
-    const modifiedClass = "absolute border-[1.5px] h-6 border-arch-cursor transition-transform duration-200";
+ 
 
-    return (
-      <div className={modifiedClass} style={modifiedStyle}></div>
-    );
+  const modifiedStyle = { transform: `translateX(${translateX}px) translateY(${translateY}px)` };
+  const modifiedClass = `absolute border-[1.5px] h-7 transition-transform duration-200 animate-pulse ${colour}`;
+
+  return <div className={modifiedClass} style={modifiedStyle}></div>;
 }
 
 export default Caret;
