@@ -9,6 +9,6 @@ export const colour = {
   "dolphin-dull": "#00E4FF",
   "dolphin-btn": "#ffcefb",
   "dolphin-bright": "#82eaff",
-  "dolphin-wrong": "#ff8de6",
+  "dolphin-wrong": "#ffbde6",
   "dolphin-navbar": "#014961",
 };

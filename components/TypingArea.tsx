@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Cursor from "./cursor";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string  };
+type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string };
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
   let charList = [];
@@ -21,7 +21,6 @@ function CharacterSeparator(lineList: Array<Array<string>>) {
 
   return charList;
 }
-
 
 function LineSeparator(wordList: Array<string>, charCount: number) {
   let counter = 0;
@@ -50,8 +49,6 @@ function LineSeparator(wordList: Array<string>, charCount: number) {
   return lineList;
 }
 
-
-
 function FinalDiv(wordCount: number, lineCount: number, charCount: number, textColour: string, isPunc: boolean, isNum: boolean, isCaps: boolean) {
   const randomWords = ["apple", "banana", "chocolate", "dog", "elephant", "flower", "guitar", "happiness", "internet", "jazz", "kangaroo", "lighthouse", "mountain", "notebook", "ocean", "penguin", "quasar", "rainbow", "sunset", "tiger", "umbrella", "volcano", "watermelon", "xylophone", "yogurt", "zeppelin"];
   const randomPunc = ["?", "!", ",", ".", "'", ";", ":", ")"];
@@ -67,7 +64,7 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 
     let word = randomWords[randomWordIndex];
     let punctuation = randomPunc[randomPuncIndex];
-    let number = Math.floor((Math.random() * 10000));
+    let number = Math.floor(Math.random() * 10000);
 
     let puncRandom = Math.floor(Math.random() * 5);
     let capsRandom = Math.floor(Math.random() * 5);
@@ -82,21 +79,16 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
       word += punctuation;
       console.log("Punc");
 
-      if (punctuation === "'") 
-        word = punctuation + word;
+      if (punctuation === "'") word = punctuation + word;
 
-      if (punctuation === ")") 
-        word = "(" + word;
+      if (punctuation === ")") word = "(" + word;
     }
 
-    if (isNum && numRandom === 4)
-      word = number.toString()
-
+    if (isNum && numRandom === 4) word = number.toString();
 
     wordList.push(word);
     wordList.push(" ");
   }
-
 
   let lineList = LineSeparator(wordList, charCount).slice(0, lineCount);
   let finalList = CharacterSeparator(lineList);
@@ -121,15 +113,18 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
       }
     });
 
-    return <span className="w-[1000px]" key={uuid()}> {subSpan} </span>;
+    return (
+      <span className="w-[1000px]" key={uuid()}>
+        {" "}
+        {subSpan}{" "}
+      </span>
+    );
   });
 
   return finalDiv;
 }
 
-
-
-function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorDivColour }: textAreaProp) {
+function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorDivColour, selectorTextColour, selectorSelectedColour, selectorHoverColour }: textAreaProp) {
   // const CreateFinalDiv = (isPunc: boolean, isNum: boolean, isCaps: boolean) => {
   //   return FinalDiv(100, 4, 60, textColour, isPunc, isNum, isCaps);
   // }; //30,10,60
@@ -164,35 +159,32 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   const textDivRef = useRef<HTMLDivElement | null>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const isWrongRef = useRef(false);
-  let correctCharRef = useRef(0);
-
+  const correctCharRef = useRef(0);
+  const textSelectorRef = useRef(null)
 
   // let isWrong = false;
   let totalWords = 30;
   let correctChar = 0;
-  
-
 
   const moveCursor = useCallback(() => {
     if (cursorRef.current) {
       cursorRef.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
     }
   }, [translateX, translateY]);
-  
 
-  const handlePuncChange = () => {
-    setPunc((currPunc) => {   
+  const handlePuncChange = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+    const target = e.target as HTMLButtonElement;
+    setPunc((currPunc) => {
       return !currPunc;
-    });  
+    });
   };
-  
 
   const handleNumChange = () => {
     setNum((currNum) => {
       return !currNum;
     });
   };
-  
 
   const handleCapsChange = () => {
     setCaps((currCaps) => {
@@ -206,12 +198,11 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     setTranslateY(initialCursorY);
     setJumpIndex(0);
     setLineIndex(0);
-  }, [punc, num, caps, CreateFinalDiv, initialCursorY, initialCursorX])
+  }, [punc, num, caps, CreateFinalDiv, initialCursorY, initialCursorX]);
 
   useEffect(() => {
     moveCursor();
   }, [translateX, translateY, moveCursor]);
-  
 
   useEffect(() => {
     const textDiv: HTMLDivElement | null = textDivRef.current;
@@ -233,31 +224,17 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
       setFinalDivSpans(newFinalDivSpans);
     }
   }, [textDivRef, finalDiv]);
-  
-
-
-
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
       const currentLineWidthList = widthList[lineIndex];
       const currentLineText = finalDivSpans[lineIndex];
-      const curSpan =
-        currentLineText && jumpIndex < currentLineText.length
-          ? currentLineText[jumpIndex]
-          : undefined;
+      const curSpan = currentLineText && jumpIndex < currentLineText.length ? currentLineText[jumpIndex] : undefined;
 
-      if (event.key === ' ') event.preventDefault();
+      if (event.key === " ") event.preventDefault();
 
-      if (
-        (event.key === 'Enter' && jumpIndex === currentLineWidthList.length) ||
-        (curSpan && event.key === curSpan.innerHTML) ||
-        (curSpan && event.key === ' ' && curSpan.innerHTML === String.fromCharCode(8194))
-      ) {
-        if (
-          (curSpan && event.key === ' ' && curSpan.innerHTML === String.fromCharCode(8194)) ||
-          (event.key === 'Enter' && jumpIndex === currentLineWidthList.length)
-        ) {
+      if ((event.key === "Enter" && jumpIndex === currentLineWidthList.length) || (curSpan && event.key === curSpan.innerHTML) || (curSpan && event.key === " " && curSpan.innerHTML === String.fromCharCode(8194))) {
+        if ((curSpan && event.key === " " && curSpan.innerHTML === String.fromCharCode(8194)) || (event.key === "Enter" && jumpIndex === currentLineWidthList.length)) {
           setWordCount((curWordCount) => {
             return curWordCount + 1;
           });
@@ -266,9 +243,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
         if (isWrongRef.current) {
           curSpan?.classList.add(textColourIncorrect);
           curSpan?.classList.remove(textColour);
-        } 
-        
-        else curSpan?.classList.add(textColourCorrect);
+        } else curSpan?.classList.add(textColourCorrect);
         curSpan?.classList.remove(textColour);
 
         isWrongRef.current = false;
@@ -293,9 +268,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
               setTranslateY((prevTranslateY) => {
                 return prevTranslateY + changeCursorY;
               });
-            } 
-            
-            else {
+            } else {
               setFinalDiv(() => CreateFinalDiv(punc, num, caps));
               setTranslateY(initialCursorY);
               setJumpIndex(0);
@@ -306,33 +279,11 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
             setTranslateX(initialCursorX);
           }
         }
-      } 
-      
-      else {
+      } else {
         isWrongRef.current = true;
       }
     },
-    [
-      widthList,
-      lineIndex,
-      finalDivSpans,
-      jumpIndex,
-      textColour,
-      textColourIncorrect,
-      textColourCorrect,
-      punc,
-      num,
-      caps,
-      initialCursorX,
-      initialCursorY,
-      setTranslateX,
-      setTranslateY,
-      setLineIndex,
-      setJumpIndex,
-      setWordCount,
-      setFinalDiv,
-      CreateFinalDiv
-    ]
+    [widthList, lineIndex, finalDivSpans, jumpIndex, textColour, textColourIncorrect, textColourCorrect, punc, num, caps, initialCursorX, initialCursorY, setTranslateX, setTranslateY, setLineIndex, setJumpIndex, setWordCount, setFinalDiv, CreateFinalDiv]
   );
 
   useEffect(() => {
@@ -343,14 +294,11 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     };
   }, [widthList, jumpIndex, lineIndex, handleKeyPress]);
 
-
-
-
   const modifiedClass = `flex flex-col items-center gap-2 justify-center text-2xl tracking-widest w-fit h-fit text-left`;
 
   return (
     <div className="flex flex-col items-center justify-center w-96 gap-20">
-      <TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} divColour={selectorDivColour} textColour={""} textSelectColour={""} hoverColour={""}/>
+      <TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} divColour={selectorDivColour} textColour={selectorTextColour} textSelectColour={selectorSelectedColour} hoverColour={selectorHoverColour} puncState={punc} numState={num} capsState={caps} />
       {/* <div className="text-2xl text-dolphin-btn">
         {wordCount} / {totalWords}
       </div> */}
