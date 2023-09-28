@@ -1,13 +1,49 @@
+"use client"
+
 import React from "react";
+import { useRef, useCallback, useEffect } from "react";
 
 type NavbarProp = { textColour: string; backgroundTheme: string; svgFill: string; hoverColour: string };
 
 function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarProp) {
+
+  const navbarRef = useRef(null);
+
+  const handleVisibility = useCallback(
+    (event: MouseEvent | KeyboardEvent) => {
+
+      if(navbarRef.current){
+        const navbarDiv = navbarRef.current as HTMLDivElement;
+
+        if (event.type === "keydown"){
+          navbarDiv.classList.add("invisible")
+        }
+
+        else if (event.type === "mousemove"){
+          navbarDiv.classList.remove("invisible")
+        }
+      }
+    },
+    []
+  )
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleVisibility);
+    document.addEventListener("mousemove", handleVisibility);
+
+
+    return () => {
+      document.removeEventListener("keydown", handleVisibility);
+      document.addEventListener("mousemove", handleVisibility);
+
+    };
+  }, [handleVisibility]);
+
   const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 rounded-2xl border-x-0 overflow-hidden ${textColour} ${backgroundTheme}`;
   const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-y-0 pl-4 cursor-pointer ${backgroundTheme} ${hoverColour}`;
 
   return (
-    <div className={modifiedClass}>
+    <div ref={navbarRef} className={modifiedClass}>
       <div className={innerClass}>
         <svg className={svgFill} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

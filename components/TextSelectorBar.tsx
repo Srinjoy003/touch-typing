@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useRef } from "react";
+
 type SelectorProp = { puncChangeFunc: any; numChangeFunc: any; puncState: boolean; capsChangeFunc: any; numState: boolean; capsState: boolean; divColour: string; textColour: string; hoverColour: string; textSelectColour: string };
 function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncState, numState, capsState, divColour, textColour, hoverColour, textSelectColour }: SelectorProp) {
   const fillColour = "fill-" + textColour.slice(5);
@@ -16,8 +18,40 @@ function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncSt
 
   const modifiedSvgClass = `group-hover:fill-dolphin-bright `;
 
+  const textSelectorRef = useRef(null);
+
+  const handleVisibility = useCallback(
+    (event: MouseEvent | KeyboardEvent) => {
+
+      if(textSelectorRef.current){
+        const textSelectorDiv = textSelectorRef.current as HTMLDivElement;
+
+        if (event.type === "keydown"){
+          textSelectorDiv.classList.add("invisible")
+        }
+
+        else if (event.type === "mousemove"){
+          textSelectorDiv.classList.remove("invisible")
+        }
+      }
+    },
+    []
+  )
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleVisibility);
+    document.addEventListener("mousemove", handleVisibility);
+
+
+    return () => {
+      document.removeEventListener("keydown", handleVisibility);
+      document.addEventListener("mousemove", handleVisibility);
+
+    };
+  }, [handleVisibility]);
+
   return (
-    <div className={modifiedOuterDivClass}>
+    <div ref={textSelectorRef} className={modifiedOuterDivClass}>
       <div className={modifiedInnerDivClass + puncTextColour}  onClick={puncChangeFunc}>
         <svg className={modifiedSvgClass + puncSvgColour} width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path
