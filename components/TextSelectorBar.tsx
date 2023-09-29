@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef } from "react";
+import { ButtonGroup } from '@mui/material';
 
 type SelectorProp = { puncChangeFunc: any; numChangeFunc: any; puncState: boolean; capsChangeFunc: any; numState: boolean; capsState: boolean; divColour: string; textColour: string; hoverColour: string; textSelectColour: string };
 function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncState, numState, capsState, divColour, textColour, hoverColour, textSelectColour }: SelectorProp) {
   const fillColour = "fill-" + textColour.slice(5);
   const fillSelectColour = "fill-" + textSelectColour.slice(5);
 
-  const modifiedOuterDivClass = `flex flex-row justify-center gap-10 w-96 h-8 rounded-md ${divColour}`;
-  const modifiedInnerDivClass = `flex flex-row gap-2 h-full items-center justify-center group ${hoverColour} `;
+  const modifiedOuterDivClass = `flex flex-row justify-center gap-10 w-96 h-8 rounded-md opacity-100 transition-opacity duration-200 border-2 border-dolphin-bg ${divColour}`;
+  const modifiedInnerDivClass = `flex flex-row gap-2 h-full items-center justify-center group  ${hoverColour} `;
 
   const puncTextColour = `${puncState ? textSelectColour : textColour}`;
   const numTextColour = `${numState ? textSelectColour : textColour}`;
@@ -27,11 +28,15 @@ function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncSt
         const textSelectorDiv = textSelectorRef.current as HTMLDivElement;
 
         if (event.type === "keydown"){
-          textSelectorDiv.classList.add("invisible")
+          textSelectorDiv.classList.add("opacity-0")
+          textSelectorDiv.classList.remove("opacity-100")
+
         }
 
         else if (event.type === "mousemove"){
-          textSelectorDiv.classList.remove("invisible")
+          textSelectorDiv.classList.add("opacity-100")
+          textSelectorDiv.classList.remove("opacity-0")
+
         }
       }
     },

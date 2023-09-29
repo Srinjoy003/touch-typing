@@ -1,50 +1,46 @@
-"use client"
+"use client";
 
 import React from "react";
 import { useRef, useCallback, useEffect } from "react";
 
-type NavbarProp = { textColour: string; backgroundTheme: string; svgFill: string; hoverColour: string };
+type NavbarProp = { textColour: string; borderTheme: string; svgFill: string; hoverColour: string };
 
-function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarProp) {
-
+function Navbar({ textColour, borderTheme, svgFill, hoverColour }: NavbarProp) {
   const navbarRef = useRef(null);
 
-  const handleVisibility = useCallback(
-    (event: MouseEvent | KeyboardEvent) => {
+  const handleVisibility = useCallback((event: MouseEvent | KeyboardEvent) => {
+    if (navbarRef.current) {
+      const navbarDiv = navbarRef.current as HTMLDivElement;
 
-      if(navbarRef.current){
-        const navbarDiv = navbarRef.current as HTMLDivElement;
-
-        if (event.type === "keydown"){
-          navbarDiv.classList.add("invisible")
-        }
-
-        else if (event.type === "mousemove"){
-          navbarDiv.classList.remove("invisible")
-        }
+      if (event.type === "keydown") {
+        navbarDiv.classList.add("opacity-0");
+        navbarDiv.classList.remove("opacity-100");
+      } else if (event.type === "mousemove") {
+        navbarDiv.classList.add("opacity-100");
+        navbarDiv.classList.remove("opacity-0");
       }
-    },
-    []
-  )
+    }
+  }, []);
 
   useEffect(() => {
     document.addEventListener("keydown", handleVisibility);
     document.addEventListener("mousemove", handleVisibility);
 
-
     return () => {
       document.removeEventListener("keydown", handleVisibility);
       document.addEventListener("mousemove", handleVisibility);
-
     };
   }, [handleVisibility]);
 
-  const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 rounded-2xl border-x-0 overflow-hidden ${textColour} ${backgroundTheme}`;
-  const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-y-0 pl-4 cursor-pointer ${backgroundTheme} ${hoverColour}`;
+  const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`;
+  const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-2 pl-4 cursor-pointer ${borderTheme} ${hoverColour}`;
+
+  const firstClass = " rounded-t-lg";
+  const lastClass = " rounded-b-lg";
 
   return (
     <div ref={navbarRef} className={modifiedClass}>
-      <div className={innerClass}>
+      <div className={innerClass + firstClass}>
         <svg className={svgFill} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fillRule="evenodd"
@@ -73,7 +69,7 @@ function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarPro
       </div>
 
       <div className={innerClass}>
-        <svg width="30px" height="28px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <svg width="30px" height="25px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g className={svgFill} id="Dribbble-Light-Preview" transform="translate(-220.000000, -7759.000000)">
               <g id="icons" transform="translate(56.000000, 160.000000)">
@@ -85,8 +81,8 @@ function Navbar({ textColour, backgroundTheme, svgFill, hoverColour }: NavbarPro
         <a>Multiplayer</a>
       </div>
 
-      <div className={innerClass}>
-        <svg  width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <div className={innerClass + lastClass}>
+        <svg width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g id="🔍-Product-Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g className={svgFill} id="ic_fluent_dark_theme_24_filled" fill="#212121" fillRule="nonzero">
               <path d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20 L12,4 C16.418278,4 20,7.581722 20,12 C20,16.418278 16.418278,20 12,20 Z" id="🎨-Color"></path>
