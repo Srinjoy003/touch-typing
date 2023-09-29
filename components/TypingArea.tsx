@@ -5,7 +5,7 @@ import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorDivColour: string; selectorTextColour: string; selectorHoverColour: string; selectorSelectedColour: string; caretColour: string};
+type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorBorderColour: string; selectorBorderSelectedColour: string; selectorTextColour: string; selectorHoverColour: string; selectorTextSelectedColour: string; selectorSvgColour: string; selectorSvgSelectedColour: string;selectorSvgHoverColour: string; caretColour: string };
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
   let charList = [];
@@ -72,12 +72,10 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 
     if (isCaps && capsRandom === 4) {
       word = word[0].toUpperCase() + word.slice(1);
-      console.log("Caps");
     }
 
     if (isPunc && puncRandom === 4) {
       word += punctuation;
-      console.log("Punc");
 
       if (punctuation === "'") word = punctuation + word;
 
@@ -124,7 +122,7 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
   return finalDiv;
 }
 
-function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorDivColour, selectorTextColour, selectorSelectedColour, selectorHoverColour, caretColour }: textAreaProp) {
+function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour }: textAreaProp) {
   // const CreateFinalDiv = (isPunc: boolean, isNum: boolean, isCaps: boolean) => {
   //   return FinalDiv(100, 4, 60, textColour, isPunc, isNum, isCaps);
   // }; //30,10,60
@@ -161,7 +159,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   const cursorRef = useRef<HTMLDivElement>(null);
   const isWrongRef = useRef(false);
   const correctCharRef = useRef(0);
-  const textSelectorRef = useRef(null)
+  const textSelectorRef = useRef(null);
 
   // let isWrong = false;
   // let totalWords = 30;
@@ -169,9 +167,8 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   const spaceChar = String.fromCharCode(8194);
 
   useEffect(() => {
-      setHydrated(true);
+    setHydrated(true);
   }, []);
-  
 
   const moveCursor = useCallback(() => {
     if (cursorRef.current) {
@@ -180,7 +177,6 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   }, [translateX, translateY]);
 
   const handlePuncChange = (e: React.MouseEvent<HTMLButtonElement>) => {
-
     const target = e.target as HTMLButtonElement;
     setPunc((currPunc) => {
       return !currPunc;
@@ -216,7 +212,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 
     if (textDiv) {
       const outerSpans: any = textDiv.childNodes; // Select outer spans
-      
+
       const newWidthList = Array.from(outerSpans).map((outerSpan: any) => {
         const innerSpans = outerSpan.getElementsByTagName("span"); // Select nested spans within the outer span
         const widths = Array.from(innerSpans).map((span: any) => span.getBoundingClientRect().width);
@@ -227,29 +223,24 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
         return outerSpan.getElementsByTagName("span"); // Select nested spans within the outer span
       });
 
-    
       let spaceCount = 0;
 
-      for(let i of outerSpans){
+      for (let i of outerSpans) {
         const spanList: any = i.childNodes;
-        console.log(spanList)
 
-        for(let j of spanList){
-          if(j.innerHTML === spaceChar){
+        for (let j of spanList) {
+          if (j.innerHTML === spaceChar) {
             spaceCount++;
           }
         }
         spaceCount++;
-
       }
 
-      setTotalWords(spaceCount)
+      setTotalWords(spaceCount);
       setWidthList(newWidthList);
       setFinalDivSpans(newFinalDivSpans);
-
     }
   }, [textDivRef, finalDiv, spaceChar]);
-
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -312,7 +303,6 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     [widthList, lineIndex, finalDivSpans, jumpIndex, textColour, textColourIncorrect, textColourCorrect, punc, num, caps, initialCursorX, initialCursorY, setTranslateX, setTranslateY, setLineIndex, setJumpIndex, setWordCount, setFinalDiv, CreateFinalDiv, spaceChar]
   );
 
-
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
 
@@ -321,24 +311,22 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
     };
   }, [widthList, jumpIndex, lineIndex, handleKeyPress]);
 
-
-
   if (!hydrated) {
     // Returns null on first render, so the client and server match
     return null;
-  } 
+  }
 
   const modifiedClass = `flex flex-col items-center gap-2 justify-center text-2xl tracking-widest w-fit h-fit text-left`;
 
   return (
     <div className="flex flex-col items-center justify-center w-96 gap-20">
-      <TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} divColour={selectorDivColour} textColour={selectorTextColour} textSelectColour={selectorSelectedColour} hoverColour={selectorHoverColour} puncState={punc} numState={num} capsState={caps} />
+      <TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange}  puncState={punc} numState={num} capsState={caps} borderColour={selectorBorderColour} borderSelectColour={selectorBorderSelectedColour} textColour={selectorTextColour} textSelectColour={selectorTextSelectedColour} hoverColour={selectorHoverColour} svgColour={selectorSvgColour} svgSelectColour={selectorSvgSelectedColour} svgHoverColour={selectorSvgHoverColour} />
 
       <div ref={textDivRef} className={modifiedClass}>
         {...finalDiv}
       </div>
 
-      <Caret translateX={translateX} translateY={translateY} colour={caretColour}/>
+      <Caret translateX={translateX} translateY={translateY} colour={caretColour} />
       <div className="absolute text-2xl text-dolphin-btn top-20 -left-80 translate-x-3">
         {wordCount} / {totalWords}
       </div>
