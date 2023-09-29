@@ -159,7 +159,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
   const cursorRef = useRef<HTMLDivElement>(null);
   const isWrongRef = useRef(false);
   const correctCharRef = useRef(0);
-  const textSelectorRef = useRef(null);
+  const wordCountRef = useRef(null);
 
   // let isWrong = false;
   // let totalWords = 30;
@@ -285,8 +285,18 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
               setTranslateY((prevTranslateY) => {
                 return prevTranslateY + changeCursorY;
               });
-            } else {
-              setFinalDiv(() => CreateFinalDiv(punc, num, caps));
+            } 
+            
+            else {
+              setFinalDiv(() => {
+                if (wordCountRef.current){
+                  const wordCountDiv = wordCountRef.current as HTMLDivElement;
+                  wordCountDiv.classList.add("invisible");
+                }
+
+                return CreateFinalDiv(punc, num, caps)
+              });
+
               setTranslateY(initialCursorY);
               setJumpIndex(0);
               setLineIndex(0);
@@ -298,6 +308,11 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
         }
       } else {
         isWrongRef.current = true;
+      }
+
+      if (wordCountRef.current){
+        const wordCountDiv = wordCountRef.current as HTMLDivElement;
+        wordCountDiv.classList.remove("invisible");
       }
     },
     [widthList, lineIndex, finalDivSpans, jumpIndex, textColour, textColourIncorrect, textColourCorrect, punc, num, caps, initialCursorX, initialCursorY, setTranslateX, setTranslateY, setLineIndex, setJumpIndex, setWordCount, setFinalDiv, CreateFinalDiv, spaceChar]
@@ -327,7 +342,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
       </div>
 
       <Caret translateX={translateX} translateY={translateY} colour={caretColour} />
-      <div className="absolute text-2xl text-dolphin-btn top-20 -left-80 translate-x-3">
+      <div ref={wordCountRef} className="absolute text-2xl text-dolphin-btn top-20 -left-80 translate-x-3 invisible">
         {wordCount} / {totalWords}
       </div>
     </div>
