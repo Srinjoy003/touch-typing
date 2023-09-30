@@ -112,9 +112,9 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 		});
 
 		return (
-			<span className="w-[1000px]" key={uuid()}>
-				{" "}
-				{subSpan}{" "}
+			<span className="w-fit" key={uuid()}>
+				{/* {""} */}
+				{subSpan} {/*{" "}*/}
 			</span>
 		);
 	});
@@ -124,17 +124,21 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 
 function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour }: textAreaProp) {
 	
-
-	const CreateFinalDiv = useCallback(
-		(isPunc: boolean, isNum: boolean, isCaps: boolean) => {
-			return FinalDiv(100, 4, 62, textColour, isPunc, isNum, isCaps);
-		},
-		[textColour] 
-	);
-
 	const initialCursorX = -500;
 	const initialCursorY = 10;
 	const changeCursorY = 40;
+
+	const words = 100;
+	const lines = 3;
+	const chars = 75;
+
+	const CreateFinalDiv = useCallback(
+		(isPunc: boolean, isNum: boolean, isCaps: boolean) => {
+			return FinalDiv(words, lines, chars, textColour, isPunc, isNum, isCaps);
+		},
+		[textColour]
+	);
+
 
 	const [punc, setPunc] = useState(false);
 	const [num, setNum] = useState(false);
@@ -160,8 +164,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 	const startTimeRef = useRef<number | null>(null);
 	const endTimeRef = useRef<number | null>(null);
 	const charCountRef = useRef(0);
-  const correctCharCountRef = useRef(0);
-
+	const correctCharCountRef = useRef(0);
 
 	const spaceChar = String.fromCharCode(8194);
 
@@ -298,14 +301,13 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 								endTimeRef.current = Date.now();
 
 								if (startTimeRef.current && endTimeRef.current && correctCharCountRef.current) {
-                  const acc = parseFloat(((correctCharCountRef.current / charCountRef.current)*100).toFixed(2))
-                  const wpm = parseFloat((charCountRef.current / ((endTimeRef.current - startTimeRef.current) / 12000)).toFixed(2));
-                  setAccuracy(acc);
+									const acc = parseFloat(((correctCharCountRef.current / charCountRef.current) * 100).toFixed(2));
+									const wpm = parseFloat((charCountRef.current / ((endTimeRef.current - startTimeRef.current) / 12000)).toFixed(2));
+									setAccuracy(acc);
 									setSpeed(wpm);
 									startTimeRef.current = null;
 									endTimeRef.current = null;
 								}
-
 
 								return CreateFinalDiv(punc, num, caps);
 							});
@@ -348,11 +350,10 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 		return null;
 	}
 
-	const modifiedClass = `flex flex-col items-center gap-2 justify-center text-2xl tracking-widest w-fit h-fit text-left`;
+	const modifiedClass = `flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-fit h-fit text-left`;
 
 	return (
-		<div className="flex flex-col items-center justify-center w-fit gap-24">
-    
+		<div className="flex flex-col items-center justify-start w-fit gap-24">
 			<TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} puncState={punc} numState={num} capsState={caps} borderColour={selectorBorderColour} borderSelectColour={selectorBorderSelectedColour} textColour={selectorTextColour} textSelectColour={selectorTextSelectedColour} hoverColour={selectorHoverColour} svgColour={selectorSvgColour} svgSelectColour={selectorSvgSelectedColour} svgHoverColour={selectorSvgHoverColour} />
 
 			<div ref={textDivRef} className={modifiedClass}>
@@ -362,12 +363,12 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 			<Caret translateX={translateX} translateY={translateY} colour={caretColour} />
 
 			<div ref={wordCountRef} className="absolute text-2xl text-dolphin-btn top-24 -left-3 translate-x-3 invisible">
-				{wordCount} / {totalWords} 
+				{wordCount} / {totalWords}
 			</div>
 
-      <div className="absolute flex flex-row items-start gap-5 w-fit text-base text-dolphin-bright -top-10 left-0 invisible">
-        <div>Speed: {speed}wpm</div>
-        <div>Accuracy: {accuracy}%</div>  
+			<div className="absolute flex flex-row items-start gap-5 w-fit text-base text-dolphin-bright -top-10 left-0 invisible">
+				<div>Speed: {speed}wpm</div>
+				<div>Accuracy: {accuracy}%</div>
 			</div>
 		</div>
 	);
