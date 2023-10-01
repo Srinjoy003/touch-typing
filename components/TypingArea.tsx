@@ -5,7 +5,7 @@ import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = { textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorBorderColour: string; selectorBorderSelectedColour: string; selectorTextColour: string; selectorHoverColour: string; selectorTextSelectedColour: string; selectorSvgColour: string; selectorSvgSelectedColour: string; selectorSvgHoverColour: string; caretColour: string };
+type textAreaProp = {textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorBorderColour: string; selectorBorderSelectedColour: string; selectorTextColour: string; selectorHoverColour: string; selectorTextSelectedColour: string; selectorSvgColour: string; selectorSvgSelectedColour: string; selectorSvgHoverColour: string; caretColour: string; wordCountColour: string };
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
 	let charList = [];
@@ -122,10 +122,10 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 	return finalDiv;
 }
 
-function TypingArea({ textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour }: textAreaProp) {
+function TypingArea({textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour, wordCountColour }: textAreaProp) {
 	
-	const initialCursorX = -500;
-	const initialCursorY = 10;
+	const initialCursorX = -561;
+	const initialCursorY = 137;
 	const changeCursorY = 40;
 
 	const words = 100;
@@ -198,7 +198,26 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 	};
 
 	useEffect(() => {
-		setFinalDiv(() => CreateFinalDiv(punc, num, caps));
+		setFinalDiv(() => {
+			if (wordCountRef.current) {
+				const wordCountDiv = wordCountRef.current as HTMLDivElement;
+				wordCountDiv.classList.add("invisible");
+			}
+
+			endTimeRef.current = Date.now();
+
+			if (startTimeRef.current && endTimeRef.current && correctCharCountRef.current) {
+				const acc = parseFloat(((correctCharCountRef.current / charCountRef.current) * 100).toFixed(2));
+				const wpm = parseFloat((charCountRef.current / ((endTimeRef.current - startTimeRef.current) / 12000)).toFixed(2));
+				setAccuracy(acc);
+				setSpeed(wpm);
+				startTimeRef.current = null;
+				endTimeRef.current = null;
+			}
+
+			return CreateFinalDiv(punc, num, caps);
+		});
+
 		setTranslateX(initialCursorX);
 		setTranslateY(initialCursorY);
 		setJumpIndex(0);
@@ -253,6 +272,8 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 			const currentLineWidthList = widthList[lineIndex];
 			const currentLineText = finalDivSpans[lineIndex];
 			const curSpan = currentLineText && jumpIndex < currentLineText.length ? currentLineText[jumpIndex] : undefined;
+			const pattern = /^[a-zA-Z0-9\s`~!@#$%^&*()_+={[}\]:;"'<,>.?/\\|,-]$/;
+
 
 			if (event.key === " ") event.preventDefault();
 
@@ -321,18 +342,19 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 						setTranslateX(initialCursorX);
 					}
 				}
-			} else {
+			} else if (pattern.test(event.key)){
 				isWrongRef.current = true;
 			}
 
-			const regex = /^F[1-9]|F1[0-2]$/;
-			if (wordCountRef.current && !regex.test(event.key)) {
+
+			if (wordCountRef.current && pattern.test(event.key) && !startTimeRef.current) {
 				const wordCountDiv = wordCountRef.current as HTMLDivElement;
 				wordCountDiv.classList.remove("invisible");
+				startTimeRef.current = Date.now();
+				
 			}
 
-			const pattern = /^[a-zA-Z0-9\s`~!@#$%^&*()_+={[}\]:;"'<,>.?/\\|,-]$/;
-			if (!startTimeRef.current) startTimeRef.current = Date.now();
+		
 		},
 		[widthList, lineIndex, finalDivSpans, jumpIndex, textColour, textColourIncorrect, textColourCorrect, punc, num, caps, initialCursorX, initialCursorY, setTranslateX, setTranslateY, setLineIndex, setJumpIndex, setWordCount, setFinalDiv, CreateFinalDiv, spaceChar]
 	);
@@ -350,10 +372,10 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 		return null;
 	}
 
-	const modifiedClass = `flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-fit h-fit text-left`;
-
+	const modifiedClass = `flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-full h-fit text-left ml-20`;
+	const wordCountClass = `absolute text-2xl top-24 -left-3 translate-x-14 invisible ${wordCountColour}`
 	return (
-		<div className="flex flex-col items-center justify-start w-fit gap-24">
+		<div className="flex flex-col items-center justify-start gap-24 w-[1200px]">
 			<TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} puncState={punc} numState={num} capsState={caps} borderColour={selectorBorderColour} borderSelectColour={selectorBorderSelectedColour} textColour={selectorTextColour} textSelectColour={selectorTextSelectedColour} hoverColour={selectorHoverColour} svgColour={selectorSvgColour} svgSelectColour={selectorSvgSelectedColour} svgHoverColour={selectorSvgHoverColour} />
 
 			<div ref={textDivRef} className={modifiedClass}>
@@ -362,7 +384,7 @@ function TypingArea({ textColour, textColourCorrect, textColourIncorrect, select
 
 			<Caret translateX={translateX} translateY={translateY} colour={caretColour} />
 
-			<div ref={wordCountRef} className="absolute text-2xl text-dolphin-btn top-24 -left-3 translate-x-3 invisible">
+			<div ref={wordCountRef} className={wordCountClass}>
 				{wordCount} / {totalWords}
 			</div>
 

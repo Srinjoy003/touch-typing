@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
-import { ButtonGroup } from "@mui/material";
 
 type SelectorProp = { puncChangeFunc: any; numChangeFunc: any; puncState: boolean; capsChangeFunc: any; numState: boolean; capsState: boolean; borderColour: string; borderSelectColour: string; textColour: string; hoverColour: string; textSelectColour: string; svgColour: string; svgSelectColour: string; svgHoverColour: string };
+
 function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncState, numState, capsState, borderColour, borderSelectColour, textColour, hoverColour, textSelectColour, svgColour, svgSelectColour, svgHoverColour }: SelectorProp) {
 	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200 scale-75`;
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;
