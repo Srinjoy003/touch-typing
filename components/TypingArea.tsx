@@ -5,7 +5,7 @@ import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
-type textAreaProp = {textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorBorderColour: string; selectorBorderSelectedColour: string; selectorTextColour: string; selectorHoverColour: string; selectorTextSelectedColour: string; selectorSvgColour: string; selectorSvgSelectedColour: string; selectorSvgHoverColour: string; caretColour: string; wordCountColour: string };
+type textAreaProp = {themeOpen: boolean; textColour: string; textColourCorrect: string; textColourIncorrect: string; selectorBorderColour: string; selectorBorderSelectedColour: string; selectorTextColour: string; selectorHoverColour: string; selectorTextSelectedColour: string; selectorSvgColour: string; selectorSvgSelectedColour: string; selectorSvgHoverColour: string; caretColour: string; wordCountColour: string };
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
 	let charList = [];
@@ -122,7 +122,7 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 	return finalDiv;
 }
 
-function TypingArea({textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour, wordCountColour }: textAreaProp) {
+function TypingArea({themeOpen, textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour, wordCountColour }: textAreaProp) {
 	
 	const initialCursorX = -561;
 	const initialCursorY = 137;
@@ -360,12 +360,15 @@ function TypingArea({textColour, textColourCorrect, textColourIncorrect, selecto
 	);
 
 	useEffect(() => {
-		document.addEventListener("keydown", handleKeyPress);
 
-		return () => {
-			document.removeEventListener("keydown", handleKeyPress);
-		};
-	}, [widthList, jumpIndex, lineIndex, handleKeyPress]);
+		if(!themeOpen){
+			document.addEventListener("keydown", handleKeyPress);
+
+			return () => {
+				document.removeEventListener("keydown", handleKeyPress);
+			};
+		}
+	}, [widthList, jumpIndex, lineIndex, handleKeyPress, themeOpen]);
 
 	if (!hydrated) {
 		// Returns null on first render, so the client and server match
@@ -376,7 +379,7 @@ function TypingArea({textColour, textColourCorrect, textColourIncorrect, selecto
 	const wordCountClass = `absolute text-2xl top-24 -left-3 translate-x-14 invisible ${wordCountColour}`
 	return (
 		<div className="flex flex-col items-center justify-start gap-24 w-[1200px]">
-			<TextSelectorBar puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} puncState={punc} numState={num} capsState={caps} borderColour={selectorBorderColour} borderSelectColour={selectorBorderSelectedColour} textColour={selectorTextColour} textSelectColour={selectorTextSelectedColour} hoverColour={selectorHoverColour} svgColour={selectorSvgColour} svgSelectColour={selectorSvgSelectedColour} svgHoverColour={selectorSvgHoverColour} />
+			<TextSelectorBar themeSelectorOpen={themeOpen} puncChangeFunc={handlePuncChange} numChangeFunc={handleNumChange} capsChangeFunc={handleCapsChange} puncState={punc} numState={num} capsState={caps} borderColour={selectorBorderColour} borderSelectColour={selectorBorderSelectedColour} textColour={selectorTextColour} textSelectColour={selectorTextSelectedColour} hoverColour={selectorHoverColour} svgColour={selectorSvgColour} svgSelectColour={selectorSvgSelectedColour} svgHoverColour={selectorSvgHoverColour} />
 
 			<div ref={textDivRef} className={modifiedClass}>
 				{...finalDiv}

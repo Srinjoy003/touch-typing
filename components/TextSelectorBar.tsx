@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 
-type SelectorProp = { puncChangeFunc: any; numChangeFunc: any; puncState: boolean; capsChangeFunc: any; numState: boolean; capsState: boolean; borderColour: string; borderSelectColour: string; textColour: string; hoverColour: string; textSelectColour: string; svgColour: string; svgSelectColour: string; svgHoverColour: string };
+type SelectorProp = { themeSelectorOpen: boolean; puncChangeFunc: any; numChangeFunc: any; puncState: boolean; capsChangeFunc: any; numState: boolean; capsState: boolean; borderColour: string; borderSelectColour: string; textColour: string; hoverColour: string; textSelectColour: string; svgColour: string; svgSelectColour: string; svgHoverColour: string };
 
-function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncState, numState, capsState, borderColour, borderSelectColour, textColour, hoverColour, textSelectColour, svgColour, svgSelectColour, svgHoverColour }: SelectorProp) {
+function TextSelectorBar({ themeSelectorOpen, puncChangeFunc, numChangeFunc, capsChangeFunc, puncState, numState, capsState, borderColour, borderSelectColour, textColour, hoverColour, textSelectColour, svgColour, svgSelectColour, svgHoverColour }: SelectorProp) {
 	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200 scale-75`;
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;
 	const firstClass = " rounded-l-lg";
@@ -35,14 +35,16 @@ function TextSelectorBar({ puncChangeFunc, numChangeFunc, capsChangeFunc, puncSt
 	}, []);
 
 	useEffect(() => {
-		document.addEventListener("keydown", handleVisibility);
-		document.addEventListener("mousemove", handleVisibility);
-
-		return () => {
-			document.removeEventListener("keydown", handleVisibility);
+		if (!themeSelectorOpen) {
+			document.addEventListener("keydown", handleVisibility);
 			document.addEventListener("mousemove", handleVisibility);
-		};
-	}, [handleVisibility]);
+
+			return () => {
+				document.removeEventListener("keydown", handleVisibility);
+				document.addEventListener("mousemove", handleVisibility);
+			};
+		}
+	}, [handleVisibility, themeSelectorOpen]);
 
 	return (
 		<div ref={textSelectorRef} className={modifiedOuterDivClass}>
