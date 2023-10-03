@@ -122,7 +122,23 @@ function FinalDiv(wordCount: number, lineCount: number, charCount: number, textC
 	return finalDiv;
 }
 
-function TypingArea({themeOpen, textColour, textColourCorrect, textColourIncorrect, selectorBorderColour, selectorBorderSelectedColour, selectorTextColour, selectorTextSelectedColour, selectorHoverColour, selectorSvgColour, selectorSvgSelectedColour, selectorSvgHoverColour, caretColour, wordCountColour }: textAreaProp) {
+function TypingArea(
+	{
+		themeOpen, 
+		textColour, 
+		textColourCorrect, 
+		textColourIncorrect, 
+		selectorBorderColour, 
+		selectorBorderSelectedColour, 
+		selectorTextColour, 
+		selectorTextSelectedColour, 
+		selectorHoverColour, 
+		selectorSvgColour, 
+		selectorSvgSelectedColour,
+		selectorSvgHoverColour, 
+		caretColour, 
+		wordCountColour 
+	}: textAreaProp) {
 	
 	const initialCursorX = -561;
 	const initialCursorY = 137;

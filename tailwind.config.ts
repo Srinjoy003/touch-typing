@@ -7,6 +7,10 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    { pattern: /^(bg|text|border|hover:bg|hover:text|hover:border|fill|decoration)-(dolphin|arch)(-[A-Za-z0-9_-]+)?$/ },
+  ]
+  ,
   theme: {
     extend: {
       colors:{
