@@ -5,9 +5,9 @@ import { useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ThemeSelector } from "./ui/themeSelector";
 
-type NavbarProp = { themeOpen: any, setThemeOpen: any, textColour: string; borderTheme: string; svgFill: string; hoverColour: string };
+type NavbarProp = { setTheme: any; themeOpen: any, setThemeOpen: any, textColour: string; borderTheme: string; svgFill: string; hoverColour: string };
 
-function Navbar({ themeOpen, setThemeOpen, textColour, borderTheme, svgFill, hoverColour }: NavbarProp) {
+function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, svgFill, hoverColour }: NavbarProp) {
 	const navbarRef = useRef(null);
 
 	const handleVisibility = useCallback((event: MouseEvent | KeyboardEvent) => {
@@ -37,7 +37,7 @@ function Navbar({ themeOpen, setThemeOpen, textColour, borderTheme, svgFill, hov
 	}, [handleVisibility, themeOpen]);
 
 	const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`;
-	const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-2 pl-4 cursor-pointer ${borderTheme} ${hoverColour}`;
+	const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-2 pl-4 cursor-pointer group ${borderTheme} ${hoverColour}`;
 
 	const firstClass = " rounded-t-lg";
 	const lastClass = " rounded-none rounded-b-lg";
@@ -85,18 +85,8 @@ function Navbar({ themeOpen, setThemeOpen, textColour, borderTheme, svgFill, hov
 				<p>Multiplayer</p>
 			</Link>
 
-			{/* <Link className={innerClass + lastClass} href="/">
-				<svg width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-					<g id="🔍-Product-Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-						<g className={svgFill} id="ic_fluent_dark_theme_24_filled" fill="#212121" fillRule="nonzero">
-							<path d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20 L12,4 C16.418278,4 20,7.581722 20,12 C20,16.418278 16.418278,20 12,20 Z" id="🎨-Color"></path>
-						</g>
-					</g>
-				</svg>
-				<p>Theme</p>
-			</Link> */}
-
-			<ThemeSelector open={themeOpen} setOpen={setThemeOpen} addClass={innerClass + lastClass} svgFill={svgFill} />
+		
+			<ThemeSelector setTheme={setTheme} open={themeOpen} setOpen={setThemeOpen} addClass={innerClass + lastClass} svgFill={svgFill} />
 		</div>
 	);
 }

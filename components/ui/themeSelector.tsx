@@ -8,13 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState } from "react";
 
-type themeProp = { open: any, setOpen: any, addClass: string; svgFill: string };
+type themeProp = { setTheme: any; open: any; setOpen: any; addClass: string; svgFill: string };
 
 const frameworks = [
 	{
-		value: "blue dolphin",
-		label: "blue dolphin",
+		value: "dolphin",
+		label: "dolphin",
 	},
 	{
 		value: "80's after dark",
@@ -34,8 +35,8 @@ const frameworks = [
 		label: "orange",
 	},
 	{
-		value: "aether",
-		label: "aether",
+		value: "arch",
+		label: "arch",
 	},
 	{
 		value: "cheesecake",
@@ -43,8 +44,9 @@ const frameworks = [
 	},
 ];
 
-export function ThemeSelector({ open, setOpen, addClass, svgFill }: themeProp) {
-	const [value, setValue] = React.useState("");
+export function ThemeSelector({ setTheme, open, setOpen, addClass, svgFill }: themeProp) {
+	const [value, setValue] = useState("");
+	const [hoverTimeout, setHoverTimeout] = useState<null | NodeJS.Timeout>(null);
 
 	const modifiedClass = `w-full justify-between h-28 ${addClass}`;
 
@@ -59,29 +61,52 @@ export function ThemeSelector({ open, setOpen, addClass, svgFill }: themeProp) {
 							</g>
 						</g>
 					</svg>
-					{value ? frameworks.find((framework) => framework.value === value)?.label : "Theme"}
+					{/*value ? frameworks.find((framework) => framework.value === value)?.label : */ "Theme"}
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-[500px] h-96 p-0 -translate-x-[600px] translate-y-32">
 				<Command>
 					<CommandInput placeholder="Search theme..." />
-					<CommandEmpty>No framework found.</CommandEmpty>
+					<CommandEmpty>No theme found.</CommandEmpty>
 					<CommandGroup>
-					<ScrollArea className="h-full w-full">
-						{frameworks.map((framework) => (
-							<CommandItem
-								key={framework.value}
-								onSelect={(currentValue) => {
-									setValue(currentValue === value ? "" : currentValue);
-									setOpen(false);
-								}}
-							>
-								<Check className={cn("mr-2 h-4 w-4", value === framework.value ? "opacity-100" : "opacity-0")} />
-								{framework.label}
-							</CommandItem>
-						))}
-						  </ScrollArea>
+						<ScrollArea className="h-full w-full ">
+							{frameworks.map((framework) => (
+								<CommandItem
+									key={framework.value}
+									onSelect={(currentValue) => {
+										if (hoverTimeout) {
+											clearTimeout(hoverTimeout);
+										}
+
+										setValue(currentValue === value ? "" : currentValue);
+										setOpen(false);
+										setTheme(currentValue);
+									}}
+									onMouseOver={() => {
+										if (hoverTimeout) {
+											clearTimeout(hoverTimeout);
+										}
+
+										const timeout = setTimeout(() => {
+											setTheme(framework.value);
+										}, 500);
+
+										// Store the timeout ID in the state
+										setHoverTimeout(timeout);
+									}}
+									onMouseOut={() => {
+										if (hoverTimeout) {
+											clearTimeout(hoverTimeout);
+										}
+										setTheme(value);
+									}}
+								>
+									<Check className={cn("mr-2 h-4 w-4", value === framework.value ? "opacity-100" : "opacity-0")} />
+									{framework.label}
+								</CommandItem>
+							))}
+						</ScrollArea>
 					</CommandGroup>
 				</Command>
 			</PopoverContent>
