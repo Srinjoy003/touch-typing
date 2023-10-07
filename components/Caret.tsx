@@ -27,10 +27,14 @@ function Caret({ translateX, translateY, colour }: CaretProp) {
 		};
 	}, [handlePulse]);
 
-	const modifiedStyle = { transform: `translateX(${translateX}px) translateY(${translateY}px)` };
+	const modifiedStyle = {
+		transform: `translateX(${translateX}px) translateY(${translateY}px)`,
+	};
 	const modifiedClass = `absolute border-[1.5px] h-7 transition-transform duration-200 animate-pulse ${colour}`;
 
-	return <div ref={caretRef} className={modifiedClass} style={modifiedStyle}></div>;
+	return (
+		<div ref={caretRef} className={modifiedClass} style={modifiedStyle}></div>
+	);
 }
 
 export default Caret;

@@ -2,9 +2,19 @@ import type { Config } from "tailwindcss";
 import { colour } from "./assets/colour";
 
 const config: Config = {
-	content: ["./pages/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}", "./app/**/*.{js,ts,jsx,tsx,mdx}"],
+	content: [
+		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
+		"./components/**/*.{js,ts,jsx,tsx,mdx}",
+		"./app/**/*.{js,ts,jsx,tsx,mdx}",
+	],
 
-	safelist: [{ pattern: /^(bg|text|border|fill|decoration)-(dolphin|arch)(-[A-Za-z0-9_-]+)?$/, variants: ["hover", "group-hover"] }],
+	safelist: [
+		{
+			pattern:
+				/^(bg|text|border|fill|decoration)-(dolphin|arch|retro|cheese|husqy|magic|tron)(-[A-Za-z0-9_-]+)?$/,
+			variants: ["hover", "group-hover", "aria-selected"],
+		},
+	],
 
 	theme: {
 		extend: {

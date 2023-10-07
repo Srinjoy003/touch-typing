@@ -1,17 +1,71 @@
 export const colour = {
+	"arch-main": "#7ebab5",
 	"arch-bg": "#0c0d11",
 	"arch-dull": "#454864",
 	"arch-navbar": "#171a25",
 	"arch-wrong": "#7ebab5", //selected(green)
 	"arch-bright": "#f6f5f5",
-  "arch-mono": "#ffffff",
+	"arch-caret": "#7ebab5",
+	"arch-mono": "#ffffff",
 
-	"dolphin-bg": "#003950",
-	"dolphin-dull": "#00E4FF",
-	"dolphin-bright": "#82eaff",
-	"dolphin-wrong": "#ffbde6",
-	"dolphin-navbar": "#014961",
-  "dolphin-mono": "#000000",
+
+	"dolphin-main": "#ffcefb",
+	"dolphin-bg": "#003950", //bg
+	"dolphin-dull": "#00E4FF", //sub
+	"dolphin-bright": "#82eaff", //text
+	"dolphin-wrong": "#ffbde6", //error
+	"dolphin-navbar": "#014961", //subalt
+	"-dolphin-caret": "#00bcd4",
+	"dolphin-mono": "#000000",
+
+
+	"husqy-main": "#c58aff",
+	"husqy-bg": "#000",
+	"husqy-dull": "#972fff",
+	"husqy-bright": "#ebd7ff",
+	"husqy-wrong": "#da3333",
+	"husqy-navbar": "#1e001e",
+	"husqy-caret": "#c58aff",
+	"husqy-mono": "#000000",
+
+
+	"retro-main": "#fca6d1",
+	"retro-bg": "#1b1d36",
+	"retro-dull": "#99d6ea",
+	"retro-bright": "#e1e7ec",
+	"retro-wrong": "#fffb85",
+	"retro-navbar": "#17182c",
+	"retro-caret": "#99d6ea",
+	"retro-mono": "#000000",
+
+	"cheese-main": "#8e2949",
+	"cheese-bg": "#fdf0d5",
+	"cheese-dull": "#d91c81",
+	"cheese-bright": "#3a3335",
+	"cheese-wrong": "#5cf074",
+	"cheese-navbar": "#f3e2bf",
+	"cheese-caret": "#892948",
+	"cheese-mono": "#ffffff",
+
+	"magic-main": "#f5b1cc",
+	"magic-bg": "#091f2c",
+	"magic-dull": "#93e8d3",
+	"magic-bright": "#a288d9",
+	"magic-wrong": "#e45c96",
+	"magic-navbar": "#071823",
+	"magic-caret": "#a288d9",
+	"magic-mono": "#000000",
+
+	"tron-main": "#f0e800",
+	"tron-bg": "#0d1c1c",
+	"tron-dull": "#f60",
+	"tron-bright": "#fff",
+	"tron-wrong": "red",
+	"tron-navbar": "#9c9191",
+	"tron-caret": "#f0e800",
+	"tron-mono": "red",
+
+
 
 };
 

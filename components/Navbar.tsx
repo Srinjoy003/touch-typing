@@ -5,9 +5,34 @@ import { useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ThemeSelector } from "./ui/themeSelector";
 
-type NavbarProp = { setTheme: any; themeOpen: any, setThemeOpen: any, textColour: string; borderTheme: string; svgFill: string; hoverColour: string };
+type NavbarProp = {
+	setTheme: any;
+	themeOpen: any;
+	setThemeOpen: any;
+	textColour: string;
+	borderTheme: string;
+	svgFill: string;
+	hoverColour: string;
+	themeSelectorBackgroundTheme: string;
+	themeSelectorBackgroundHoverTheme: string;
+	themeSelectorTextTheme: string;
+	themeSelectorTextHoverTheme: string;
 
-function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, svgFill, hoverColour }: NavbarProp) {
+};
+
+function Navbar({
+	setTheme,
+	themeOpen,
+	setThemeOpen,
+	textColour,
+	borderTheme,
+	svgFill,
+	hoverColour,
+	themeSelectorBackgroundTheme,
+	themeSelectorBackgroundHoverTheme,
+	themeSelectorTextTheme,
+	themeSelectorTextHoverTheme
+}: NavbarProp) {
 	const navbarRef = useRef(null);
 
 	const handleVisibility = useCallback((event: MouseEvent | KeyboardEvent) => {
@@ -25,14 +50,14 @@ function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, sv
 	}, []);
 
 	useEffect(() => {
-		if(!themeOpen){
+		if (!themeOpen) {
 			document.addEventListener("keydown", handleVisibility);
 			document.addEventListener("mousemove", handleVisibility);
 
 			return () => {
 				document.removeEventListener("keydown", handleVisibility);
 				document.addEventListener("mousemove", handleVisibility);
-		};
+			};
 		}
 	}, [handleVisibility, themeOpen]);
 
@@ -45,7 +70,14 @@ function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, sv
 	return (
 		<div ref={navbarRef} className={modifiedClass}>
 			<Link className={innerClass + firstClass} href="/">
-				<svg className={svgFill} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg
+					className={svgFill}
+					width="30px"
+					height="30px"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
 					<path
 						fillRule="evenodd"
 						clipRule="evenodd"
@@ -56,7 +88,13 @@ function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, sv
 			</Link>
 
 			<Link className={innerClass} href="/">
-				<svg className={svgFill} width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<svg
+					className={svgFill}
+					width="30px"
+					height="30px"
+					viewBox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg"
+				>
 					<rect x="0" fill="none" width="24" height="24" />
 					<g>
 						<path d="M21 21H3v-2h18v2zM8 10H4v7h4v-7zm6-4h-4v11h4V6zm6-3h-4v14h4V3z" />
@@ -66,18 +104,43 @@ function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, sv
 			</Link>
 
 			<Link className={innerClass} href="/typingTest">
-				<svg className={svgFill} width="30px" height="30px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+				<svg
+					className={svgFill}
+					width="30px"
+					height="30px"
+					viewBox="0 0 512 512"
+					xmlns="http://www.w3.org/2000/svg"
+				>
 					<path d="M256 54.28c-124.603 0-226 101.398-226 226 0 47.864 14.975 92.293 40.465 128.876l29.79-19.86c-17.188-24.545-28.708-53.362-32.696-84.577H96v-18H66.115c-.07-2.14-.115-4.284-.115-6.44 0-45.378 15.816-86.97 42.236-119.598l17.4 17.4 12.727-12.727-18.133-18.132C152.735 114.057 197.335 92.8 247 90.498v29.22h18V90.5c49.665 2.302 94.265 23.56 126.77 56.725l-18.133 18.132 12.726 12.727 17.4-17.4c26.42 32.63 42.237 74.22 42.237 119.6 0 2.154-.044 4.3-.115 6.437H416v18h28.44c-3.987 31.214-15.507 60.03-32.694 84.575l29.79 19.86C467.025 372.574 482 328.146 482 280.282c0-124.602-101.397-226-226-226zm15.83 66.23a144 160 0 0 1 74.608 100.062l49.966-17.568a160 160 0 0 0-4.3-7.012l-5.135 5.153-30.368-30.29-5.76-5.746 7.85-7.874a160 160 0 0 0-86.862-36.726zm156.15 89.844l-175.332 60.6C240.505 272.618 231 283.155 231 295.72c0 13.7 11.3 25 25 25 6.77 0 12.95-2.764 17.473-7.208L427.98 210.354zm-16.513 32.322l-60.713 40.72a144 160 0 0 1-56.6 108.323h76.057a160 160 0 0 0 39.763-68.572H398.48v-52.515h17.022a160 160 0 0 0-4.035-27.957zM128 421.72v36h256v-36H128z" />
 				</svg>
 				<p>Typing Test</p>
 			</Link>
 
 			<Link className={innerClass} href="">
-				<svg width="30px" height="25px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-					<g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-						<g className={svgFill} id="Dribbble-Light-Preview" transform="translate(-220.000000, -7759.000000)">
+				<svg
+					width="30px"
+					height="25px"
+					viewBox="0 0 20 20"
+					version="1.1"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<g
+						id="Page-1"
+						stroke="none"
+						strokeWidth="1"
+						fill="none"
+						fillRule="evenodd"
+					>
+						<g
+							className={svgFill}
+							id="Dribbble-Light-Preview"
+							transform="translate(-220.000000, -7759.000000)"
+						>
 							<g id="icons" transform="translate(56.000000, 160.000000)">
-								<path d="M174,7611 L178,7611 L178,7607 L174,7607 L174,7611 Z M170,7607 L174,7607 L174,7603 L170,7603 L170,7607 Z M174,7603 L178,7603 L178,7599 L174,7599 L174,7603 Z M182,7599 L182,7603 L178,7603 L178,7607 L182,7607 L182,7619 L184,7619 L184,7599 L182,7599 Z M166,7607 L170,7607 L170,7611 L166,7611 L166,7619 L164,7619 L164,7599 L170,7599 L170,7603 L166,7603 L166,7607 Z" id="finish_line-[#104]"></path>
+								<path
+									d="M174,7611 L178,7611 L178,7607 L174,7607 L174,7611 Z M170,7607 L174,7607 L174,7603 L170,7603 L170,7607 Z M174,7603 L178,7603 L178,7599 L174,7599 L174,7603 Z M182,7599 L182,7603 L178,7603 L178,7607 L182,7607 L182,7619 L184,7619 L184,7599 L182,7599 Z M166,7607 L170,7607 L170,7611 L166,7611 L166,7619 L164,7619 L164,7599 L170,7599 L170,7603 L166,7603 L166,7607 Z"
+									id="finish_line-[#104]"
+								></path>
 							</g>
 						</g>
 					</g>
@@ -85,8 +148,17 @@ function Navbar({ setTheme, themeOpen, setThemeOpen, textColour, borderTheme, sv
 				<p>Multiplayer</p>
 			</Link>
 
-		
-			<ThemeSelector setTheme={setTheme} open={themeOpen} setOpen={setThemeOpen} addClass={innerClass + lastClass} svgFill={svgFill} />
+			<ThemeSelector
+				setTheme={setTheme}
+				open={themeOpen}
+				setOpen={setThemeOpen}
+				addClass={innerClass + lastClass}
+				svgFill={svgFill}
+				backgroundTheme={themeSelectorBackgroundTheme}
+				backgroundHoverTheme={themeSelectorBackgroundHoverTheme}
+				textTheme={themeSelectorTextTheme}
+				textHoverTheme={themeSelectorTextHoverTheme}
+			/>
 		</div>
 	);
 }
