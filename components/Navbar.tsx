@@ -17,7 +17,6 @@ type NavbarProp = {
 	themeSelectorBackgroundHoverTheme: string;
 	themeSelectorTextTheme: string;
 	themeSelectorTextHoverTheme: string;
-
 };
 
 function Navbar({
@@ -31,7 +30,7 @@ function Navbar({
 	themeSelectorBackgroundTheme,
 	themeSelectorBackgroundHoverTheme,
 	themeSelectorTextTheme,
-	themeSelectorTextHoverTheme
+	themeSelectorTextHoverTheme,
 }: NavbarProp) {
 	const navbarRef = useRef(null);
 
@@ -154,7 +153,7 @@ function Navbar({
 				setOpen={setThemeOpen}
 				addClass={innerClass + lastClass}
 				svgFill={svgFill}
-				backgroundTheme={themeSelectorBackgroundTheme}
+				themeSelectorTheme={themeSelectorBackgroundTheme}
 				backgroundHoverTheme={themeSelectorBackgroundHoverTheme}
 				textTheme={themeSelectorTextTheme}
 				textHoverTheme={themeSelectorTextHoverTheme}

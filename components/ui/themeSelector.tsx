@@ -18,7 +18,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type themeProp = {
 	setTheme: any;
@@ -26,11 +26,7 @@ type themeProp = {
 	setOpen: any;
 	addClass: string;
 	svgFill: string;
-	backgroundTheme: string;
-	backgroundHoverTheme: string;
-	textTheme: string;
-	textHoverTheme: string;
-
+	themeSelectorTheme: string;
 };
 
 const themes = [
@@ -51,7 +47,7 @@ const themes = [
 		label: "cyber citrus",
 	},
 	{
-		value: "arca`dia",
+		value: "arcadia",
 		label: "arcadia",
 	},
 	{
@@ -64,20 +60,18 @@ const themes = [
 	},
 ];
 
-
-
 type ThemeMap = {
-  [key: string]: string;
+	[key: string]: string;
 };
 
 const themeMap: ThemeMap = {
-  "ocean breeze": "dolphin",
-  "arcadia": "arch",
-  "cyber citrus": "tron",
-  "retro nightfall": "retro",
-  "delight": "cheese",
-  "wildscape": "husqy",
-  "dark magic": "magic"
+	"ocean breeze": "dolphin",
+	arcadia: "arch",
+	"cyber citrus": "tron",
+	"retro nightfall": "retro",
+	delight: "cheese",
+	wildscape: "husqy",
+	"dark magic": "magic",
 };
 
 // blue dolphin - Ocean Breeze (dolphin)
@@ -87,22 +81,27 @@ const themeMap: ThemeMap = {
 // cheesecake- Delight (cheese)
 // arch - Arcadia (arch)
 
-
 export function ThemeSelector({
 	setTheme,
 	open,
 	setOpen,
 	addClass,
 	svgFill,
-	backgroundTheme,
-	backgroundHoverTheme,
-	textTheme,
-	textHoverTheme
+	themeSelectorTheme,
 }: themeProp) {
 	const [value, setValue] = useState("");
 	const [hoverTimeout, setHoverTimeout] = useState<null | NodeJS.Timeout>(null);
+	const selectedTheme = useRef("arcadia");
 
-	const modifiedClass = `w-full justify-between h-28 ${addClass}`;
+	const modifiedClass = `w-full justify-between h-28 focus:outline-none ${addClass}`;
+	const bgTheme = themeSelectorTheme.split(" ")[0]
+
+	const handleMouseLeave = () => {
+		if (hoverTimeout) {
+			clearTimeout(hoverTimeout);
+		}
+		setTheme(themeMap[selectedTheme.current]);
+	};
 
 	return (
 		<Popover open={open} onOpenChange={setOpen} modal={true}>
@@ -144,18 +143,21 @@ export function ThemeSelector({
 					{
 						/*value ? frameworks.find((framework) => framework.value === value)?.label : */ "Theme"
 					}
-					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"  />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[500px] h-96 p-0 -translate-x-[600px] translate-y-32 ">
-				<Command>
-					<CommandInput placeholder="Search theme..." />
+			<PopoverContent
+				className={`w-[500px] h-96 p-0 -translate-x-[600px] translate-y-32`}
+				onMouseLeave={handleMouseLeave}
+			>
+				<Command className={bgTheme}>
+					<CommandInput placeholder="Search theme..."/>
 					<CommandEmpty>No theme found.</CommandEmpty>
 					<CommandGroup>
-						<ScrollArea className="h-full w-full">
+						<ScrollArea className="h-96 w-full">
 							{themes.map((themeList) => (
 								<CommandItem
-									className={backgroundTheme}
+									className={themeSelectorTheme}
 									key={themeList.value}
 									onSelect={(currentValue) => {
 										if (hoverTimeout) {
@@ -165,6 +167,7 @@ export function ThemeSelector({
 										setValue(currentValue === value ? "" : currentValue);
 										setOpen(false);
 										setTheme(themeMap[currentValue]);
+										selectedTheme.current = currentValue;
 									}}
 									onMouseOver={() => {
 										if (hoverTimeout) {
@@ -178,12 +181,12 @@ export function ThemeSelector({
 										// Store the timeout ID in the state
 										setHoverTimeout(timeout);
 									}}
-									onMouseOut={() => {
-										if (hoverTimeout) {
-											clearTimeout(hoverTimeout);
-										}
-										setTheme(themeMap[value]);
-									}}
+									// onMouseOut={() => {
+									// 	if (hoverTimeout) {
+									// 		clearTimeout(hoverTimeout);
+									// 	}
+									// 	// setTheme(themeMap[value]);
+									// }}
 								>
 									<Check
 										className={cn(
