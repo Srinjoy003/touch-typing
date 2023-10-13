@@ -5,13 +5,15 @@ import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { useState } from "react";
 import TestBar from "./testBar";
+import Timer from "./Timer";
+
 function Home() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [theme, setTheme] = useState("arch");
+	const [theme, setTheme] = useState("dolphin");
 
 	return (
 		<div
-			className={`bg-${theme}-bg flex flex-row items-center justify-end w-screen h-full gap-32`}
+			className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32`}
 		>
 			<Logo textColour={`${theme}-bright`} secondaryColour={`${theme}-main`} />
 
@@ -19,6 +21,7 @@ function Home() {
 
 				<div>
 					<TestBar/>
+					<Timer />
 				</div>
 				{/* <div className={`translate-x-6 mb-10 translate-y-10`}>
 					<TypingArea
