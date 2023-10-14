@@ -26,7 +26,7 @@ type themeProp = {
 	setOpen: any;
 	addClass: string;
 	svgFill: string;
-	themeSelectorTheme: string;
+	themeSelectorColour: string;
 };
 
 const themes = [
@@ -87,14 +87,14 @@ export function ThemeSelector({
 	setOpen,
 	addClass,
 	svgFill,
-	themeSelectorTheme,
+	themeSelectorColour: themeSelectorTheme,
 }: themeProp) {
 	const [value, setValue] = useState("");
 	const [hoverTimeout, setHoverTimeout] = useState<null | NodeJS.Timeout>(null);
 	const selectedTheme = useRef("arcadia");
 
 	const modifiedClass = `w-full justify-between h-28 focus:outline-none ${addClass}`;
-	const bgTheme = themeSelectorTheme.split(" ")[0]
+	const bgTheme = themeSelectorTheme.split(" ")[0];
 
 	const handleMouseLeave = () => {
 		if (hoverTimeout) {
@@ -143,7 +143,7 @@ export function ThemeSelector({
 					{
 						/*value ? frameworks.find((framework) => framework.value === value)?.label : */ "Theme"
 					}
-					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"  />
+					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent
@@ -151,7 +151,7 @@ export function ThemeSelector({
 				onMouseLeave={handleMouseLeave}
 			>
 				<Command className={bgTheme}>
-					<CommandInput placeholder="Search theme..."/>
+					<CommandInput placeholder="Search theme..." />
 					<CommandEmpty>No theme found.</CommandEmpty>
 					<CommandGroup>
 						<ScrollArea className="h-96 w-full">

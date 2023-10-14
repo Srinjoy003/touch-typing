@@ -26,9 +26,7 @@ function Home() {
 						textColour={`text-${theme}-dull`}
 						textSelectColour={`text-${theme}-main`}
 						hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
-						svgColour={`fill-${theme}-dull`}
-						svgSelectColour={`fill-${theme}-main`}
-						svgHoverColour={`group-hover:fill-${theme}-bright`}			
+						textHoverColour={`hover:text-${theme}-bright`}
 					/>
 					{/* <Timer /> */}
 				</div>
@@ -70,10 +68,7 @@ function Home() {
 				borderTheme={`border-${theme}-navbar`}
 				svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 				hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
-				themeSelectorBackgroundTheme={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
-				themeSelectorBackgroundHoverTheme=""
-				themeSelectorTextTheme=""
-				themeSelectorTextHoverTheme=""
+				themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 			/>
 		</div>
 	);

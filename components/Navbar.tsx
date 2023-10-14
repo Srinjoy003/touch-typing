@@ -13,10 +13,7 @@ type NavbarProp = {
 	borderTheme: string;
 	svgFill: string;
 	hoverColour: string;
-	themeSelectorBackgroundTheme: string;
-	themeSelectorBackgroundHoverTheme: string;
-	themeSelectorTextTheme: string;
-	themeSelectorTextHoverTheme: string;
+	themeSelectorColour: string;
 };
 
 function Navbar({
@@ -27,10 +24,7 @@ function Navbar({
 	borderTheme,
 	svgFill,
 	hoverColour,
-	themeSelectorBackgroundTheme,
-	themeSelectorBackgroundHoverTheme,
-	themeSelectorTextTheme,
-	themeSelectorTextHoverTheme,
+	themeSelectorColour,
 }: NavbarProp) {
 	const navbarRef = useRef(null);
 
@@ -153,10 +147,7 @@ function Navbar({
 				setOpen={setThemeOpen}
 				addClass={innerClass + lastClass}
 				svgFill={svgFill}
-				themeSelectorTheme={themeSelectorBackgroundTheme}
-				backgroundHoverTheme={themeSelectorBackgroundHoverTheme}
-				textTheme={themeSelectorTextTheme}
-				textHoverTheme={themeSelectorTextHoverTheme}
+				themeSelectorColour={themeSelectorColour}
 			/>
 		</div>
 	);

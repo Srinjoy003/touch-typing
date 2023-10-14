@@ -54,7 +54,7 @@ function Home() {
 				borderTheme={`border-${theme}-navbar`}
 				svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 				hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
-				themeSelectorBackgroundTheme={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
+				themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 				themeSelectorBackgroundHoverTheme=""
 				themeSelectorTextTheme=""
 				themeSelectorTextHoverTheme=""
