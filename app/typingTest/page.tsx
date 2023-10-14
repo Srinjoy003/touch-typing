@@ -18,12 +18,21 @@ function Home() {
 			<Logo textColour={`${theme}-bright`} secondaryColour={`${theme}-main`} />
 
 			<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
-
 				<div>
-					<TestBar/>
-					<Timer />
+					<TestBar
+						themeSelectorOpen={isOpen}
+						borderColour={`border-${theme}-navbar`}
+						borderSelectColour={`border-${theme}-main`}
+						textColour={`text-${theme}-dull`}
+						textSelectColour={`text-${theme}-main`}
+						hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
+						svgColour={`fill-${theme}-dull`}
+						svgSelectColour={`fill-${theme}-main`}
+						svgHoverColour={`group-hover:fill-${theme}-bright`}			
+					/>
+					{/* <Timer /> */}
 				</div>
-				{/* <div className={`translate-x-6 mb-10 translate-y-10`}>
+				<div className={`translate-x-6 mb-10 translate-y-10`}>
 					<TypingArea
 						themeOpen={isOpen}
 						textColour={`text-${theme}-dull`}
@@ -51,7 +60,7 @@ function Home() {
 						textColour={`text-${theme}-dull`}
 						textPressedColour={`text-${theme}-mono`}
 					/>
-				</div> */}
+				</div>
 			</div>
 			<Navbar
 				setTheme={setTheme}

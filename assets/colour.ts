@@ -63,7 +63,7 @@ export const colour = {
 	"tron-wrong": "red",
 	"tron-navbar": "#9c9191",
 	"tron-caret": "#f0e800",
-	"tron-mono": "red",
+	"tron-mono": "#ffffff",
 
 
 

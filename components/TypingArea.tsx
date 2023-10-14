@@ -6,6 +6,7 @@ import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
 
 type textAreaProp = {
+	displayTextSelector?: boolean;
 	themeOpen: boolean;
 	textColour: string;
 	textColourCorrect: string;

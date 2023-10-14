@@ -40,7 +40,7 @@ function TextSelectorBar({
 	const firstClass = " rounded-l-lg";
 	const lastClass = " rounded-r-lg";
 
-	const puncDiv = `${puncState ? textSelectColour : textColour} ${
+	const puncDivColour = `${puncState ? textSelectColour : textColour} ${
 		puncState ? borderSelectColour : borderColour
 	}`;
 	const numDivColour = `${numState ? textSelectColour : textColour} ${
@@ -87,7 +87,7 @@ function TextSelectorBar({
 	return (
 		<div ref={textSelectorRef} className={modifiedOuterDivClass}>
 			<div
-				className={modifiedInnerDivClass + puncDiv + firstClass}
+				className={modifiedInnerDivClass + puncDivColour + firstClass}
 				onClick={puncChangeFunc}
 			>
 				<svg
