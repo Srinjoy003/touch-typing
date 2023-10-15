@@ -3,7 +3,7 @@ import Countdown from 'react-countdown';
 function Timer() {
   return (
     <div>
-       <Countdown date={Date.now() + 10000} />
+       <Countdown date={Date.now() + 10000} precision={3} />
 
     </div>
   )

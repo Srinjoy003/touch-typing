@@ -5,8 +5,11 @@ import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { useState } from "react";
 import { themeObj } from "@/assets/colour";
+// import { useSelector } from 'react-redux';
 
 function Home() {
+
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [theme, setTheme] = useState("arch");
 
@@ -55,9 +58,6 @@ function Home() {
 				svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 				hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
 				themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
-				themeSelectorBackgroundHoverTheme=""
-				themeSelectorTextTheme=""
-				themeSelectorTextHoverTheme=""
 			/>
 		</div>
 	);

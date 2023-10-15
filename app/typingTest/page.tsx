@@ -18,7 +18,7 @@ function Home() {
 			<Logo textColour={`${theme}-bright`} secondaryColour={`${theme}-main`} />
 
 			<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
-				<div>
+				<div className="absolute">
 					<TestBar
 						themeSelectorOpen={isOpen}
 						borderColour={`border-${theme}-navbar`}
@@ -28,7 +28,7 @@ function Home() {
 						hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
 						textHoverColour={`hover:text-${theme}-bright`}
 					/>
-					{/* <Timer /> */}
+					<Timer />
 				</div>
 				<div className={`translate-x-6 mb-10 translate-y-10`}>
 					<TypingArea
