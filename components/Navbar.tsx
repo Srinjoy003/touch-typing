@@ -9,7 +9,6 @@ import { ThemeSelector } from "./ui/themeSelector";
 
 
 type NavbarProp = {
-	setTheme: any;
 	themeOpen: any;
 	setThemeOpen: any;
 	textColour: string;
@@ -20,7 +19,6 @@ type NavbarProp = {
 };
 
 function Navbar({
-	setTheme,
 	themeOpen,
 	setThemeOpen,
 	textColour,
@@ -145,7 +143,6 @@ function Navbar({
 			</Link>
 
 			<ThemeSelector
-				setTheme={setTheme}
 				open={themeOpen}
 				setOpen={setThemeOpen}
 				addClass={innerClass + lastClass}

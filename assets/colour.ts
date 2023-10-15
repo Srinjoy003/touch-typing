@@ -64,9 +64,6 @@ export const colour = {
 	"tron-navbar": "#9c9191",
 	"tron-caret": "#f0e800",
 	"tron-mono": "#ffffff",
-
-
-
 };
 
 type ThemeKeys = "dolphin" | "arch"; // Define all theme keys

@@ -6,7 +6,6 @@ import Logo from "@/components/Logo";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./reduxStore/store";
-import { setTheme } from "./reduxStore/themeSlice";
 
 
 function Home() {
@@ -54,7 +53,6 @@ function Home() {
 				</div>
 			</div>
 			<Navbar
-				setTheme={setTheme}
 				themeOpen={isOpen}
 				setThemeOpen={setIsOpen}
 				textColour={`text-${theme}-dull`}

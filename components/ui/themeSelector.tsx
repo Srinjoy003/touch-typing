@@ -23,7 +23,6 @@ import { useDispatch } from "react-redux";
 import { setTheme } from "@/app/reduxStore/themeSlice";
 
 type themeProp = {
-	setTheme: any;
 	open: any;
 	setOpen: any;
 	addClass: string;

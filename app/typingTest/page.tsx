@@ -5,12 +5,17 @@ import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { useState } from "react";
 import TestBar from "./testBar";
-import Timer from "./Timer";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxStore/store";
+import { colour } from "@/assets/colour";
 
 function Home() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [theme, setTheme] = useState("dolphin");
+	const theme = useSelector((state: RootState) => state.theme);
+	const coundownTime = useSelector((state: RootState) => state.countdown);
+
+
 
 	return (
 		<div
@@ -32,13 +37,17 @@ function Home() {
 
 					<CountdownCircleTimer
 						isPlaying
-						duration={10}
+						duration={coundownTime}
+						key={coundownTime}
 						colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
 						colorsTime={[7, 5, 2, 0]}
 						size={80}
 						strokeWidth={2}
+						onUpdate={(remainingTime: number) =>{
+
+						}}
 					>
-						{({ remainingTime }) => remainingTime}
+						{({ remainingTime, color}) => <div /*className={`text-${theme}-bright`}*/ style={{color: color}}>{remainingTime}</div>}
 					</CountdownCircleTimer>
 				</div>
 				<div className={`translate-x-6 mb-10 translate-y-10`}>
@@ -72,7 +81,6 @@ function Home() {
 				</div>
 			</div>
 			<Navbar
-				setTheme={setTheme}
 				themeOpen={isOpen}
 				setThemeOpen={setIsOpen}
 				textColour={`text-${theme}-dull`}

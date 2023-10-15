@@ -2,10 +2,14 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./themeSlice";
+import countdownReducer from "./countdownSlice";
+
 
 export const store = configureStore({
 	reducer: {
         theme: themeReducer,
+        countdown: countdownReducer,
+
     },
 });
 
