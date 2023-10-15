@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import { useState } from "react";
 import TestBar from "./testBar";
 import Timer from "./Timer";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 function Home() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,17 @@ function Home() {
 						hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
 						textHoverColour={`hover:text-${theme}-bright`}
 					/>
-					<Timer />
+
+					<CountdownCircleTimer
+						isPlaying
+						duration={10}
+						colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+						colorsTime={[7, 5, 2, 0]}
+						size={80}
+						strokeWidth={2}
+					>
+						{({ remainingTime }) => remainingTime}
+					</CountdownCircleTimer>
 				</div>
 				<div className={`translate-x-6 mb-10 translate-y-10`}>
 					<TypingArea

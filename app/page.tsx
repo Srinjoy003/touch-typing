@@ -4,14 +4,18 @@ import Keyboard from "@/components/Keyboard";
 import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { useState } from "react";
-import { themeObj } from "@/assets/colour";
-// import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./reduxStore/store";
+import { setTheme } from "./reduxStore/themeSlice";
+
 
 function Home() {
 
+	const theme = useSelector((state: RootState) => state.theme);
+
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [theme, setTheme] = useState("arch");
+	// const [theme, setTheme] = useState("arch");
 
 	return (
 		<div

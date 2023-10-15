@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { themeObj } from "@/assets/colour";
+import { Providers } from "./reduxStore/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,9 @@ export default function RootLayout({
 	const modifiedClass = `${inter.className} h-screen overflow-hidden`;
 	return (
 		<html lang="en">
-			<body className={modifiedClass}>{children}</body>
+			<body className={modifiedClass}>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	);
 }

@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { setTheme } from "@/app/reduxStore/themeSlice";
 
 type themeProp = {
 	setTheme: any;
@@ -82,7 +84,6 @@ const themeMap: ThemeMap = {
 // arch - Arcadia (arch)
 
 export function ThemeSelector({
-	setTheme,
 	open,
 	setOpen,
 	addClass,
@@ -95,6 +96,11 @@ export function ThemeSelector({
 
 	const modifiedClass = `w-full justify-between h-28 focus:outline-none ${addClass}`;
 	const bgTheme = themeSelectorTheme.split(" ")[0];
+
+	const dispatch = useDispatch();
+	const handleSetTheme = (newTheme: string) => {
+		dispatch(setTheme(newTheme));
+	};
 
 	const handleMouseLeave = () => {
 		if (hoverTimeout) {
@@ -166,7 +172,7 @@ export function ThemeSelector({
 
 										setValue(currentValue === value ? "" : currentValue);
 										setOpen(false);
-										setTheme(themeMap[currentValue]);
+										handleSetTheme(themeMap[currentValue]);
 										selectedTheme.current = currentValue;
 									}}
 									onMouseOver={() => {
@@ -175,7 +181,7 @@ export function ThemeSelector({
 										}
 
 										const timeout = setTimeout(() => {
-											setTheme(themeMap[themeList.value]);
+											handleSetTheme(themeMap[themeList.value]);
 										}, 500);
 
 										// Store the timeout ID in the state
