@@ -4,8 +4,12 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/app/reduxStore/loadingSlice";
 
 type textAreaProp = {
+	hydrated: boolean;
+	setHydrated: any;
 	displayTextSelector?: boolean;
 	themeOpen: boolean;
 	textColour: string;
@@ -180,6 +184,8 @@ function FinalDiv(
 }
 
 function TypingArea({
+	hydrated,
+	setHydrated,
 	themeOpen,
 	textColour,
 	textColourCorrect,
@@ -214,7 +220,6 @@ function TypingArea({
 	const [num, setNum] = useState(false);
 	const [caps, setCaps] = useState(false);
 
-	const [hydrated, setHydrated] = useState(false);
 	const [finalDiv, setFinalDiv] = useState(() =>
 		CreateFinalDiv(punc, num, caps)
 	);
@@ -240,9 +245,10 @@ function TypingArea({
 
 	const spaceChar = String.fromCharCode(8194);
 
+	const dispatch = useDispatch();
 	useEffect(() => {
 		setHydrated(true);
-	}, []);
+	}, [setHydrated]);
 
 	const moveCursor = useCallback(() => {
 		if (cursorRef.current) {

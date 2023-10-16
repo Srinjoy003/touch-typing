@@ -3,13 +3,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./themeSlice";
 import countdownReducer from "./countdownSlice";
+import loadingReducer from "./loadingSlice";
 
 
 export const store = configureStore({
 	reducer: {
         theme: themeReducer,
         countdown: countdownReducer,
-
+        loading: loadingReducer,
     },
 });
 

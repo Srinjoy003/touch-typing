@@ -4,6 +4,8 @@ import React from "react";
 import { useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ThemeSelector } from "./ui/themeSelector";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/app/reduxStore/loadingSlice";
 
 
 
@@ -61,9 +63,14 @@ function Navbar({
 	const firstClass = " rounded-t-lg";
 	const lastClass = " rounded-none rounded-b-lg";
 
+	const dispatch = useDispatch();
+	const handleSetLoading = () => {
+		dispatch(setLoading(true));
+	};
+
 	return (
 		<div ref={navbarRef} className={modifiedClass}>
-			<Link className={innerClass + firstClass} href="/">
+			<Link className={innerClass + firstClass} href="/" onClick={handleSetLoading}>
 				<svg
 					className={svgFill}
 					width="30px"
