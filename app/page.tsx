@@ -6,30 +6,44 @@ import Logo from "@/components/Logo";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./reduxStore/store";
-import Loading from "@/components/Loading";
 import "./globals.css";
-
+import TextSelectorBar from "@/components/TextSelectorBar";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
 	const [hydrated, setHydrated] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-	// const [theme, setTheme] = useState("arch");
 
 	return (
 		<>
-			<div className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${hydrated ? 'hidden' : ''}`}>
-				{/* <Loading /> */}
+			<div
+				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
+					hydrated ? "hidden" : ""
+				}`}
+			>
 				<div className="lds-dual-ring"></div>
 			</div>
 			<div
-				className={`bg-${theme}-bg flex flex-row items-center justify-end w-screen h-full gap-32 ${hydrated ? '' : 'hidden'}`}
+				className={`bg-${theme}-bg flex flex-row items-center justify-end w-screen h-full gap-32 ${
+					hydrated ? "" : "hidden"
+				}`}
 			>
 				<Logo
 					textColour={`${theme}-bright`}
 					secondaryColour={`${theme}-main`}
 				/>
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
+					{/* <TextSelectorBar
+							themeSelectorOpen={isOpen}
+							borderSelectColour={`border-${theme}-main`}
+							borderColour={`border-${theme}-navbar`}
+							textColour={`text-${theme}-dull`}
+							textSelectColour={`text-${theme}-main`}
+							hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
+							svgColour={`fill-${theme}-dull`}
+							svgSelectColour={`fill-${theme}-main`}
+							svgHoverColour={`group-hover:fill-${theme}-bright`}
+						/> */}
 					<div className={`translate-x-6 mb-10 translate-y-10`}>
 						<TypingArea
 							hydrated={hydrated}
@@ -50,6 +64,7 @@ function Home() {
 							wordCountColour={`text-${theme}-main`}
 						/>
 					</div>
+
 					<div className="translate-x-10 translate-y-6 ml-24 scale-110">
 						<Keyboard
 							themeSelectorOpen={isOpen}

@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/reduxStore/store";
+import {
+	toggleCaps,
+	toggleNum,
+	togglePunc,
+} from "@/app/reduxStore/selectorSlice";
+import { useDispatch } from "react-redux";
 
 type SelectorProp = {
 	themeSelectorOpen: boolean;
-	puncChangeFunc: any;
-	numChangeFunc: any;
-	puncState: boolean;
-	capsChangeFunc: any;
-	numState: boolean;
-	capsState: boolean;
 	borderColour: string;
 	borderSelectColour: string;
 	textColour: string;
@@ -20,12 +22,6 @@ type SelectorProp = {
 
 function TextSelectorBar({
 	themeSelectorOpen,
-	puncChangeFunc,
-	numChangeFunc,
-	capsChangeFunc,
-	puncState,
-	numState,
-	capsState,
 	borderColour,
 	borderSelectColour,
 	textColour,
@@ -35,6 +31,23 @@ function TextSelectorBar({
 	svgSelectColour,
 	svgHoverColour,
 }: SelectorProp) {
+	const puncState = useSelector((state: RootState) => state.selector.punc);
+	const numState = useSelector((state: RootState) => state.selector.num);
+	const capsState = useSelector((state: RootState) => state.selector.caps);
+	const dispatch = useDispatch();
+
+	const handlePuncChange = () => {
+		dispatch(togglePunc());
+	};
+
+	const handleNumChange = () => {
+		dispatch(toggleNum());
+	};
+
+	const handleCapsChange = () => {
+		dispatch(toggleCaps());
+	};
+
 	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200 scale-75`;
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;
 	const firstClass = " rounded-l-lg";
@@ -88,7 +101,7 @@ function TextSelectorBar({
 		<div ref={textSelectorRef} className={modifiedOuterDivClass}>
 			<div
 				className={modifiedInnerDivClass + puncDivColour + firstClass}
-				onClick={puncChangeFunc}
+				onClick={handlePuncChange}
 			>
 				<svg
 					className={modifiedSvgClass + puncSvgColour}
@@ -108,7 +121,7 @@ function TextSelectorBar({
 			</div>
 			<div
 				className={modifiedInnerDivClass + numDivColour}
-				onClick={numChangeFunc}
+				onClick={handleNumChange}
 			>
 				<svg
 					className={modifiedSvgClass + numSvgColour}
@@ -123,7 +136,7 @@ function TextSelectorBar({
 			</div>
 			<div
 				className={modifiedInnerDivClass + capsDivColour + lastClass}
-				onClick={capsChangeFunc}
+				onClick={handleCapsChange}
 			>
 				<svg
 					className={modifiedSvgClass + capsSvgColour}

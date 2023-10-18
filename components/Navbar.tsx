@@ -34,10 +34,15 @@ function Navbar({
 	const handleVisibility = useCallback((event: MouseEvent | KeyboardEvent) => {
 		if (navbarRef.current) {
 			const navbarDiv = navbarRef.current as HTMLDivElement;
+			const pattern = /^[a-zA-Z0-9\s`~!@#$%^&*()_+={[}\]:;"'<,>.?/\\|,-]$/;
 
 			if (event.type === "keydown") {
-				navbarDiv.classList.add("opacity-0");
-				navbarDiv.classList.remove("opacity-100");
+				const keyEvent = event as KeyboardEvent;
+
+				if(pattern.test(keyEvent.key)){
+					navbarDiv.classList.add("opacity-0");
+					navbarDiv.classList.remove("opacity-100");
+				}
 			} else if (event.type === "mousemove") {
 				navbarDiv.classList.add("opacity-100");
 				navbarDiv.classList.remove("opacity-0");

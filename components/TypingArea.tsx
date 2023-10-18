@@ -4,8 +4,8 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Caret from "./Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "./TextSelectorBar";
-import { useDispatch } from "react-redux";
-import { setLoading } from "@/app/reduxStore/loadingSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/reduxStore/store";
 
 type textAreaProp = {
 	hydrated: boolean;
@@ -216,9 +216,9 @@ function TypingArea({
 		[textColour]
 	);
 
-	const [punc, setPunc] = useState(false);
-	const [num, setNum] = useState(false);
-	const [caps, setCaps] = useState(false);
+	const punc = useSelector((state: RootState) => state.selector.punc);
+	const num = useSelector((state: RootState) => state.selector.num);
+	const caps = useSelector((state: RootState) => state.selector.caps);
 
 	const [finalDiv, setFinalDiv] = useState(() =>
 		CreateFinalDiv(punc, num, caps)
@@ -244,8 +244,8 @@ function TypingArea({
 	const correctCharCountRef = useRef(0);
 
 	const spaceChar = String.fromCharCode(8194);
+	const coundownTime = useSelector((state: RootState) => state.countdown);
 
-	const dispatch = useDispatch();
 	useEffect(() => {
 		setHydrated(true);
 	}, [setHydrated]);
@@ -255,25 +255,6 @@ function TypingArea({
 			cursorRef.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`;
 		}
 	}, [translateX, translateY]);
-
-	const handlePuncChange = (e: React.MouseEvent<HTMLButtonElement>) => {
-		const target = e.target as HTMLButtonElement;
-		setPunc((currPunc) => {
-			return !currPunc;
-		});
-	};
-
-	const handleNumChange = () => {
-		setNum((currNum) => {
-			return !currNum;
-		});
-	};
-
-	const handleCapsChange = () => {
-		setCaps((currCaps) => {
-			return !currCaps;
-		});
-	};
 
 	useEffect(() => {
 		setFinalDiv(() => {
@@ -313,7 +294,15 @@ function TypingArea({
 		setTranslateY(initialCursorY);
 		setJumpIndex(0);
 		setLineIndex(0);
-	}, [punc, num, caps, CreateFinalDiv, initialCursorY, initialCursorX]);
+	}, [
+		punc,
+		num,
+		caps,
+		CreateFinalDiv,
+		initialCursorY,
+		initialCursorX,
+		coundownTime,
+	]);
 
 	useEffect(() => {
 		moveCursor();
@@ -519,12 +508,6 @@ function TypingArea({
 		<div className="flex flex-col items-center justify-start gap-24 w-[1200px]">
 			<TextSelectorBar
 				themeSelectorOpen={themeOpen}
-				puncChangeFunc={handlePuncChange}
-				numChangeFunc={handleNumChange}
-				capsChangeFunc={handleCapsChange}
-				puncState={punc}
-				numState={num}
-				capsState={caps}
 				borderColour={selectorBorderColour}
 				borderSelectColour={selectorBorderSelectedColour}
 				textColour={selectorTextColour}

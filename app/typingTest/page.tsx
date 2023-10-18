@@ -5,22 +5,23 @@ import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { useState } from "react";
 import TestBar from "./testBar";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useSelector } from "react-redux";
 import { RootState } from "../reduxStore/store";
-import { colour } from "@/assets/colour";
+import CountdownTimer from "./CountdownTimer";
+import "../globals.css";
+
 
 function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [hydrated, setHydrated] = useState(false);
 	const theme = useSelector((state: RootState) => state.theme);
-	const coundownTime = useSelector((state: RootState) => state.countdown);
+	// const coundownTime = useSelector((state: RootState) => state.countdown);
 
 
 	return (
 		<>
 			<div className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${hydrated ? 'hidden' : ''}`}>
-				Loading
+				<div className="lds-dual-ring"></div>	
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${hydrated ? '' : 'hidden'}`}
@@ -30,7 +31,7 @@ function Home() {
 					secondaryColour={`${theme}-main`}
 				/>
 
-				<div className="flex flex-col items-center h-fit justify-start gap-28 translate-y-10 translate-x-20">
+				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="absolute">
 						<TestBar
 							themeSelectorOpen={isOpen}
@@ -42,19 +43,7 @@ function Home() {
 							textHoverColour={`hover:text-${theme}-bright`}
 						/>
 
-						<CountdownCircleTimer
-							isPlaying
-							duration={coundownTime}
-							key={coundownTime}
-							colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-							colorsTime={[7, 5, 2, 0]}
-							size={80}
-							strokeWidth={2}
-						>
-							{({ remainingTime, color }) => (
-								<div style={{ color: color }}>{remainingTime}</div>
-							)}
-						</CountdownCircleTimer>
+						<CountdownTimer themeSelectorOpen={isOpen} />
 					</div>
 					<div className={`translate-x-6 mb-10 translate-y-10`}>
 						<TypingArea

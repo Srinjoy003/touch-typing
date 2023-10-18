@@ -4,6 +4,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./themeSlice";
 import countdownReducer from "./countdownSlice";
 import loadingReducer from "./loadingSlice";
+import selectorReducer from "./selectorSlice";
+
+
 
 
 export const store = configureStore({
@@ -11,6 +14,7 @@ export const store = configureStore({
         theme: themeReducer,
         countdown: countdownReducer,
         loading: loadingReducer,
+        selector: selectorReducer,
     },
 });
 
