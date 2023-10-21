@@ -93,7 +93,7 @@ function Navbar({
 				<p>Practise</p>
 			</Link>
 
-			<Link className={innerClass} href="/">
+			<Link className={innerClass} href="/stats">
 				<svg
 					className={svgFill}
 					width="30px"
@@ -122,7 +122,7 @@ function Navbar({
 				<p>Typing Test</p>
 			</Link>
 
-			<Link className={innerClass} href="">
+			<Link className={innerClass} href="	">
 				<svg
 					width="30px"
 					height="25px"

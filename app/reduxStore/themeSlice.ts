@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const themeSlice = createSlice({
   name: 'theme',
-  initialState: 'arch',
+  initialState: 'dolphin',
   reducers: {
     setTheme: (state, action) => {
       return action.payload; // Set the theme to the payload value

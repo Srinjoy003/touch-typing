@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./reduxStore/store";
 import "./globals.css";
 import TextSelectorBar from "@/components/TextSelectorBar";
+import Restart from "@/components/Restart";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -33,36 +34,34 @@ function Home() {
 					secondaryColour={`${theme}-main`}
 				/>
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
-					{/* <TextSelectorBar
-							themeSelectorOpen={isOpen}
-							borderSelectColour={`border-${theme}-main`}
-							borderColour={`border-${theme}-navbar`}
-							textColour={`text-${theme}-dull`}
-							textSelectColour={`text-${theme}-main`}
-							hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
-							svgColour={`fill-${theme}-dull`}
-							svgSelectColour={`fill-${theme}-main`}
-							svgHoverColour={`group-hover:fill-${theme}-bright`}
-						/> */}
-					<div className={`translate-x-6 mb-10 translate-y-10`}>
-						<TypingArea
-							hydrated={hydrated}
-							setHydrated={setHydrated}
-							themeOpen={isOpen}
-							textColour={`text-${theme}-dull`}
-							textColourCorrect={`text-${theme}-bright`}
-							textColourIncorrect={`text-${theme}-wrong`}
-							selectorBorderColour={`border-${theme}-navbar`}
-							selectorBorderSelectedColour={`border-${theme}-main`}
-							selectorTextColour={`text-${theme}-dull`}
-							selectorTextSelectedColour={`text-${theme}-main`}
-							selectorHoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
-							selectorSvgColour={`fill-${theme}-dull`}
-							selectorSvgSelectedColour={`fill-${theme}-main`}
-							selectorSvgHoverColour={`group-hover:fill-${theme}-bright`}
-							caretColour={`border-${theme}-main`}
-							wordCountColour={`text-${theme}-main`}
-						/>
+					<div className="flex flex-col gap-24">
+						<div className="w-full flex items-center justify-center translate-x-6 translate-y-10 scale-75">
+							<TextSelectorBar
+								isTypingTest={false}
+								themeSelectorOpen={isOpen}
+								borderSelectColour={`border-${theme}-main`}
+								borderColour={`border-${theme}-navbar`}
+								textColour={`text-${theme}-dull`}
+								textSelectColour={`text-${theme}-main`}
+								hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
+								svgColour={`fill-${theme}-dull`}
+								svgSelectColour={`fill-${theme}-main`}
+								svgHoverColour={`group-hover:fill-${theme}-bright`}
+							/>
+						</div>
+						<div className={`translate-x-6 mb-10 translate-y-10`}>
+							<TypingArea
+								hydrated={hydrated}
+								setHydrated={setHydrated}
+								themeOpen={isOpen}
+								textColour={`text-${theme}-dull`}
+								textColourCorrect={`text-${theme}-bright`}
+								textColourIncorrect={`text-${theme}-wrong`}
+								caretColour={`border-${theme}-main`}
+								wordCountColour={`text-${theme}-main`}
+							/>
+						</div>
+						<Restart colour={`text-${theme}-dull`} />
 					</div>
 
 					<div className="translate-x-10 translate-y-6 ml-24 scale-110">

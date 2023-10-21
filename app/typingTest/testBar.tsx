@@ -27,7 +27,7 @@ function TestBar({
 	const [timeSelected, setTimeSelected] = useState(15);
 	const [wordSelected, setWordSelected] = useState(15);
 
-	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[700px] h-10 rounded-md opacity-100 transition-opacity duration-200 scale-75`;
+	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[700px] h-10 rounded-md opacity-100 transition-opacity duration-200`;
 	const modifiedInnerDiv1Class = `flex flex-row h-full w-1/2 items-center justify-center group ${borderColour} `;
 	const modifiedInnerDiv2Class = `flex flex-row h-full w-1/2 items-center justify-center group border-2 ${borderColour} `;
 	const testTypeClass = `flex w-1/2 h-full items-center justify-center gap-4 `;
@@ -46,12 +46,12 @@ function TestBar({
 	const wordClass3 = ` ${wordSelected === 50 ? textSelectColour : textColour}`;
 	const wordClass4 = ` ${wordSelected === 100 ? textSelectColour : textColour}`;
 
-	const timeDiv = `border-2 ${testType ? textSelectColour : textColour} ${
-		testType ? borderSelectColour : borderColour
-	} ${hoverColour}`;
-	const wordDiv = `border-2 ${testType ? textColour : textSelectColour} ${
-		testType ? borderColour : borderSelectColour
-	}  ${hoverColour}`;
+	const timeDiv = `border-2 ${
+		testType ? textSelectColour : textColour
+	} ${borderColour} ${hoverColour}`;
+	const wordDiv = `border-2 ${
+		testType ? textColour : textSelectColour
+	} ${borderColour}  ${hoverColour}`;
 
 	const textSelectorRef = useRef(null);
 
@@ -79,10 +79,13 @@ function TestBar({
 
 	const dispatch = useDispatch();
 
-	const handleTimeSelected = useCallback((time: number) => {
-		setTimeSelected(time);
-		dispatch(setCountdown(time));
-	}, [dispatch]);
+	const handleTimeSelected = useCallback(
+		(time: number) => {
+			setTimeSelected(time);
+			dispatch(setCountdown(time));
+		},
+		[dispatch]
+	);
 
 	useEffect(() => {
 		if (!themeSelectorOpen) {
@@ -99,10 +102,7 @@ function TestBar({
 	return (
 		<div ref={textSelectorRef} className={modifiedOuterDivClass}>
 			<div className={modifiedInnerDiv1Class}>
-				<div
-					className={testTypeClass + timeDiv + firstClass}
-					onClick={handleTimeTest}
-				>
+				<div className={testTypeClass + timeDiv} onClick={handleTimeTest}>
 					<BsFillClockFill />
 					<button className="outline-none">time</button>
 				</div>

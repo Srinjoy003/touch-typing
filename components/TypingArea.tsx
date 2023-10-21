@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import Caret from "./Caret";
+import Caret from "@/components/Caret";
 import { v4 as uuid } from "uuid";
-import TextSelectorBar from "./TextSelectorBar";
+import TextSelectorBar from "@/components/TextSelectorBar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/reduxStore/store";
 
@@ -15,14 +15,6 @@ type textAreaProp = {
 	textColour: string;
 	textColourCorrect: string;
 	textColourIncorrect: string;
-	selectorBorderColour: string;
-	selectorBorderSelectedColour: string;
-	selectorTextColour: string;
-	selectorHoverColour: string;
-	selectorTextSelectedColour: string;
-	selectorSvgColour: string;
-	selectorSvgSelectedColour: string;
-	selectorSvgHoverColour: string;
 	caretColour: string;
 	wordCountColour: string;
 };
@@ -190,19 +182,11 @@ function TypingArea({
 	textColour,
 	textColourCorrect,
 	textColourIncorrect,
-	selectorBorderColour,
-	selectorBorderSelectedColour,
-	selectorTextColour,
-	selectorTextSelectedColour,
-	selectorHoverColour,
-	selectorSvgColour,
-	selectorSvgSelectedColour,
-	selectorSvgHoverColour,
 	caretColour,
 	wordCountColour,
 }: textAreaProp) {
 	const initialCursorX = -561;
-	const initialCursorY = 137;
+	const initialCursorY = 0;
 	const changeCursorY = 40;
 
 	const words = 100;
@@ -502,23 +486,11 @@ function TypingArea({
 		return null;
 	}
 
-	const modifiedClass = `flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-full h-fit text-left ml-20`;
-	const wordCountClass = `absolute text-2xl top-24 -left-3 translate-x-14 invisible ${wordCountColour}`;
 	return (
 		<div className="flex flex-col items-center justify-start gap-24 w-[1200px]">
-			<TextSelectorBar
-				themeSelectorOpen={themeOpen}
-				borderColour={selectorBorderColour}
-				borderSelectColour={selectorBorderSelectedColour}
-				textColour={selectorTextColour}
-				textSelectColour={selectorTextSelectedColour}
-				hoverColour={selectorHoverColour}
-				svgColour={selectorSvgColour}
-				svgSelectColour={selectorSvgSelectedColour}
-				svgHoverColour={selectorSvgHoverColour}
-			/>
+		
 
-			<div ref={textDivRef} className={modifiedClass}>
+			<div ref={textDivRef} className={`flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-full h-fit text-left ml-20`}>
 				{...finalDiv}
 			</div>
 
@@ -528,11 +500,11 @@ function TypingArea({
 				colour={caretColour}
 			/>
 
-			<div ref={wordCountRef} className={wordCountClass}>
+			<div ref={wordCountRef} className={`absolute text-2xl -top-10 -left-3 translate-x-14 invisible ${wordCountColour}`}>
 				{wordCount} / {totalWords}
 			</div>
 
-			<div className="absolute flex flex-row items-start gap-5 w-fit text-base text-dolphin-bright -top-10 left-0 invisible">
+			<div className="absolute flex flex-row items-start gap-5 w-fit text-base text-dolphin-bright top-0 left-0 invisible">
 				<div>Speed: {speed}wpm</div>
 				<div>Accuracy: {accuracy}%</div>
 			</div>
