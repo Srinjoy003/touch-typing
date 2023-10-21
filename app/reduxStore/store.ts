@@ -5,6 +5,8 @@ import themeReducer from "./themeSlice";
 import countdownReducer from "./countdownSlice";
 import loadingReducer from "./loadingSlice";
 import selectorReducer from "./selectorSlice";
+import refreshReducer from "./refreshSlice";
+
 
 
 
@@ -15,6 +17,8 @@ export const store = configureStore({
         countdown: countdownReducer,
         loading: loadingReducer,
         selector: selectorReducer,
+        refresh: refreshReducer,
+
     },
 });
 

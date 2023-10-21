@@ -10,6 +10,7 @@ import { RootState } from "../reduxStore/store";
 import CountdownTimer from "./CountdownTimer";
 import TextSelectorBar from "@/components/TextSelectorBar";
 import "../globals.css";
+import Refresh from "@/components/Refresh";
 
 function Home() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -88,6 +89,8 @@ function Home() {
 								wordCountColour={`text-${theme}-main`}
 							/>
 						</div>
+						<Refresh themeSelectorOpen={isOpen} colour={`text-${theme}-dull`} hoverColour={`hover:text-${theme}-bright`}/>
+
 					</div>
 					<div className="translate-x-10 translate-y-6 ml-24 scale-110">
 						<Keyboard

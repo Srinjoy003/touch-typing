@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useContext } from "react";
 import Caret from "@/components/Caret";
 import { v4 as uuid } from "uuid";
 import TextSelectorBar from "@/components/TextSelectorBar";
@@ -229,6 +229,7 @@ function TypingArea({
 
 	const spaceChar = String.fromCharCode(8194);
 	const coundownTime = useSelector((state: RootState) => state.countdown);
+	const refresher = useSelector((state: RootState) => state.refresh);
 
 	useEffect(() => {
 		setHydrated(true);
@@ -289,6 +290,24 @@ function TypingArea({
 	]);
 
 	useEffect(() => {
+		setFinalDiv(() => CreateFinalDiv(punc, num, caps));
+		charCountRef.current = 0;
+		correctCharCountRef.current = 0;
+		startTimeRef.current = null;
+		endTimeRef.current = null;
+		setWordCount(0);
+		setTranslateY(initialCursorY);
+		setJumpIndex(0);
+		setLineIndex(0);
+		setTranslateX(initialCursorX);
+
+		if (wordCountRef.current) {
+			const wordCountDiv = wordCountRef.current as HTMLDivElement;
+			wordCountDiv.classList.add("invisible");
+		}
+	}, [refresher, punc, num, caps, CreateFinalDiv, initialCursorX]);
+
+	useEffect(() => {
 		moveCursor();
 	}, [translateX, translateY, moveCursor]);
 
@@ -331,7 +350,7 @@ function TypingArea({
 			setWidthList(newWidthList);
 			setFinalDivSpans(newFinalDivSpans);
 		}
-	}, [textDivRef, finalDiv, spaceChar]);
+	}, [textDivRef, finalDiv, spaceChar, refresher]);
 
 	const handleKeyPress = useCallback(
 		(event: KeyboardEvent) => {
@@ -488,9 +507,10 @@ function TypingArea({
 
 	return (
 		<div className="flex flex-col items-center justify-start gap-24 w-[1200px]">
-		
-
-			<div ref={textDivRef} className={`flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-full h-fit text-left ml-20`}>
+			<div
+				ref={textDivRef}
+				className={`flex flex-col items-start gap-2 justify-center text-2xl tracking-widest w-full h-fit text-left ml-20`}
+			>
 				{...finalDiv}
 			</div>
 
@@ -500,7 +520,10 @@ function TypingArea({
 				colour={caretColour}
 			/>
 
-			<div ref={wordCountRef} className={`absolute text-2xl -top-10 -left-3 translate-x-14 invisible ${wordCountColour}`}>
+			<div
+				ref={wordCountRef}
+				className={`absolute text-2xl -top-10 -left-3 translate-x-14 invisible ${wordCountColour}`}
+			>
 				{wordCount} / {totalWords}
 			</div>
 

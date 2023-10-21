@@ -3,12 +3,12 @@ import TypingArea from "@/components/TypingArea";
 import Keyboard from "@/components/Keyboard";
 import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./reduxStore/store";
 import "./globals.css";
 import TextSelectorBar from "@/components/TextSelectorBar";
-import Restart from "@/components/Restart";
+import Refresh from "@/components/Refresh";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -61,9 +61,8 @@ function Home() {
 								wordCountColour={`text-${theme}-main`}
 							/>
 						</div>
-						<Restart colour={`text-${theme}-dull`} />
+						<Refresh themeSelectorOpen={isOpen} colour={`text-${theme}-dull`} hoverColour={`hover:text-${theme}-bright`}/>
 					</div>
-
 					<div className="translate-x-10 translate-y-6 ml-24 scale-110">
 						<Keyboard
 							themeSelectorOpen={isOpen}

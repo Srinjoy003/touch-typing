@@ -9,7 +9,7 @@ import {
 import { useDispatch } from "react-redux";
 
 type SelectorProp = {
-	isTypingTest: boolean
+	isTypingTest: boolean;
 	themeSelectorOpen: boolean;
 	borderColour: string;
 	borderSelectColour: string;
@@ -50,7 +50,6 @@ function TextSelectorBar({
 		dispatch(toggleCaps());
 	};
 
-	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200`;
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;
 	const firstClass = " rounded-l-lg";
 	const lastClass = " rounded-r-lg";
@@ -100,7 +99,10 @@ function TextSelectorBar({
 	}, [handleVisibility, themeSelectorOpen]);
 
 	return (
-		<div ref={textSelectorRef} className={modifiedOuterDivClass}>
+		<div
+			ref={textSelectorRef}
+			className={`flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200 cursor-pointer`}
+		>
 			<div
 				className={modifiedInnerDivClass + puncDivColour + firstClass}
 				onClick={handlePuncChange}
@@ -137,7 +139,11 @@ function TextSelectorBar({
 				<button className="outline-none">numbers</button>
 			</div>
 			<div
-				className={modifiedInnerDivClass + capsDivColour + (isTypingTest ? "": lastClass)}
+				className={
+					modifiedInnerDivClass +
+					capsDivColour +
+					(isTypingTest ? "" : lastClass)
+				}
 				onClick={handleCapsChange}
 			>
 				<svg
