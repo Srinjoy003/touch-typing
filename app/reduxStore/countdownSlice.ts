@@ -5,7 +5,7 @@ const countdownSlice = createSlice({
   initialState: 15,
   reducers: {
     setCountdown: (state, action) => {
-      return action.payload; // Set the theme to the payload value
+      return action.payload;
     },
   },
 });

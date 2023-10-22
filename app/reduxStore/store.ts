@@ -6,6 +6,7 @@ import countdownReducer from "./countdownSlice";
 import loadingReducer from "./loadingSlice";
 import selectorReducer from "./selectorSlice";
 import refreshReducer from "./refreshSlice";
+import speedAccuracyReducer from "./speedAccuracySlice";
 
 
 
@@ -18,6 +19,7 @@ export const store = configureStore({
         loading: loadingReducer,
         selector: selectorReducer,
         refresh: refreshReducer,
+        speedAccuracy: speedAccuracyReducer
 
     },
 });

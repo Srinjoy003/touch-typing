@@ -5,7 +5,7 @@ const refreshSlice = createSlice({
   initialState: 0,
   reducers: {
     alterRefresh: (state) => {
-      return (state + 1) % 2; // Set the theme to the payload value
+      return (state + 1) % 2; 
     },
   },
 });

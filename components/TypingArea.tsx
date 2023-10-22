@@ -3,9 +3,13 @@
 import { useRef, useState, useEffect, useCallback, useContext } from "react";
 import Caret from "@/components/Caret";
 import { v4 as uuid } from "uuid";
-import TextSelectorBar from "@/components/TextSelectorBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/reduxStore/store";
+import {
+	incrementTotalChar,
+	incrementCorrectChar,
+	resetTimeAccuracy,
+} from "@/app/reduxStore/speedAccuracySlice";
 
 type textAreaProp = {
 	hydrated: boolean;
@@ -231,6 +235,8 @@ function TypingArea({
 	const coundownTime = useSelector((state: RootState) => state.countdown);
 	const refresher = useSelector((state: RootState) => state.refresh);
 
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		setHydrated(true);
 	}, [setHydrated]);
@@ -295,6 +301,7 @@ function TypingArea({
 		correctCharCountRef.current = 0;
 		startTimeRef.current = null;
 		endTimeRef.current = null;
+		dispatch(resetTimeAccuracy());
 		setWordCount(0);
 		setTranslateY(initialCursorY);
 		setJumpIndex(0);
@@ -305,7 +312,7 @@ function TypingArea({
 			const wordCountDiv = wordCountRef.current as HTMLDivElement;
 			wordCountDiv.classList.add("invisible");
 		}
-	}, [refresher, punc, num, caps, CreateFinalDiv, initialCursorX]);
+	}, [refresher, punc, num, caps, CreateFinalDiv, initialCursorX, dispatch]);
 
 	useEffect(() => {
 		moveCursor();
@@ -385,6 +392,11 @@ function TypingArea({
 					curSpan?.classList.remove(textColour);
 				} else curSpan?.classList.add(textColourCorrect);
 				curSpan?.classList.remove(textColour);
+
+				if (isWrongRef.current === false) {
+					dispatch(incrementCorrectChar());
+				}
+				dispatch(incrementTotalChar());
 
 				isWrongRef.current = false;
 				correctCharCountRef.current += 1;
@@ -487,6 +499,7 @@ function TypingArea({
 			setFinalDiv,
 			CreateFinalDiv,
 			spaceChar,
+			dispatch,
 		]
 	);
 

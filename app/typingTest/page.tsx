@@ -16,7 +16,10 @@ function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [hydrated, setHydrated] = useState(false);
 	const theme = useSelector((state: RootState) => state.theme);
-	// const coundownTime = useSelector((state: RootState) => state.countdown);
+	const totalChar = useSelector((state: RootState) => state.speedAccuracy.totalChar);
+	const correctChar = useSelector((state: RootState) => state.speedAccuracy.correctChar);
+	const time = useSelector((state: RootState) => state.speedAccuracy.time);
+
 
 	return (
 		<>
@@ -37,19 +40,11 @@ function Home() {
 					secondaryColour={`${theme}-main`}
 				/>
 
-				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
-					<div className="absolute">
-						{/* <TestBar
-							themeSelectorOpen={isOpen}
-							borderColour={`border-${theme}-navbar`}
-							borderSelectColour={`border-${theme}-main`}
-							textColour={`text-${theme}-dull`}
-							textSelectColour={`text-${theme}-main`}
-							hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
-							textHoverColour={`hover:text-${theme}-bright`}
-						/> */}
-					</div>
+				<div className="absolute left-1/2 top-2/3 text-white bg-black">
+					char:{totalChar} correct:{correctChar} time:{time}
+				</div>
 
+				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="absolute">
 						<CountdownTimer themeSelectorOpen={isOpen} />
 					</div>
@@ -89,8 +84,11 @@ function Home() {
 								wordCountColour={`text-${theme}-main`}
 							/>
 						</div>
-						<Refresh themeSelectorOpen={isOpen} colour={`text-${theme}-dull`} hoverColour={`hover:text-${theme}-bright`}/>
-
+						<Refresh
+							themeSelectorOpen={isOpen}
+							colour={`text-${theme}-dull`}
+							hoverColour={`hover:text-${theme}-bright`}
+						/>
 					</div>
 					<div className="translate-x-10 translate-y-6 ml-24 scale-110">
 						<Keyboard

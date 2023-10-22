@@ -12,6 +12,10 @@ import Refresh from "@/components/Refresh";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
+	const totalChar = useSelector((state: RootState) => state.speedAccuracy.totalChar);
+	const correctChar = useSelector((state: RootState) => state.speedAccuracy.correctChar);
+
+
 	const [hydrated, setHydrated] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -33,6 +37,8 @@ function Home() {
 					textColour={`${theme}-bright`}
 					secondaryColour={`${theme}-main`}
 				/>
+
+				
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="flex flex-col gap-24">
 						<div className="w-full flex items-center justify-center translate-x-6 translate-y-10 scale-75">

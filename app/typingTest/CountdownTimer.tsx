@@ -1,8 +1,9 @@
 import React from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../reduxStore/store";
 import { useState, useCallback, useEffect } from "react";
+import { setTime } from "../reduxStore/speedAccuracySlice";
 
 type CountdownTimerProp = { themeSelectorOpen: boolean };
 
@@ -32,6 +33,10 @@ function CountdownTimer({ themeSelectorOpen }: CountdownTimerProp) {
 		setIsTimerVisible(false);
 	}, [coundownTime]);
 
+	const dispatch = useDispatch();
+
+
+
 	return (
 		<div
 			className={`transition-opacity duration-200 ${
@@ -46,6 +51,9 @@ function CountdownTimer({ themeSelectorOpen }: CountdownTimerProp) {
 				colorsTime={[7, 5, 2, 0]}
 				size={80}
 				strokeWidth={2}
+				onComplete={(time: number) => {
+					dispatch(setTime(time));
+				}}
 			>
 				{({ remainingTime, color }) => (
 					<div style={{ color: color }}>{remainingTime}</div>
