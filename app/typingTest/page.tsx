@@ -107,7 +107,7 @@ function Home() {
 				/>
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
-					<div className="absolute">
+					<div className="absolute right-1/2 -top-32 translate-x-10">
 						<CountdownTimer themeSelectorOpen={isOpen} isTimerVisible={isTimerVisible} setIsTimerVisible={setIsTimerVisible}/>
 					</div>
 					<div className="flex flex-col gap-24">

@@ -5,6 +5,7 @@ import { RootState } from "../reduxStore/store";
 import { useState, useCallback, useEffect } from "react";
 import { setSpeed, setAccuracy } from "../reduxStore/speedAccuracySlice";
 import { toggleResult } from "../reduxStore/resultSlice";
+import { colour } from "@/assets/colour";
 
 type CountdownTimerProp = {
 	themeSelectorOpen: boolean;
@@ -12,9 +13,14 @@ type CountdownTimerProp = {
 	setIsTimerVisible: (visible: boolean) => void;
 };
 
-function CountdownTimer({ themeSelectorOpen, isTimerVisible, setIsTimerVisible }: CountdownTimerProp) {
+function CountdownTimer({
+	themeSelectorOpen,
+	isTimerVisible,
+	setIsTimerVisible,
+}: CountdownTimerProp) {
 	const coundownTime = useSelector((state: RootState) => state.countdown);
 	const result = useSelector((state: RootState) => state.result);
+	const theme = useSelector((state: RootState) => state.theme);
 
 	const totalChar = useSelector(
 		(state: RootState) => state.speedAccuracy.totalChar
@@ -23,14 +29,16 @@ function CountdownTimer({ themeSelectorOpen, isTimerVisible, setIsTimerVisible }
 		(state: RootState) => state.speedAccuracy.correctChar
 	);
 
+	const handleVisibility = useCallback(
+		(event: KeyboardEvent) => {
+			const pattern = /^[a-zA-Z0-9\s`~!@#$%^&*()_+={[}\]:;"'<,>.?/\\|,-]$/;
 
-	const handleVisibility = useCallback((event: KeyboardEvent) => {
-		const pattern = /^[a-zA-Z0-9\s`~!@#$%^&*()_+={[}\]:;"'<,>.?/\\|,-]$/;
-
-		if (pattern.test(event.key)) {
-			setIsTimerVisible(true);
-		}
-	}, []);
+			if (pattern.test(event.key)) {
+				setIsTimerVisible(true);
+			}
+		},
+		[setIsTimerVisible]
+	);
 
 	useEffect(() => {
 		if (!themeSelectorOpen) {
@@ -44,9 +52,24 @@ function CountdownTimer({ themeSelectorOpen, isTimerVisible, setIsTimerVisible }
 
 	useEffect(() => {
 		setIsTimerVisible(false);
-	}, [coundownTime]);
+	}, [coundownTime, setIsTimerVisible]);
 
 	const dispatch = useDispatch();
+
+	const colour1 = colour[
+		`${theme}-bright` as keyof typeof colour
+	] as `#${string}`;
+	const colour2 = colour[
+		`${theme}-dull` as keyof typeof colour
+	] as `#${string}`;
+	const colour3 = colour[
+		`${theme}-wrong` as keyof typeof colour
+	] as `#${string}`;
+	const colour4 = colour[
+		`${theme}-navbar` as keyof typeof colour
+	] as `#${string}`;
+
+	console.log(colour2);
 
 	return (
 		<div
@@ -58,21 +81,30 @@ function CountdownTimer({ themeSelectorOpen, isTimerVisible, setIsTimerVisible }
 				isPlaying
 				duration={coundownTime}
 				key={`${coundownTime} ${isTimerVisible} ${result}`}
-				colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-				colorsTime={[7, 5, 2, 0]}
-				size={80}
-				strokeWidth={2}
+				colors={[colour1, colour3]}
+				colorsTime={[coundownTime, 10, 0]}
+				size={120}
+				strokeWidth={8}
+				trailColor={colour4}
+				isSmoothColorTransition={false}
 				onComplete={(time: number) => {
 					if (isTimerVisible) {
 						dispatch(setSpeed((totalChar / 5 / (time / 60)).toFixed(2)));
-						dispatch(setAccuracy(((correctChar / totalChar) * 100).toFixed(2)));
 						dispatch(toggleResult());
 						setIsTimerVisible(false);
+
+						if (totalChar === 0) dispatch(setAccuracy((0).toFixed(2)));
+						else
+							dispatch(
+								setAccuracy(((correctChar / totalChar) * 100).toFixed(2))
+							);
 					}
 				}}
 			>
 				{({ remainingTime, color }) => (
-					<div style={{ color: color }}>{remainingTime}</div>
+					<div className="font-semibold text-2xl" style={{ color: color }}>
+						{remainingTime}
+					</div>
 				)}
 			</CountdownCircleTimer>
 		</div>

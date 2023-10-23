@@ -7,9 +7,6 @@ import { ThemeSelector } from "./ui/themeSelector";
 import { useDispatch } from "react-redux";
 import { setLoading } from "@/app/reduxStore/loadingSlice";
 
-
-
-
 type NavbarProp = {
 	themeOpen: any;
 	setThemeOpen: any;
@@ -39,7 +36,7 @@ function Navbar({
 			if (event.type === "keydown") {
 				const keyEvent = event as KeyboardEvent;
 
-				if(pattern.test(keyEvent.key)){
+				if (pattern.test(keyEvent.key)) {
 					navbarDiv.classList.add("opacity-0");
 					navbarDiv.classList.remove("opacity-100");
 				}
@@ -62,7 +59,6 @@ function Navbar({
 		}
 	}, [handleVisibility, themeOpen]);
 
-	const modifiedClass = `flex flex-col items-center justify-center text-base h-1/2 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`;
 	const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-2 pl-4 cursor-pointer group ${borderTheme} ${hoverColour}`;
 
 	const firstClass = " rounded-t-lg";
@@ -74,8 +70,15 @@ function Navbar({
 	};
 
 	return (
-		<div ref={navbarRef} className={modifiedClass}>
-			<Link className={innerClass + firstClass} href="/" onClick={handleSetLoading}>
+		<div
+			ref={navbarRef}
+			className={`flex flex-col items-center justify-center text-base h-1/2 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`}
+		>
+			<Link
+				className={innerClass + firstClass}
+				href="/"
+				onClick={handleSetLoading}
+			>
 				<svg
 					className={svgFill}
 					width="30px"
