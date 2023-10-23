@@ -7,6 +7,8 @@ import {
 	togglePunc,
 } from "@/app/reduxStore/selectorSlice";
 import { useDispatch } from "react-redux";
+import { resetTimeAccuracy } from "@/app/reduxStore/speedAccuracySlice";
+
 
 type SelectorProp = {
 	isTypingTest: boolean;
@@ -40,14 +42,19 @@ function TextSelectorBar({
 
 	const handlePuncChange = () => {
 		dispatch(togglePunc());
+		dispatch(resetTimeAccuracy())
 	};
 
 	const handleNumChange = () => {
 		dispatch(toggleNum());
+		dispatch(resetTimeAccuracy())
+
 	};
 
 	const handleCapsChange = () => {
 		dispatch(toggleCaps());
+		dispatch(resetTimeAccuracy())
+
 	};
 
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;

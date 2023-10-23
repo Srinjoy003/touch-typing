@@ -5,34 +5,100 @@ import Navbar from "@/components/Navbar";
 import Logo from "@/components/Logo";
 import { useState } from "react";
 import TestBar from "./testBar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../reduxStore/store";
 import CountdownTimer from "./CountdownTimer";
 import TextSelectorBar from "@/components/TextSelectorBar";
 import "../globals.css";
 import Refresh from "@/components/Refresh";
+import { toggleResult } from "../reduxStore/resultSlice";
+import { alterRefresh } from "../reduxStore/refreshSlice";
+import { resetTimeAccuracy } from "../reduxStore/speedAccuracySlice";
+import { GiNextButton } from "react-icons/gi";
 
 function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [hydrated, setHydrated] = useState(false);
-	const theme = useSelector((state: RootState) => state.theme);
-	const totalChar = useSelector((state: RootState) => state.speedAccuracy.totalChar);
-	const correctChar = useSelector((state: RootState) => state.speedAccuracy.correctChar);
-	const time = useSelector((state: RootState) => state.speedAccuracy.time);
+	const [isTimerVisible, setIsTimerVisible] = useState(false);
 
+	const theme = useSelector((state: RootState) => state.theme);
+	const totalChar = useSelector(
+		(state: RootState) => state.speedAccuracy.totalChar
+	);
+	const correctChar = useSelector(
+		(state: RootState) => state.speedAccuracy.correctChar
+	);
+	const speed = useSelector((state: RootState) => state.speedAccuracy.speed);
+	const accuracy = useSelector(
+		(state: RootState) => state.speedAccuracy.accuracy
+	);
+
+	const mistakes = totalChar - correctChar;
+	const result = useSelector((state: RootState) => state.result);
+
+	const dispatch = useDispatch();
+
+	const handleResultScreen = () => {
+		dispatch(toggleResult());
+		dispatch(alterRefresh());
+		dispatch(resetTimeAccuracy());
+		setIsTimerVisible(false);
+	};
 
 	return (
 		<>
 			<div
-				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
+				className={`bg-${theme}-bg text-${theme}-wrong w-full h-full ${
 					hydrated ? "hidden" : ""
 				}`}
 			>
 				<div className="lds-dual-ring"></div>
 			</div>
+
+			<div
+				className={`w-full h-full text-${theme}-main bg-${theme}-bg flex item-center justify-center ${
+					result ? "" : "hidden"
+				}`}
+			>
+				<div className="flex flex-col items-center justify-center gap-10">
+					<div className="flex gap-20 text-7xl items-center justify-center">
+						<div>
+							<h1 className="h-fit font-semibold">
+								{speed}
+								<span className="text-4xl font-mono font-thin">WPM</span>
+							</h1>
+							<p className={`text-lg text-center`}>Speed</p>
+						</div>
+						<div>
+							<h1 className="h-fit font-semibold">
+								{mistakes}
+								<span className="text-4xl font-mono font-thin">CHAR</span>
+							</h1>
+							<p className={`text-lg text-center`}>Mistakes</p>
+						</div>
+						<div>
+							<h1 className="h-fit font-semibold">
+								{accuracy}
+								<span className="text-4xl font-mono font-thin">%</span>
+							</h1>
+							<p className={`text-lg text-center`}>Accuracy</p>
+						</div>
+					</div>
+
+					<div
+						className={`font-semibold flex gap-3 items-center justify-center text-${theme}-dull border-${theme}-dull cursor-pointer border-2 rounded-3xl p-3 hover:border-${theme}-bright hover:text-${theme}-bright px-5`}
+						onClick={handleResultScreen}
+					>
+						<span className="text-xl">
+							<GiNextButton />
+						</span>
+						<span>RETURN</span>
+					</div>
+				</div>
+			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated ? "" : "hidden"
+					hydrated && !result ? "" : "hidden"
 				}`}
 			>
 				<Logo
@@ -40,13 +106,9 @@ function Home() {
 					secondaryColour={`${theme}-main`}
 				/>
 
-				<div className="absolute left-1/2 top-2/3 text-white bg-black">
-					char:{totalChar} correct:{correctChar} time:{time}
-				</div>
-
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="absolute">
-						<CountdownTimer themeSelectorOpen={isOpen} />
+						<CountdownTimer themeSelectorOpen={isOpen} isTimerVisible={isTimerVisible} setIsTimerVisible={setIsTimerVisible}/>
 					</div>
 					<div className="flex flex-col gap-24">
 						<div className="w-full flex items-start justify-center translate-x-6 translate-y-10 gap-0 scale-75">

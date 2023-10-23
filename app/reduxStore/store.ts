@@ -7,7 +7,7 @@ import loadingReducer from "./loadingSlice";
 import selectorReducer from "./selectorSlice";
 import refreshReducer from "./refreshSlice";
 import speedAccuracyReducer from "./speedAccuracySlice";
-
+import resultReducer from "./resultSlice"
 
 
 
@@ -19,7 +19,8 @@ export const store = configureStore({
         loading: loadingReducer,
         selector: selectorReducer,
         refresh: refreshReducer,
-        speedAccuracy: speedAccuracyReducer
+        speedAccuracy: speedAccuracyReducer,
+        result: resultReducer,
 
     },
 });

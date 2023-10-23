@@ -3,6 +3,7 @@ import { BsFillClockFill } from "react-icons/bs";
 import { TbLetterCase } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { setCountdown } from "../reduxStore/countdownSlice";
+import { resetTimeAccuracy } from "../reduxStore/speedAccuracySlice";
 
 type TestBarProp = {
 	themeSelectorOpen: boolean;
@@ -83,6 +84,7 @@ function TestBar({
 		(time: number) => {
 			setTimeSelected(time);
 			dispatch(setCountdown(time));
+			dispatch(resetTimeAccuracy());
 		},
 		[dispatch]
 	);

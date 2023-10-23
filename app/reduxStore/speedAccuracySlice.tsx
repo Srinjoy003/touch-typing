@@ -16,7 +16,7 @@ const speedAccuracySlice = createSlice({
 		},
 
 		setAccuracy: (state, action) => {
-			state.speed = action.payload;
+			state.accuracy = action.payload;
 		},
         resetTimeAccuracy: (state) => {
             state.totalChar = 0;
@@ -28,5 +28,5 @@ const speedAccuracySlice = createSlice({
 	},
 });
 
-export const { incrementCorrectChar, incrementTotalChar, setTime, resetTimeAccuracy } = speedAccuracySlice.actions;
+export const { incrementCorrectChar, incrementTotalChar, setSpeed, setAccuracy, resetTimeAccuracy } = speedAccuracySlice.actions;
 export default speedAccuracySlice.reducer;
