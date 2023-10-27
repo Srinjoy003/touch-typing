@@ -20,6 +20,8 @@ function Home() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [hydrated, setHydrated] = useState(false);
 	const [isTimerVisible, setIsTimerVisible] = useState(false);
+	const [navigating, setNavigating] = useState(false)
+
 
 	const theme = useSelector((state: RootState) => state.theme);
 	const totalChar = useSelector(
@@ -108,7 +110,11 @@ function Home() {
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="absolute right-1/2 -top-32 translate-x-10">
-						<CountdownTimer themeSelectorOpen={isOpen} isTimerVisible={isTimerVisible} setIsTimerVisible={setIsTimerVisible}/>
+						<CountdownTimer
+							themeSelectorOpen={isOpen}
+							isTimerVisible={isTimerVisible}
+							setIsTimerVisible={setIsTimerVisible}
+						/>
 					</div>
 					<div className="flex flex-col gap-24">
 						<div className="w-full flex items-start justify-center translate-x-6 translate-y-10 gap-0 scale-75">
@@ -167,6 +173,7 @@ function Home() {
 				<Navbar
 					themeOpen={isOpen}
 					setThemeOpen={setIsOpen}
+					setNavigating={setNavigating}
 					textColour={`text-${theme}-dull`}
 					borderTheme={`border-${theme}-navbar`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}

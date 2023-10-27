@@ -18,19 +18,20 @@ function Home() {
 
 	const [hydrated, setHydrated] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
+	const [navigating, setNavigating] = useState(false)
 
 	return (
 		<>
 			<div
 				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
-					hydrated ? "hidden" : ""
+					hydrated && !navigating ? "hidden" : ""
 				}`}
 			>
 				<div className="lds-dual-ring"></div>
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-screen h-full gap-32 ${
-					hydrated ? "" : "hidden"
+					hydrated && !navigating ? "" : "hidden"
 				}`}
 			>
 				<Logo
@@ -84,6 +85,7 @@ function Home() {
 				<Navbar
 					themeOpen={isOpen}
 					setThemeOpen={setIsOpen}
+					setNavigating={setNavigating}
 					textColour={`text-${theme}-dull`}
 					borderTheme={`border-${theme}-navbar`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}

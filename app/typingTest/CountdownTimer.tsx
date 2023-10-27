@@ -80,7 +80,7 @@ function CountdownTimer({
 			<CountdownCircleTimer
 				isPlaying
 				duration={coundownTime}
-				key={`${coundownTime} ${isTimerVisible} ${result}`}
+				key={`${coundownTime} ${isTimerVisible}`}
 				colors={[colour1, colour3]}
 				colorsTime={[coundownTime, 10, 0]}
 				size={120}
@@ -88,7 +88,7 @@ function CountdownTimer({
 				trailColor={colour4}
 				isSmoothColorTransition={false}
 				onComplete={(time: number) => {
-					if (isTimerVisible) {
+					if (isTimerVisible && !result) {
 						dispatch(setSpeed((totalChar / 5 / (time / 60)).toFixed(2)));
 						dispatch(toggleResult());
 						setIsTimerVisible(false);

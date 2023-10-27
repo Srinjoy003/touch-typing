@@ -8,8 +8,9 @@ import { useDispatch } from "react-redux";
 import { setLoading } from "@/app/reduxStore/loadingSlice";
 
 type NavbarProp = {
-	themeOpen: any;
-	setThemeOpen: any;
+	themeOpen: boolean;
+	setThemeOpen: (newThemeOpen: boolean) => void;
+	setNavigating: (navigating: boolean) => void;
 	textColour: string;
 	borderTheme: string;
 	svgFill: string;
@@ -20,6 +21,7 @@ type NavbarProp = {
 function Navbar({
 	themeOpen,
 	setThemeOpen,
+	setNavigating,
 	textColour,
 	borderTheme,
 	svgFill,
@@ -77,7 +79,10 @@ function Navbar({
 			<Link
 				className={innerClass + firstClass}
 				href="/"
-				onClick={handleSetLoading}
+				onClick={() => {
+					handleSetLoading();
+					setNavigating(true);
+				}}
 			>
 				<svg
 					className={svgFill}
@@ -96,7 +101,7 @@ function Navbar({
 				<p>Practise</p>
 			</Link>
 
-			<Link className={innerClass} href="/stats">
+			<Link className={innerClass} href="/stats" onClick={() => setNavigating(true)}>
 				<svg
 					className={svgFill}
 					width="30px"
@@ -112,7 +117,11 @@ function Navbar({
 				<p>Stats</p>
 			</Link>
 
-			<Link className={innerClass} href="/typingTest">
+			<Link
+				className={innerClass}
+				href="/typingTest"
+				onClick={() => setNavigating(true)}
+			>
 				<svg
 					className={svgFill}
 					width="30px"
@@ -125,7 +134,7 @@ function Navbar({
 				<p>Typing Test</p>
 			</Link>
 
-			<Link className={innerClass} href="	">
+			<Link className={innerClass} href="	" onClick={() => setNavigating(true)}>
 				<svg
 					width="30px"
 					height="25px"
