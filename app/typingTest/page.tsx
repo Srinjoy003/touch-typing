@@ -16,12 +16,11 @@ import { alterRefresh } from "../reduxStore/refreshSlice";
 import { resetTimeAccuracy } from "../reduxStore/speedAccuracySlice";
 import { GiNextButton } from "react-icons/gi";
 
-function Home() {
+function TypingTest() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [hydrated, setHydrated] = useState(false);
 	const [isTimerVisible, setIsTimerVisible] = useState(false);
-	const [navigating, setNavigating] = useState(false)
-
+	const [navigating, setNavigating] = useState(false);
 
 	const theme = useSelector((state: RootState) => state.theme);
 	const totalChar = useSelector(
@@ -185,4 +184,4 @@ function Home() {
 	);
 }
 
-export default Home;
+export default TypingTest;

@@ -30,12 +30,12 @@ function Home() {
 				<div className="lds-dual-ring"></div>
 			</div>
 			<div
-				className={`bg-${theme}-bg flex flex-row items-center justify-end w-screen h-full gap-32 ${
+				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
 					hydrated && !navigating ? "" : "hidden"
 				}`}
 			>
 				<Logo
-					textColour={`${theme}-bright`}
+					textColour={`${theme}-main`}
 					secondaryColour={`${theme}-main`}
 				/>
 

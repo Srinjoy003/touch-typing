@@ -1,11 +1,14 @@
 import React from "react";
+import { Anton  } from "next/font/google";
+
+const font = Anton({ weight: "400", subsets: ["latin"] });
 
 type logoProp = { textColour: string; secondaryColour: string };
 
 function Logo({ textColour, secondaryColour }: logoProp) {
 	return (
 		<div
-			className={`absolute top-12 left-12 flex flex-row gap-4 items-center text-3xl text-${textColour} font-extrabold font-mono italic underline decoration-${secondaryColour}`}
+			className={`${font.className} absolute top-12 left-12 flex flex-row gap-2 items-center text-4xl text-${textColour} font-underline decoration-${secondaryColour}`}
 		>
 			<svg
 				className={`fill-${secondaryColour}`}

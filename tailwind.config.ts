@@ -11,8 +11,8 @@ const config: Config = {
 	safelist: [
 		{
 			pattern:
-				/^(bg|text|border|fill|decoration)-(dolphin|arch|retro|cheese|husqy|magic|tron)(-[A-Za-z0-9_-]+)?$/,
-			variants: ["hover", "group-hover", "aria-selected"],
+				/^(bg|text|border|fill|decoration|from|to)-(dolphin|arch|retro|cheese|husqy|magic|tron)(-[A-Za-z0-9_-]+)?$/,
+			variants: ["hover", "group-hover", "aria-selected", "focus"],
 		},
 	],
 
