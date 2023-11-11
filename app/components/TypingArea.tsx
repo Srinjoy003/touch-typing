@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback, useContext } from "react";
-import Caret from "@/components/Caret";
+import Caret from "@/app/components/Caret";
 import { v4 as uuid } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/reduxStore/store";

@@ -1,24 +1,27 @@
 "use client";
-import TypingArea from "@/components/TypingArea";
-import Keyboard from "@/components/Keyboard";
-import Navbar from "@/components/Navbar";
-import Logo from "@/components/Logo";
+import TypingArea from "@/app/components/TypingArea";
+import Keyboard from "@/app/components/Keyboard";
+import Navbar from "@/app/components/Navbar";
+import Logo from "@/app/components/Logo";
 import { useState, createContext } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./reduxStore/store";
 import "./globals.css";
-import TextSelectorBar from "@/components/TextSelectorBar";
-import Refresh from "@/components/Refresh";
+import TextSelectorBar from "@/app/components/TextSelectorBar";
+import Refresh from "@/app/components/Refresh";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
-	const totalChar = useSelector((state: RootState) => state.speedAccuracy.totalChar);
-	const correctChar = useSelector((state: RootState) => state.speedAccuracy.correctChar);
-
+	const totalChar = useSelector(
+		(state: RootState) => state.speedAccuracy.totalChar
+	);
+	const correctChar = useSelector(
+		(state: RootState) => state.speedAccuracy.correctChar
+	);
 
 	const [hydrated, setHydrated] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-	const [navigating, setNavigating] = useState(false)
+	const [navigating, setNavigating] = useState(false);
 
 	return (
 		<>
@@ -34,12 +37,8 @@ function Home() {
 					hydrated && !navigating ? "" : "hidden"
 				}`}
 			>
-				<Logo
-					textColour={`${theme}-main`}
-					secondaryColour={`${theme}-main`}
-				/>
+				<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
 
-				
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="flex flex-col gap-24">
 						<div className="w-full flex items-center justify-center translate-x-6 translate-y-10 scale-75">
@@ -68,7 +67,11 @@ function Home() {
 								wordCountColour={`text-${theme}-main`}
 							/>
 						</div>
-						<Refresh themeSelectorOpen={isOpen} colour={`text-${theme}-dull`} hoverColour={`hover:text-${theme}-bright`}/>
+						<Refresh
+							themeSelectorOpen={isOpen}
+							colour={`text-${theme}-dull`}
+							hoverColour={`hover:text-${theme}-bright`}
+						/>
 					</div>
 					<div className="translate-x-10 translate-y-6 ml-24 scale-110">
 						<Keyboard

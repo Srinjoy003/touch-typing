@@ -101,7 +101,11 @@ function Navbar({
 				<p>Practise</p>
 			</Link>
 
-			<Link className={innerClass} href="/stats" onClick={() => setNavigating(true)}>
+			<Link
+				className={innerClass}
+				href="/stats"
+				onClick={() => setNavigating(true)}
+			>
 				<svg
 					className={svgFill}
 					width="30px"
