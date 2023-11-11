@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest){
+export async function GET(request: NextRequest) {}
 
-}
+export async function POST(request: NextRequest) {
+	const requestBody = await request.json();
+	console.log("Request Body:", requestBody);
 
-export async function POST(request: NextRequest){
-    console.log(request.body)
-    return new Response(JSON.stringify(request), {status: 401});
-    
-}
-
-export function Yo(request: NextRequest){
-    console.log(request.body)
-    
+	console.log("Received");
+	return new NextResponse(JSON.stringify(requestBody));
 }

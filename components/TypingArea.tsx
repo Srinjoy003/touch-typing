@@ -29,10 +29,14 @@ type textAreaProp = {
 type Gram = {
 	[key: string]: {
 	  [probability: number]: string;
+	  sorted?: number[];
 	};
+
   };
 
-var grams: Gram = {
+
+
+let grams: Gram = {
 	" ": {
 		0.6294: "s",
 		1.0: "t",
@@ -359,44 +363,53 @@ var grams: Gram = {
 	},
 };
 // create a sorted list for all keys
-// for (var key in grams) {
-// 	var sorted = [];
-// 	for (var p in grams[key]) sorted.push(p);
-// 	grams[key].sorted = sorted.sort();
-// }
+for (let key in grams) {
+	let sorted: number[] = [];
+	for (let p in grams[key]) {
+		const probability: number = parseFloat(p);
+		sorted.push(probability);
+	}
+	grams[key].sorted = sorted.sort();
+}
 
-// function generateWords(n) {
-// 	if (!n) {
-// 		n = 1;
-// 	}
-// 	var words = [];
-// 	for (var i = 0; i < n; i++) {
-// 		var w = " ";
-// 		// last will be our 1gram used to find a proper follower
-// 		var last = w;
-// 		while (true) {
-// 			var rand = Math.random();
-// 			var p_list = grams[last].sorted;
-// 			// find the follower corresponding to the random number
-// 			// Note: p_list containes the accumulated probabilities of
-// 			// the followers.
-// 			for (var k = 0; k + 1 < p_list.length && p_list[k] < rand; k++);
+function generateWords(n: number): string[] {
+	if (!n) {
+		n = 1;
+	}
+	var words = [];
+	for (let i = 0; i < n; i++) {
+		let w = " ";
+		// last will be our 1gram used to find a proper follower
+		let last = w;
+		while (true) {
+			let rand = Math.random();
+			let p_list = grams[last].sorted;
+			// find the follower corresponding to the random number
+			// Note: p_list containes the accumulated probabilities of
+			// the followers.
 
-// 			char = grams[last][p_list[k]];
-// 			if (char === " ") {
-// 				// space indicates end, but we do not want words shorter
-// 				// than 5 so make sure we have minimum length
-// 				if (w.length > 5) break;
-// 			} else {
-// 				w += char;
-// 			}
-// 			last = char;
-// 		}
-// 		// strip the leading space before appending to the list
-// 		words.push(w.substring(1));
-// 	}
-// 	return words;
-// }
+			if(p_list === undefined) p_list = []
+			let k = 0;
+
+			while(k + 1 < p_list.length && p_list[k] < rand){
+				k++
+			}
+
+			const char = grams[last][p_list[k]];
+			if (char === " ") {
+				// space indicates end, but we do not want words shorter
+				// than 5 so make sure we have minimum length
+				if (w.length > 5) break;
+			} else {
+				w += char;
+			}
+			last = char;
+		}
+		// strip the leading space before appending to the list
+		words.push(w.substring(1));
+	}
+	return words;
+}
 
 function CharacterSeparator(lineList: Array<Array<string>>) {
 	let charList = [];
@@ -449,34 +462,36 @@ function FinalDiv(
 	isNum: boolean,
 	isCaps: boolean
 ) {
-	const randomWords = [
-		"apple",
-		"banana",
-		"chocolate",
-		"dog",
-		"elephant",
-		"flower",
-		"guitar",
-		"happiness",
-		"internet",
-		"jazz",
-		"kangaroo",
-		"lighthouse",
-		"mountain",
-		"notebook",
-		"ocean",
-		"penguin",
-		"quasar",
-		"rainbow",
-		"sunset",
-		"tiger",
-		"umbrella",
-		"volcano",
-		"watermelon",
-		"xylophone",
-		"yogurt",
-		"zeppelin",
-	];
+	// const randomWords = [
+	// 	"apple",
+	// 	"banana",
+	// 	"chocolate",
+	// 	"dog",
+	// 	"elephant",
+	// 	"flower",
+	// 	"guitar",
+	// 	"happiness",
+	// 	"internet",
+	// 	"jazz",
+	// 	"kangaroo",
+	// 	"lighthouse",
+	// 	"mountain",
+	// 	"notebook",
+	// 	"ocean",
+	// 	"penguin",
+	// 	"quasar",
+	// 	"rainbow",
+	// 	"sunset",
+	// 	"tiger",
+	// 	"umbrella",
+	// 	"volcano",
+	// 	"watermelon",
+	// 	"xylophone",
+	// 	"yogurt",
+	// 	"zeppelin",
+	// ];
+
+	const randomWords = generateWords(100);
 	const randomPunc = ["?", "!", ",", ".", "'", ";", ":", ")"];
 	// let wordCount = 36; //36
 	// let lineCount = 4; //4
