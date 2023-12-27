@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 type SignInSchema = {
 	email: string;
 	password: string;
-	confirmPassword: string;
+	confirmPassword?: string;
 };
 
 function Login() {
@@ -24,6 +24,8 @@ function Login() {
 
 	const onSubmit = async (data: SignInSchema) => {
 		try {
+			delete data.confirmPassword;
+			console.log("After Deletion", data)
 			const response = await fetch("../api/users", {
 				method: "POST",
 				body: JSON.stringify(data),
@@ -32,11 +34,10 @@ function Login() {
 				},
 			});
 
-			const responseData = await response.json();
-			console.log(responseData);
+			// const responseData = await response.json();
+			console.log(response);
 
 			// Check if the response was successful (status code 2xx)
-			
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
@@ -44,9 +45,6 @@ function Login() {
 			reset();
 		}
 	};
-
-
-
 
 	const modifiedClass = `w-64 bg-${theme}-navbar placeholder:text-gray-300 text-${theme}-bright h-9 px-2 focus:outline-none border-2 focus:border-${theme}-main border-${theme}-dull`;
 
@@ -72,8 +70,8 @@ function Login() {
 				{...register("password", {
 					required: "Password is required",
 					minLength: {
-						value: 5,
-						message: "Password must be atleast 5 characters",
+						value: 8,
+						message: "Password must be atleast 8 characters",
 					},
 				})}
 				className={modifiedClass}
@@ -102,7 +100,7 @@ function Login() {
 				type="submit"
 			>
 				Submit
-			</button>		
+			</button>
 		</form>
 	);
 }
