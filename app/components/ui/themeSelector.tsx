@@ -56,6 +56,10 @@ const themes = [
 		label: "delight",
 	},
 	{
+		value: "crimson royale",
+		label: "crimson royale",
+	},
+	{
 		value: "dark magic",
 		label: "dark magic",
 	},
@@ -73,6 +77,7 @@ const themeMap: ThemeMap = {
 	delight: "cheese",
 	wildscape: "husqy",
 	"dark magic": "magic",
+	"crimson royale": "crimson"
 };
 
 // blue dolphin - Ocean Breeze (dolphin)

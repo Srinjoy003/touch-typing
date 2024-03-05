@@ -23,6 +23,13 @@
 			"@/*": ["./*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "backend/database/db.mjs", "backend/database/user.mjs"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"backend/database/db.mjs",
+		"app/api/user.ts"
+	],
 	"exclude": ["node_modules"]
 }

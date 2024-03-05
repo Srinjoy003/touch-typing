@@ -102,10 +102,7 @@ function TypingTest() {
 					hydrated && !result ? "" : "hidden"
 				}`}
 			>
-				<Logo
-					textColour={`${theme}-bright`}
-					secondaryColour={`${theme}-main`}
-				/>
+				<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="absolute right-1/2 -top-32 translate-x-10">

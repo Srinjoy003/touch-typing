@@ -6,12 +6,13 @@ import "../globals.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NextResponse } from "next/server";
 
-type LogInSchema = {
-	username: string;
+type SignInSchema = {
+	email: string;
 	password: string;
+	confirmPassword?: string;
 };
 
-function Login() {
+function Signup() {
 	const theme = useSelector((state: RootState) => state.theme);
 	const {
 		register,
@@ -19,11 +20,13 @@ function Login() {
 		reset,
 		formState: { errors, isSubmitting },
 		getValues,
-	} = useForm<LogInSchema>();
+	} = useForm<SignInSchema>();
 
-	const onSubmit = async (data: LogInSchema) => {
+	const onSubmit = async (data: SignInSchema) => {
 		try {
-			const response = await fetch("../api/login", {
+			delete data.confirmPassword;
+			console.log("After Deletion", data);
+			const response = await fetch("../api/users", {
 				method: "POST",
 				body: JSON.stringify(data),
 				headers: {
@@ -54,38 +57,56 @@ function Login() {
 			<h1
 				className={`text-center text-${theme}-wrong text-6xl font-bold mb-10`}
 			>
-				Log In
+				Sign Up
 			</h1>
 			<input
-				{...register("username", { required: "Username is required" })}
+				{...register("email", { required: "Email is required" })}
 				className={modifiedClass}
-				type="text"
+				type="email"
 				placeholder="Email"
 			/>
-			{errors?.username?.message}
+			{errors?.email?.message}
 			<input
 				{...register("password", {
 					required: "Password is required",
+					minLength: {
+						value: 8,
+						message: "Password must be atleast 8 characters",
+					},
 				})}
 				className={modifiedClass}
 				type="password"
 				placeholder="Password"
 			/>
+			{errors?.password?.message}
+			<input
+				{...register("confirmPassword", {
+					required: "Confirm password is required",
+					minLength: {
+						value: 5,
+						message: "Password must be atleast 5 characters",
+					},
+				})}
+				className={modifiedClass}
+				type="password"
+				placeholder="Confirm Password"
+			/>
+			{errors?.confirmPassword?.message}
 
 			<button
 				className={`${
 					isSubmitting ? `bg-${theme}-navbar` : `bg-${theme}-bg`
-				} px-7 py-3 text-${theme}-main rounded-full shadow-lg border-${theme}-main border-2 hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright mt-5`}
+				} px-7 py-3 text-${theme}-main rounded-full shadow-lg border-${theme}-main border-2 hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright`}
 				type="submit"
 			>
 				Submit
 			</button>
 			<p className="text-sm">
-				Don&apos;t have an account?{" "}
-				<a className={`underline text-${theme}-main`}>Sign Up Here</a>
+				Already have an account?{" "}
+				<a className={`underline text-${theme}-main`}>Log In Here</a>
 			</p>
 		</form>
 	);
 }
 
-export default Login;
+export default Signup;

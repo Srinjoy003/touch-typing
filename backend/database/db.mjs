@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { userSchema } from "./user.mjs";
+import { userSchema } from "../../app/api/user.js";
 
 const mongoURI = "mongodb://0.0.0.0:27017/";
 
@@ -16,7 +16,7 @@ async function run() {
 		// const user = await User.create({ email: "srinjoy003@gmail.com", password: "12345678" });
 		// await user.save();
 		// const user = await User.findById('658c5aeaa52c228f0b9fbc6e');
-		const user = await User.findOne({email: "srinjoy003@gmail.com"});
+		const user = await User.findOne({ email: "srinjoy003@gmail.com" });
 		console.log(user);
 	} catch (e) {
 		console.log(e.message);

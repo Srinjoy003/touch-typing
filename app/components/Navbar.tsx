@@ -74,7 +74,7 @@ function Navbar({
 	return (
 		<div
 			ref={navbarRef}
-			className={`flex flex-col items-center justify-center text-base h-1/2 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`}
+			className={`flex flex-col items-center justify-center text-base h-80 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`}
 		>
 			<Link
 				className={innerClass + firstClass}
@@ -138,7 +138,7 @@ function Navbar({
 				<p>Typing Test</p>
 			</Link>
 
-			<Link className={innerClass} href="	" onClick={() => setNavigating(true)}>
+			{/* <Link className={innerClass} href="	" onClick={() => setNavigating(true)}>
 				<svg
 					width="30px"
 					height="25px"
@@ -168,7 +168,7 @@ function Navbar({
 					</g>
 				</svg>
 				<p>Multiplayer</p>
-			</Link>
+			</Link> */}
 
 			<ThemeSelector
 				open={themeOpen}

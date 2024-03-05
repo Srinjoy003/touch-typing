@@ -15,7 +15,7 @@ export const colour = {
 	"dolphin-bright": "#82eaff", //text
 	"dolphin-wrong": "#ffbde6", //error
 	"dolphin-navbar": "#014961", //subalt
-	"-dolphin-caret": "#00bcd4",
+	"dolphin-caret": "#00bcd4",
 	"dolphin-mono": "#000000",
 
 
@@ -64,11 +64,20 @@ export const colour = {
 	"tron-navbar": "#9c9191",
 	"tron-caret": "#f0e800",
 	"tron-mono": "#ffffff",
+
+	"crimson-main": "#ffadad",
+	"crimson-bg": "#00002e", //bg
+	"crimson-dull": "#ff3d8b", //sub
+	"crimson-bright": "#f1deef", //text
+	"crimson-wrong": "#8fecff", //error
+	"crimson-navbar": "#060548", //subalt
+	"crimson-caret": "#ffffff",
+	"crimson-mono": "#000000",
+
+
 };
 
-type ThemeKeys = "dolphin" | "arch"; // Define all theme keys
-type StateKeys = "normal" | "hover"; // Define all state keys
-type UsageKeys = "bg" | "text" | "border"; // Define all usage keys
+
 
 interface ThemeObject {
 	[themeKey: string]: {

@@ -29,6 +29,8 @@ ChartJS.register(
 	Legend
 );
 
+import { colour } from "@/assets/colour";
+
 export const options = {
 	responsive: true,
 	plugins: {
@@ -52,11 +54,12 @@ export const data = {
 	labels,
 	datasets: [
 		{
-			fill: true,
+			fill: false,
 			label: "Words per min",
-			data: labels.map(() => getRandomNumber(0, 1000)),
-			borderColor: "rgb(53, 162, 235)",
+			data: labels.map(() => getRandomNumber(0, 100)),
+			borderColor: colour["dolphin-main"],
 			backgroundColor: "rgba(53, 162, 235, 0.5)",
+			
 		},
 	],
 };
@@ -72,12 +75,15 @@ export default function App() {
 		<main
 			className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32`}
 		>
-			<Logo textColour={`${theme}-bright`} secondaryColour={`${theme}-main`} />
-			{/* <Line options={options} data={data} /> */}
-			{/* <Line data={data} options={options} width={110} height={100} /> */}
-            <div>
-                
-            </div>
+			<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
+			<Line
+				data={data}
+				options={options}
+				width={80}
+				height={100}
+				className="w-10"
+			/>
+			<div></div>
 
 			<Navbar
 				themeOpen={isOpen}
