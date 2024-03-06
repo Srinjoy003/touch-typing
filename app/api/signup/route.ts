@@ -1,7 +1,7 @@
 // Import necessary modules
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import { User } from "../user.js";
+import { UserSignup } from "../user.js";
 import bcrypt from "bcrypt";
 
 // Connect to MongoDB
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 		const hashedPassword = await bcrypt.hash(requestBody.password, salt);
 
 		const userDetails = { email: requestBody.email, password: hashedPassword };
-		const newUser = new User(userDetails);
+		const newUser = new UserSignup(userDetails);
 
 		await newUser.save();
 

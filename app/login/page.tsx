@@ -31,14 +31,11 @@ function Login() {
 				},
 			});
 
-			// const responseData = await response.json();
 			console.log(response);
 
-			// Check if the response was successful (status code 2xx)
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
-			// This will be executed regardless of success or failure
 			reset();
 		}
 	};
@@ -60,7 +57,7 @@ function Login() {
 				{...register("username", { required: "Username is required" })}
 				className={modifiedClass}
 				type="text"
-				placeholder="Email"
+				placeholder="Username"
 			/>
 			{errors?.username?.message}
 			<input

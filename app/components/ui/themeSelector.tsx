@@ -63,6 +63,36 @@ const themes = [
 		value: "dark magic",
 		label: "dark magic",
 	},
+
+	{
+		value: "spectrum glow",
+		label: "spectrum glow",
+	},
+
+	{
+		value: "soaring skies",
+		label: "soaring skies",
+	},
+
+	{
+		value: "passion fruit",
+		label: "passion fruit",
+	},
+
+	{
+		value: "cosmic mist",
+		label: "cosmic mist",
+	},
+
+	{
+		value: "amber essence",
+		label: "amber essence",
+	},
+
+	{
+		value: "earthsong",
+		label: "earthsong",
+	},
 ];
 
 type ThemeMap = {
@@ -77,7 +107,14 @@ const themeMap: ThemeMap = {
 	delight: "cheese",
 	wildscape: "husqy",
 	"dark magic": "magic",
-	"crimson royale": "crimson"
+	"crimson royale": "crimson",
+	"minty mirage": "retrocast",
+	"spectrum glow": "sonokai",
+	"soaring skies": "soaring",
+	"passion fruit": "fruit",
+	"cosmic mist": "nebula",
+	"amber essence": "honey",
+	earthsong: "earthsong",
 };
 
 // blue dolphin - Ocean Breeze (dolphin)
@@ -102,6 +139,7 @@ export function ThemeSelector({
 	const bgTheme = themeSelectorTheme.split(" ")[0];
 
 	const dispatch = useDispatch();
+
 	const handleSetTheme = (newTheme: string) => {
 		dispatch(setTheme(newTheme));
 	};
@@ -191,12 +229,6 @@ export function ThemeSelector({
 										// Store the timeout ID in the state
 										setHoverTimeout(timeout);
 									}}
-									// onMouseOut={() => {
-									// 	if (hoverTimeout) {
-									// 		clearTimeout(hoverTimeout);
-									// 	}
-									// 	// setTheme(themeMap[value]);
-									// }}
 								>
 									<Check
 										className={cn(
@@ -207,6 +239,9 @@ export function ThemeSelector({
 									{themeList.label}
 								</CommandItem>
 							))}
+							<CommandItem
+								className={themeSelectorTheme + ` h-12`}
+							></CommandItem>
 						</ScrollArea>
 					</CommandGroup>
 				</Command>

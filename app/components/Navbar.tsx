@@ -61,7 +61,7 @@ function Navbar({
 		}
 	}, [handleVisibility, themeOpen]);
 
-	const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-2 pl-4 cursor-pointer group ${borderTheme} ${hoverColour}`;
+	const innerClass = `flex flex-row gap-3 items-center justify-start w-full h-28 border-2 pl-4 cursor-pointer group ${borderTheme} ${hoverColour} border-opacity-40`;
 
 	const firstClass = " rounded-t-lg";
 	const lastClass = " rounded-none rounded-b-lg";

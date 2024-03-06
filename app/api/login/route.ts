@@ -1,7 +1,7 @@
 // Import necessary modules
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import { User } from "../user.js";
+import { UserSignup } from "../user.js";
 import bcrypt from "bcrypt";
 
 // Connect to MongoDB
@@ -20,23 +20,16 @@ export async function POST(request: NextRequest) {
 		const requestBody = await request.json();
 		console.log("Request Body:", requestBody);
 
-		const salt = await bcrypt.genSalt();
-		const hashedPassword = await bcrypt.hash(requestBody.password, salt);
+		// const user = UserSignup.findOne((user:typeof UserSignup) => );
 
-		const userDetails = {email: requestBody.email, password: hashedPassword}
-		const newUser = new User(userDetails);
+		// console.log("Form data saved to MongoDB", newUser);
 
-		await newUser.save();
-
-		console.log("Form data saved to MongoDB", newUser);
-
-		// Return a response with the saved form data
-		return new NextResponse(JSON.stringify(newUser), {
-			status: 200,
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		// return new NextResponse(JSON.stringify(newUser), {
+		// 	status: 200,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+		// });
 	} catch (error) {
 		console.error("Error processing form submission:", error);
 

@@ -90,7 +90,7 @@ function Home() {
 					setThemeOpen={setIsOpen}
 					setNavigating={setNavigating}
 					textColour={`text-${theme}-dull`}
-					borderTheme={`border-${theme}-navbar`}
+					borderTheme={`border-${theme}-dull`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 					hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
 					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}

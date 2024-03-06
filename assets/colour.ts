@@ -74,6 +74,68 @@ export const colour = {
 	"crimson-caret": "#ffffff",
 	"crimson-mono": "#000000",
 
+	"retrocast-main": "#88dbdf",
+	"retrocast-bg": "#07737a", //bg
+	"retrocast-dull": "#f3e03b", //sub
+	"retrocast-bright": "#ffffff", //text
+	"retrocast-wrong": "#ff585d", //error
+	"retrocast-navbar": "#26858b", //subalt
+	"retrocast-caret": "#88dbdf",
+	"retrocast-mono": "#ffffff",
+
+	"sonokai-main": "#9ed072",
+	"sonokai-bg": "#2c2e34", //bg
+	"sonokai-dull": "#e7c664", //sub
+	"sonokai-bright": "#e2e2e3", //text
+	"sonokai-wrong": "#fc5d7c", //error
+	"sonokai-navbar": "#23242", //subalt
+	"sonokai-caret": "#f38c71",
+	"sonokai-mono": "#000000",
+
+	"soaring-main": "#55c6f0",
+	"soaring-bg": "#fff9f2", //bg
+	"soaring-dull": "#1e107a", //sub
+	"soaring-bright": "#1d1e1e", //text
+	"soaring-wrong": "#fb5745", //error
+	"soaring-navbar": "#e5ddd4", //subalt
+	"soaring-caret": "#1e107a",
+	"soaring-mono": "#000000",
+
+	"fruit-main": "#f4a3b4",
+	"fruit-bg": "#7c2142", //bg
+	"fruit-dull": "#9994b8", //sub
+	"fruit-bright": "#ffffff", //text
+	"fruit-wrong": "#deb80b", //error
+	"fruit-navbar": "#833c5e", //subalt
+	"fruit-caret": "#ffffff",
+	"fruit-mono": "#000000",
+
+	"nebula-main": "#be3c88",
+	"nebula-bg": "#212135", //bg
+	"nebula-dull": "#19b3b8", //sub
+	"nebula-bright": "#838686", //text
+	"nebula-wrong": "#ca4754", //error
+	"nebula-navbar": "#191928", //subalt
+	"nebula-caret": "#78c729",
+	"nebula-mono": "#000000",
+
+	"honey-main": "#fff546",
+	"honey-bg": "#f2aa00;", //bg
+	"honey-dull": "#a66b00", //sub
+	"honey-bright": "#f3eecb", //text
+	"honey-wrong": "#df3333", //error
+	"honey-navbar": "#e19e00", //subalt
+	"honey-caret": "#79520",
+	"honey-mono": "#000000",
+
+	"earthsong-main": "#509452",
+	"earthsong-bg": "#292521", //bg
+	"earthsong-dull": "#f5ae2d", //sub
+	"earthsong-bright": "#e6c7a8", //text
+	"earthsong-wrong": "#7e2a33", //error
+	"earthsong-navbar": "#1d1b18", //subalt
+	"earthsong-caret": "#1298ba",
+	"earthsong-mono": "#000000",
 
 };
 

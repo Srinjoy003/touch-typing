@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { NextResponse } from "next/server";
 
 type SignInSchema = {
+	username: string;
 	email: string;
 	password: string;
 	confirmPassword?: string;
@@ -26,7 +27,7 @@ function Signup() {
 		try {
 			delete data.confirmPassword;
 			console.log("After Deletion", data);
-			const response = await fetch("../api/users", {
+			const response = await fetch("../api/signup", {
 				method: "POST",
 				body: JSON.stringify(data),
 				headers: {
@@ -59,6 +60,13 @@ function Signup() {
 			>
 				Sign Up
 			</h1>
+			<input
+				{...register("username", { required: "Username is required" })}
+				className={modifiedClass}
+				type="text"
+				placeholder="Username"
+			/>
+			{errors?.username?.message}
 			<input
 				{...register("email", { required: "Email is required" })}
 				className={modifiedClass}
@@ -96,7 +104,7 @@ function Signup() {
 			<button
 				className={`${
 					isSubmitting ? `bg-${theme}-navbar` : `bg-${theme}-bg`
-				} px-7 py-3 text-${theme}-main rounded-full shadow-lg border-${theme}-main border-2 hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright`}
+				} px-7 py-3 text-${theme}-main rounded-full shadow-lg border-${theme}-main border-2 hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright mt-5`}
 				type="submit"
 			>
 				Submit
