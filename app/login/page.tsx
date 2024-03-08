@@ -5,6 +5,7 @@ import { RootState } from "../reduxStore/store";
 import "../globals.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NextResponse } from "next/server";
+import { useRouter } from "next/router";
 
 type LogInSchema = {
 	username: string;
@@ -13,6 +14,8 @@ type LogInSchema = {
 
 function Login() {
 	const theme = useSelector((state: RootState) => state.theme);
+	// const router = useRouter();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const {
 		register,
 		handleSubmit,
@@ -31,8 +34,14 @@ function Login() {
 				},
 			});
 
-			console.log(response);
+			if (response.status === 200) {
+				// router.push("/");
+				setErrorMessage(null);
 
+			} else {
+				const errorMessage = await response.text();
+				setErrorMessage(errorMessage);
+			}
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
@@ -68,7 +77,7 @@ function Login() {
 				type="password"
 				placeholder="Password"
 			/>
-
+			{errorMessage && <p>{errorMessage}</p>}
 			<button
 				className={`${
 					isSubmitting ? `bg-${theme}-navbar` : `bg-${theme}-bg`

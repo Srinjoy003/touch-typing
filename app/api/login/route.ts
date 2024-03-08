@@ -1,7 +1,7 @@
 // Import necessary modules
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import { UserSignup } from "../user.js";
+import { Users } from "../user";
 import bcrypt from "bcrypt";
 
 // Connect to MongoDB
@@ -20,18 +20,35 @@ export async function POST(request: NextRequest) {
 		const requestBody = await request.json();
 		console.log("Request Body:", requestBody);
 
-		// const user = UserSignup.findOne((user:typeof UserSignup) => );
+		const user = await Users.findOne({ username: requestBody.username });
 
-		// console.log("Form data saved to MongoDB", newUser);
+		if (!user) {
+			return new NextResponse("User not found", {
+				status: 404,
+			});
+		}
 
-		// return new NextResponse(JSON.stringify(newUser), {
-		// 	status: 200,
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// });
+		const passwordMatch = await bcrypt.compare(
+			requestBody.password,
+			user.password
+		);
+
+		if (!passwordMatch) {
+			return new NextResponse("Username and password do not match", {
+				status: 401,
+			});
+		}
+
+		console.log("User logged in:", user);
+
+		return new NextResponse(JSON.stringify({ message: "Login successful" }), {
+			status: 200,
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
 	} catch (error) {
-		console.error("Error processing form submission:", error);
+		console.error("Error processing login", error);
 
 		// Return an error response
 		return new NextResponse("Internal Server Error", {

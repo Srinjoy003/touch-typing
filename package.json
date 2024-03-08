@@ -32,6 +32,7 @@
     "eslint-config-next": "13.5.2",
     "express": "^4.18.2",
     "faker": "^5.5.3",
+    "input-otp": "^1.0.1",
     "lucide-react": "^0.279.0",
     "mongoose": "^8.0.0",
     "next": "^13.5.4",

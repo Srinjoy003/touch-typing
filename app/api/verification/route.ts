@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { UnverifiedUsers, Users } from "../user";
-import bcrypt from "bcrypt";
 
 // Connect to MongoDB
 const mongoURI = "mongodb://0.0.0.0:27017/test";
@@ -20,41 +19,29 @@ export async function POST(request: NextRequest) {
 		const requestBody = await request.json();
 		console.log("Request Body:", requestBody);
 
-		const existingEmail = await Users.findOne({ email: requestBody.email });
-		const existingUsername = await Users.findOne({
-			username: requestBody.username,
-		});
+		
+		const user = await UnverifiedUsers.findOne({ userId: requestBody.userId });
 
-		if (existingEmail)
-			return new NextResponse(
-				"An account with this email already exists. Please choose a different email.",
+        if(!user){
+            return new NextResponse(
+				"Cannot find the user id in unverified users.",
 				{
 					status: 404,
 				}
 			);
+        }
 
-		if (existingUsername)
-			return new NextResponse(
-				"Username already taken. Please choose a different email.",
-				{
-					status: 404,
-				}
-			);
-
-		const salt = await bcrypt.genSalt();
-		const hashedPassword = await bcrypt.hash(requestBody.password, salt);
 
 		const userDetails = {
-			userId: requestBody.userId,
-			username: requestBody.username,
-			email: requestBody.email,
-			password: hashedPassword,
+			username: user.username,
+			email: user.email,
+			password: user.password,
 		};
-		const newUser = new UnverifiedUsers(userDetails);
+		const newUser = new Users(userDetails);
 
 		await newUser.save();
 
-		console.log("Unverified Form data saved to MongoDB", newUser);
+		console.log("Form data saved to MongoDB", newUser);
 
 		return new NextResponse(JSON.stringify(newUser), {
 			status: 200,
@@ -65,6 +52,7 @@ export async function POST(request: NextRequest) {
 	} catch (error) {
 		console.error("Error processing form submission:", error);
 
+		// Return an error response
 		return new NextResponse("Internal Server Error", {
 			status: 500,
 		});
