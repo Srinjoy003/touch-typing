@@ -26,7 +26,9 @@ function Signup() {
 		getValues,
 	} = useForm<SignInSchema>();
 
-	const [startVerification, setStartVerification] = useState<boolean>(true);
+	const [startVerification, setStartVerification] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [userId, setUserId] = useState<string | null>(null);
 
 	const onSubmit = async (data: SignInSchema) => {
 		if (data.password !== data.confirmPassword) {
@@ -37,9 +39,12 @@ function Signup() {
 		}
 
 		try {
-			delete data.confirmPassword;
+			setIsLoading(true);
 
-			const user = { ...data, userId: uuidv4() };
+			delete data.confirmPassword;
+			const userId = uuidv4();
+			setUserId(userId);
+			const user = { ...data, userId };
 
 			const response = await fetch("../api/signup", {
 				method: "POST",
@@ -49,18 +54,44 @@ function Signup() {
 				},
 			});
 
-			if (response.status === 200) {
+			if (response.ok) {
 				setErrorMessage(null);
 				setStartVerification(true);
-			} else if (response.status === 404) {
+			} else {
 				const errorMessage = await response.text();
 				setErrorMessage(errorMessage);
+				setErrorMessage("Incorrect Code")
 			}
 			console.log(response);
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
-			reset();
+			setIsLoading(false);
+		}
+	};
+
+	const handleVerification = async (code: number) => {
+		try {
+			setIsLoading(true);
+			const response = await fetch("../api/verification", {
+				method: "POST",
+				body: JSON.stringify({ verificationCode: code, userId }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+
+				console.log(result);
+			} else {
+				console.error("Error:", response.status, response.statusText);
+			}
+		} catch (error) {
+			console.error("An error occurred:", error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -131,6 +162,7 @@ function Signup() {
 					Already have an account?{" "}
 					<a className={`underline text-${theme}-main`}>Log In Here</a>
 				</p>
+				{isLoading && <p>Processing Verification...</p>}
 			</form>
 		);
 	else
@@ -139,18 +171,20 @@ function Signup() {
 				className={`w-full h-full min-w-fit bg-${theme}-bg flex flex-col item-center justify-center text-${theme}-dull items-center gap-8`}
 			>
 				<h1
-					className={`text-center text-${theme}-wrong text-6xl font-bold mb-10`}
+					className={`text-center text-${theme}-wrong text-4xl sm:text-5xl md:text-7xl font-bold mb-10 ml-5 mr-5`}
 				>
 					Verification Code
 				</h1>
-				<p className="-mt-10 mb-10 text-base">
+				<p
+					className={`-mt-10 mb-3 sm:mb-5 md:mb-7 lg:mb-10 text-sm md:text-base text-${theme}-bright ml-10 mr-10`}
+				>
 					Please enter the verification code sent to the registered email
 					account
 				</p>
 				<OTPInput
 					maxLength={6}
-					containerClassName="group flex items-center has-[:disabled]:opacity-30"
-					size={100}
+					containerClassName={`group flex items-center has-[:disabled]:opacity-30 text-${theme}-bright`}
+					onComplete={handleVerification}
 					render={({ slots }) => (
 						<>
 							<div className="flex">
@@ -169,6 +203,9 @@ function Signup() {
 						</>
 					)}
 				/>
+
+				{isLoading && <p>Processing Verification...</p>}
+				{errorMessage && <p>{errorMessage}</p>}
 			</main>
 		);
 }

@@ -1,4 +1,4 @@
-// Import necessary modules
+
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { Users } from "../user";

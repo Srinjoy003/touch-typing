@@ -19,18 +19,21 @@ export async function POST(request: NextRequest) {
 		const requestBody = await request.json();
 		console.log("Request Body:", requestBody);
 
-		
 		const user = await UnverifiedUsers.findOne({ userId: requestBody.userId });
 
-        if(!user){
-            return new NextResponse(
-				"Cannot find the user id in unverified users.",
-				{
-					status: 404,
-				}
-			);
-        }
+		if (!user) {
+			return new NextResponse("Cannot find the user id in unverified users.", {
+				status: 404,
+			});
+		}
 
+		console.log(requestBody);
+
+		if (requestBody.verificationCode !== user.verificationCode) {
+			return new NextResponse("Incorrect Code.", {
+				status: 404,
+			});
+		}
 
 		const userDetails = {
 			username: user.username,

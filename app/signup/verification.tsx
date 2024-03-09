@@ -9,7 +9,7 @@ export function Slot(props: SlotProps) {
 	return (
 		<div
 			className={cn(
-				"relative w-20 h-28 text-[4rem]",
+				"relative w-10 h-14 sm:w-16 sm:h-24 md:w-20 md:h-28 text-[2rem] sm:text-[3rem] md:text-[4rem]",
 				"flex items-center justify-center",
 				"transition-all duration-300",
 				`border-${theme}-dull border-y border-r first:border-l first:rounded-l-md last:rounded-r-md`,

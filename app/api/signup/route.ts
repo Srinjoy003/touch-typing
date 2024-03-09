@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { UnverifiedUsers, Users } from "../user";
 import bcrypt from "bcrypt";
+import { customAlphabet } from "nanoid";
+import nodemailer from "nodemailer";
 
 // Connect to MongoDB
 const mongoURI = "mongodb://0.0.0.0:27017/test";
@@ -44,11 +46,34 @@ export async function POST(request: NextRequest) {
 		const salt = await bcrypt.genSalt();
 		const hashedPassword = await bcrypt.hash(requestBody.password, salt);
 
+		const transporter = nodemailer.createTransport({
+			service: "gmail",
+			auth: {
+				user: process.env.EMAIL_USER as string,
+				pass: process.env.EMAIL_PASSWORD as string,
+			},
+		});
+
+		const nanoid = customAlphabet("0123456789", 6);
+		const verificationCode = nanoid();
+
+		const mailOptions = {
+			from: process.env.EMAIL_USER as string,
+			to: requestBody.email,
+			subject: "Verify Your Email",
+			text: `Hi ${requestBody.username},\n\nYour code: ${verificationCode}\n\nUse it to finish your registration.\n\n-The Key Ninja Team`,
+		  };
+
+		
+		await transporter.sendMail(mailOptions);
+		console.log("Email sent successfully");
+
 		const userDetails = {
 			userId: requestBody.userId,
 			username: requestBody.username,
 			email: requestBody.email,
 			password: hashedPassword,
+			verificationCode
 		};
 		const newUser = new UnverifiedUsers(userDetails);
 
