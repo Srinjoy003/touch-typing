@@ -14,8 +14,18 @@ const unverifiedUserSchema = new mongoose.Schema({
 	verificationCode: { type: String, required: false, length: 6 },
 });
 
+const ForgotPasswordSchema = new mongoose.Schema({
+	email: { type: String, required: true },
+	token: { type: String, required: true, unique: true },
+});
+
 export const Users =
 	mongoose.models.Users || mongoose.model("Users", UserSchema);
+
 export const UnverifiedUsers =
 	mongoose.models.UnverifiedUsers ||
 	mongoose.model("UnverifiedUsers", unverifiedUserSchema);
+
+export const ForgotPasswordUsers =
+	mongoose.models.ForgotPasswordUsers ||
+	mongoose.model("ForgotPasswordUsers", ForgotPasswordSchema);

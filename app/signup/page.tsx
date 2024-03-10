@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { OTPInput } from "input-otp";
 import { Slot, FakeCaret, FakeDash } from "./verification";
+import Link from "next/link";
 
 type SignInSchema = {
 	username: string;
@@ -60,7 +61,7 @@ function Signup() {
 			} else {
 				const errorMessage = await response.text();
 				setErrorMessage(errorMessage);
-				setErrorMessage("Incorrect Code")
+				setErrorMessage("Incorrect Code");
 			}
 			console.log(response);
 		} catch (error) {
@@ -95,7 +96,7 @@ function Signup() {
 		}
 	};
 
-	const modifiedClass = `w-64 bg-${theme}-navbar placeholder:text-gray-300 text-${theme}-bright h-9 px-2 focus:outline-none border-2 focus:border-${theme}-main border-${theme}-dull`;
+	const modifiedClass = `w-64 bg-${theme}-navbar placeholder:text-gray-300 text-${theme}-bright h-9 px-2 focus:outline-none border-2 focus:border-${theme}-main border-${theme}-dull transition-all duration-300 ease-in-out`;
 
 	if (!startVerification)
 		return (
@@ -140,8 +141,8 @@ function Signup() {
 					{...register("confirmPassword", {
 						required: "Confirm password is required",
 						minLength: {
-							value: 5,
-							message: "Password must be atleast 5 characters",
+							value: 8,
+							message: "Password must be atleast 8 characters",
 						},
 					})}
 					className={modifiedClass}
@@ -160,7 +161,12 @@ function Signup() {
 				</button>
 				<p className="text-sm">
 					Already have an account?{" "}
-					<a className={`underline text-${theme}-main`}>Log In Here</a>
+					<Link
+						href="/login"
+						className={`underline text-${theme}-main hover:text-opacity-70`}
+					>
+						Log In Here
+					</Link>
 				</p>
 				{isLoading && <p>Processing Verification...</p>}
 			</form>

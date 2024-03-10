@@ -2,26 +2,25 @@ import dotenv from "dotenv";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import nodemailer from "nodemailer";
-import { UnverifiedUsers } from "../user";
-import { customAlphabet } from "nanoid";
+import { Users, ForgotPasswordUsers } from "../user";
+import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
 export async function POST(request: NextRequest) {
 	try {
-		const nanoid = customAlphabet("0123456789", 6);
-		const verificationCode = nanoid();
-
 		const requestBody = await request.json();
 		console.log("Request Body:", requestBody);
 
-		// const user = await UnverifiedUsers.findOne({ userId: requestBody.userId });
+		const user = await Users.findOne({ email: requestBody.email });
 
-		// if (!user) {
-		// 	return new NextResponse("Cannot find the user id in unverified users.", {
-		// 		status: 404,
-		// 	});
-		// }
+		if (!user) {
+			return new NextResponse("Account with this email does not exist.", {
+				status: 404,
+			});
+		}
+
+		const token = uuidv4();
 
 		const transporter = nodemailer.createTransport({
 			service: "gmail",
@@ -31,26 +30,27 @@ export async function POST(request: NextRequest) {
 			},
 		});
 
+		const resetPasswordLink = `http://localhost:3000/resetPassword?token=${token}`;
+
 		const mailOptions = {
 			from: process.env.EMAIL_USER as string,
-			to: "srinjoy003@gmail.com",
-			subject: "Test Email",
-			text: "This is a test email from Node.js using Gmail SMTP.",
+			to: requestBody.email,
+			subject: "Password Reset",
+			text: `Hi ${user.username},\n\nYou've requested to reset your password.\n\nClick the following link to reset your password:\n${resetPasswordLink}\n\nIf you didn't request this, you can safely ignore this email.\n\n-The Key Ninja Team`,
 		};
 
 		await transporter.sendMail(mailOptions);
 		console.log("Email sent successfully");
 
-		// const userDetails = {
-		// 	username: user.username,
-		// 	email: user.email,
-		// 	password: user.password,
-		// };
+		const userDetails = {
+			email: requestBody.email,
+			token,
+		};
 
-		await transporter.sendMail(mailOptions);
-		console.log("Email sent successfully");
+		const newUser = new ForgotPasswordUsers(userDetails);
+		await newUser.save();
 
-		return new NextResponse("Sent Verification Email", {
+		return new NextResponse("Sent Reset Password Email", {
 			status: 200,
 		});
 	} catch (error) {

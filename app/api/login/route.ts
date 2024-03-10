@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 		const user = await Users.findOne({ username: requestBody.username });
 
 		if (!user) {
-			return new NextResponse("User not found", {
+			return new NextResponse("Account with this username does not exist", {
 				status: 404,
 			});
 		}

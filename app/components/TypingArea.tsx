@@ -747,7 +747,7 @@ function TypingArea({
 			setWidthList(newWidthList);
 			setFinalDivSpans(newFinalDivSpans);
 		}
-	}, [textDivRef, finalDiv, spaceChar, refresher]);
+	}, [textDivRef, finalDiv, spaceChar, refresher, hydrated]);
 
 	const handleKeyPress = useCallback(
 		(event: KeyboardEvent) => {
