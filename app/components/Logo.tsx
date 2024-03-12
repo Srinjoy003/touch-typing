@@ -1,5 +1,5 @@
 import React from "react";
-import { Anton  } from "next/font/google";
+import { Anton } from "next/font/google";
 
 const font = Anton({ weight: "400", subsets: ["latin"] });
 

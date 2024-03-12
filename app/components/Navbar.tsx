@@ -16,6 +16,7 @@ type NavbarProp = {
 	svgFill: string;
 	hoverColour: string;
 	themeSelectorColour: string;
+	modifyClass?: string
 };
 
 function Navbar({
@@ -27,6 +28,7 @@ function Navbar({
 	svgFill,
 	hoverColour,
 	themeSelectorColour,
+	modifyClass
 }: NavbarProp) {
 	const navbarRef = useRef(null);
 
@@ -66,21 +68,15 @@ function Navbar({
 	const firstClass = " rounded-t-lg";
 	const lastClass = " rounded-none rounded-b-lg";
 
-	const dispatch = useDispatch();
-	const handleSetLoading = () => {
-		dispatch(setLoading(true));
-	};
-
 	return (
 		<div
 			ref={navbarRef}
-			className={`flex flex-col items-center justify-center text-base h-80 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme}`}
+			className={`flex flex-col items-center justify-center text-base h-80 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme} ${modifyClass ?? ""}`}
 		>
 			<Link
 				className={innerClass + firstClass}
 				href="/"
 				onClick={() => {
-					handleSetLoading();
 					setNavigating(true);
 				}}
 			>

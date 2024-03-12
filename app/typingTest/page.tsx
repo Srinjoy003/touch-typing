@@ -49,11 +49,13 @@ function TypingTest() {
 	return (
 		<>
 			<div
-				className={`bg-${theme}-bg text-${theme}-wrong w-full h-full ${
-					hydrated ? "hidden" : ""
+				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
+					hydrated && !navigating ? "hidden" : ""
 				}`}
 			>
-				<div className="lds-dual-ring"></div>
+				<div
+					className={`absolute left-1/2 top-1/2 block w-[64px] h-[64px] rounded-full border-[6px] border-solid border-x-${theme}-wrong border-y-transparent animate-spin`}
+				></div>
 			</div>
 
 			<div
@@ -99,7 +101,7 @@ function TypingTest() {
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated && !result ? "" : "hidden"
+					hydrated && !result && !navigating ? "" : "hidden"
 				}`}
 			>
 				<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
@@ -118,7 +120,7 @@ function TypingTest() {
 								isTypingTest={true}
 								themeSelectorOpen={isOpen}
 								borderSelectColour={`border-${theme}-main`}
-								borderColour={`border-${theme}-navbar`}
+								borderColour={`border-${theme}-dull border-opacity-40`}
 								textColour={`text-${theme}-dull`}
 								textSelectColour={`text-${theme}-main`}
 								hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
@@ -128,7 +130,7 @@ function TypingTest() {
 							/>
 							<TestBar
 								themeSelectorOpen={isOpen}
-								borderColour={`border-${theme}-navbar`}
+								borderColour={`border-${theme}-dull border-opacity-40`}
 								borderSelectColour={`border-${theme}-main`}
 								textColour={`text-${theme}-dull`}
 								textSelectColour={`text-${theme}-main`}
@@ -171,7 +173,7 @@ function TypingTest() {
 					setThemeOpen={setIsOpen}
 					setNavigating={setNavigating}
 					textColour={`text-${theme}-dull`}
-					borderTheme={`border-${theme}-navbar`}
+					borderTheme={`border-${theme}-dull`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 					hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
 					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}

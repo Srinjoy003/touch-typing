@@ -9,6 +9,7 @@ import { RootState } from "./reduxStore/store";
 import "./globals.css";
 import TextSelectorBar from "@/app/components/TextSelectorBar";
 import Refresh from "@/app/components/Refresh";
+import { colour } from "@/assets/colour";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -24,17 +25,16 @@ function Home() {
 					hydrated && !navigating ? "hidden" : ""
 				}`}
 			>
-				<div className="lds-dual-ring"></div>
+				<div
+					className={`absolute left-1/2 top-1/2 block w-[64px] h-[64px] rounded-full border-[6px] border-solid border-x-${theme}-wrong border-y-transparent animate-spin`}
+				></div>
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
 					hydrated && !navigating ? "" : "hidden"
 				}`}
 			>
-				<Logo
-					textColour={`${theme}-bright`}
-					secondaryColour={`${theme}-main`}
-				/>
+				<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="flex flex-col gap-24">
@@ -43,7 +43,7 @@ function Home() {
 								isTypingTest={false}
 								themeSelectorOpen={isOpen}
 								borderSelectColour={`border-${theme}-main`}
-								borderColour={`border-${theme}-navbar`}
+								borderColour={`border-${theme}-dull border-opacity-50`}
 								textColour={`text-${theme}-dull`}
 								textSelectColour={`text-${theme}-main`}
 								hoverColour={`hover:text-${theme}-bright hover:border-${theme}-dull hover:bg-${theme}-navbar`}
