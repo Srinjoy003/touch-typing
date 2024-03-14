@@ -1,14 +1,17 @@
 import React from "react";
 import { Martian_Mono } from "next/font/google";
+import { useSelector } from "react-redux";
+import { RootState } from "../reduxStore/store";
 
 const mono = Martian_Mono({ weight: "400", subsets: ["latin"] });
 
 type StatBoxProps = {
-	theme: string;
 	unit: string;
 	dataSet: { value: number; speed: number; accuracy: number }[];
 };
-function StatBox({ theme, unit, dataSet }: StatBoxProps) {
+function StatBox({ unit, dataSet }: StatBoxProps) {
+	const theme = useSelector((state: RootState) => state.theme);
+	
 	return (
 		<div
 			className={`w-fit h-36 bg-${theme}-navbar rounded-lg px-5 flex items-center justify-start gap-10 ${mono.className}`}

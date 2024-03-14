@@ -5,30 +5,27 @@ import { RootState } from "../reduxStore/store";
 import { MouseEvent } from "react";
 
 const mono = Martian_Mono({ weight: "400", subsets: ["latin"] });
-type filterOptions =
-	| "all time"
-	| "last 3 months"
-	| "last month"
-	| "last week"
-	| "last day";
-type FilterProps = {
-	filter?: filterOptions;
-	setFilter?: (filter: filterOptions) => void;
+
+type sortOptions = "speed" | "raw speed" | "accuracy" | "date";
+
+type SorterProps = {
+	filter?: sortOptions;
+	setFilter?: (filter: sortOptions) => void;
 };
-function Filters({ filter, setFilter }: FilterProps) {
+function Sorter({ filter, setFilter }: SorterProps) {
 	const theme = useSelector((state: RootState) => state.theme);
 	const buttonClassname = `w-48 hover:bg-${theme}-bright hover:text-${theme}-bg rounded-lg py-2 text-sm transition duration-300 `;
-	const [option, setOption] = useState<filterOptions>("all time");
+	const [option, setOption] = useState<sortOptions>("date");
 
-	const handleFilterSelection = (event: MouseEvent<HTMLButtonElement>) => {
-		const innerHTML = event.currentTarget.innerHTML as filterOptions;
+	const handleSorterSelection = (event: MouseEvent<HTMLButtonElement>) => {
+		const innerHTML = event.currentTarget.innerHTML as sortOptions;
 		setOption(innerHTML);
 	};
 
 	return (
-		<div className="flex flex-col gap-7 mt-10">
+		<div className="flex flex-col gap-7 mt-20">
 			<h2 className={`text-${theme}-dull ${mono.className} text-lg`}>
-				filters
+				sort by
 			</h2>
 			<div
 				className={`w-fit flex items-center justify-start gap-10 ${mono.className}`}
@@ -37,70 +34,57 @@ function Filters({ filter, setFilter }: FilterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "last day"
+							option === "speed"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
 					}
-					onClick={handleFilterSelection}
+					onClick={handleSorterSelection}
 				>
-					last day
+					speed
 				</button>
 				<button
 					className={
 						buttonClassname +
 						`${
-							option === "last week"
+							option === "raw speed"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
 					}
-					onClick={handleFilterSelection}
+					onClick={handleSorterSelection}
 				>
-					last week
+					raw speed
 				</button>
 				<button
 					className={
 						buttonClassname +
 						`${
-							option === "last month"
+							option === "accuracy"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
 					}
-					onClick={handleFilterSelection}
+					onClick={handleSorterSelection}
 				>
-					last month
+					accuracy
 				</button>
 				<button
 					className={
 						buttonClassname +
 						`${
-							option === "last 3 months"
+							option === "date"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
 					}
-					onClick={handleFilterSelection}
+					onClick={handleSorterSelection}
 				>
-					last 3 months
-				</button>
-				<button
-					className={
-						buttonClassname +
-						`${
-							option === "all time"
-								? `bg-${theme}-main text-${theme}-bg`
-								: `bg-${theme}-navbar text-${theme}-bright`
-						}`
-					}
-					onClick={handleFilterSelection}
-				>
-					all time
+					date
 				</button>
 			</div>
 		</div>
 	);
 }
 
-export default Filters;
+export default Sorter;
