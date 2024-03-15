@@ -9,7 +9,6 @@ import {
 import { useDispatch } from "react-redux";
 import { resetTimeAccuracy } from "@/app/reduxStore/speedAccuracySlice";
 
-
 type SelectorProp = {
 	isTypingTest: boolean;
 	themeSelectorOpen: boolean;
@@ -21,9 +20,11 @@ type SelectorProp = {
 	svgColour: string;
 	svgSelectColour: string;
 	svgHoverColour: string;
+	className?: string;
 };
 
 function TextSelectorBar({
+	className,
 	isTypingTest,
 	themeSelectorOpen,
 	borderColour,
@@ -42,19 +43,17 @@ function TextSelectorBar({
 
 	const handlePuncChange = () => {
 		dispatch(togglePunc());
-		dispatch(resetTimeAccuracy())
+		dispatch(resetTimeAccuracy());
 	};
 
 	const handleNumChange = () => {
 		dispatch(toggleNum());
-		dispatch(resetTimeAccuracy())
-
+		dispatch(resetTimeAccuracy());
 	};
 
 	const handleCapsChange = () => {
 		dispatch(toggleCaps());
-		dispatch(resetTimeAccuracy())
-
+		dispatch(resetTimeAccuracy());
 	};
 
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;
@@ -108,7 +107,9 @@ function TextSelectorBar({
 	return (
 		<div
 			ref={textSelectorRef}
-			className={`flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200 cursor-pointer`}
+			className={`flex flex-row justify-center gap-0 w-[500px] h-10 rounded-md opacity-100 transition-opacity duration-200 cursor-pointer ${
+				className ?? ""
+			}`}
 		>
 			<div
 				className={modifiedInnerDivClass + puncDivColour + firstClass}

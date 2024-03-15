@@ -120,9 +120,14 @@ export default function App() {
 	));
 	return (
 		<main
-			className={`bg-${theme}-bg flex flex-col items-start justify-start w-full gap-32 h-screen overflow-y-auto`}
+			className={`bg-${theme}-bg flex flex-col items-start justify-start w-full gap-32 h-screen overflow-y-auto scrollbar scrollbar-thumb-${theme}-dull scrollbar-track-${theme}-navbar scrollbar-thin`}
 		>
-			<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
+			<Logo
+				className="ml-12 mt-12 -mb-56"
+				textColour={`${theme}-main`}
+				secondaryColour={`${theme}-main`}
+			/>
+			{/* <Profile /> */}
 
 			<main className="mt-40 flex flex-col gap-16 ml-20">
 				<Profile theme={theme} />

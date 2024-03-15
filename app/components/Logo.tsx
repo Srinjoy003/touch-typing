@@ -3,12 +3,18 @@ import { Anton } from "next/font/google";
 
 const font = Anton({ weight: "400", subsets: ["latin"] });
 
-type logoProp = { textColour: string; secondaryColour: string };
+type logoProp = {
+	textColour: string;
+	secondaryColour: string;
+	className?: string;
+};
 
-function Logo({ textColour, secondaryColour }: logoProp) {
+function Logo({ textColour, secondaryColour, className }: logoProp) {
 	return (
 		<div
-			className={`${font.className} absolute top-12 left-12 flex flex-row gap-2 items-center text-4xl text-${textColour} font-underline decoration-${secondaryColour}`}
+			className={`${className ?? ""} ${
+				font.className
+			} flex flex-row gap-2 items-center text-4xl text-${textColour} font-underline decoration-${secondaryColour}`}
 		>
 			<svg
 				className={`fill-${secondaryColour}`}

@@ -5,10 +5,11 @@ import { RootState } from "../reduxStore/store";
 import "../globals.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { NextResponse } from "next/server";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 type LogInSchema = {
 	username: string;
@@ -21,9 +22,10 @@ type ForgotPasswordSchema = {
 
 function Login() {
 	const theme = useSelector((state: RootState) => state.theme);
-	// const router = useRouter();
+	const router = useRouter();
 	const [forgotPassword, setForgotPassword] = useState<boolean>(false);
 	const [emailSent, setEmailSent] = useState<boolean>(false);
+	const [logging, setLogging] = useState<boolean>(false);
 
 	const {
 		register,
@@ -60,6 +62,7 @@ function Login() {
 
 	const onSubmit = async (data: LogInSchema) => {
 		try {
+			setLogging(true);
 			const response = await fetch("../api/login", {
 				method: "POST",
 				body: JSON.stringify(data),
@@ -69,7 +72,11 @@ function Login() {
 			});
 
 			if (response.ok) {
-				toast.success("Logged In");
+				const responseData = await response.json(); // Parse response body as JSON
+				const username = responseData.username;
+				Cookies.set("username", username, { expires: 30 });
+				router.push('/');
+
 			} else {
 				const errorMessage = await response.text();
 				toast.error(errorMessage);
@@ -77,7 +84,7 @@ function Login() {
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
-			reset();
+			setLogging(false);
 		}
 	};
 
@@ -135,6 +142,9 @@ function Login() {
 						Sign Up Here
 					</Link>
 				</p>
+				{logging && (
+					<p className={`text-${theme}-bright`}>Logging you in ....</p>
+				)}
 				<ToastContainer position="top-center" hideProgressBar />
 			</form>
 		);

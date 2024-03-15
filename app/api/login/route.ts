@@ -1,10 +1,9 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { Users } from "../user";
 import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 
-// Connect to MongoDB
 const mongoURI = "mongodb://0.0.0.0:27017/test";
 mongoose.connect(mongoURI);
 
@@ -13,7 +12,10 @@ process.on("SIGINT", async () => {
 	process.exit(0);
 });
 
-// POST function to handle form submissions
+function generateSessionId() {
+	return uuidv4();
+}
+
 export async function POST(request: NextRequest) {
 	try {
 		// Parse the JSON request body
@@ -40,13 +42,21 @@ export async function POST(request: NextRequest) {
 		}
 
 		console.log("User logged in:", user);
+		const sessionId = generateSessionId();
 
-		return new NextResponse(JSON.stringify({ message: "Login successful" }), {
-			status: 200,
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		return new NextResponse(
+			JSON.stringify({
+				sessionId,
+				message: "Login successful",
+				username: requestBody.username,
+			}),
+			{
+				status: 200,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
 	} catch (error) {
 		console.error("Error processing login", error);
 

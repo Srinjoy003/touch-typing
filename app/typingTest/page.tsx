@@ -3,7 +3,7 @@ import TypingArea from "@/app/components/TypingArea";
 import Keyboard from "@/app/components/Keyboard";
 import Navbar from "@/app/components/Navbar";
 import Logo from "@/app/components/Logo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TestBar from "./testBar";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../reduxStore/store";
@@ -15,6 +15,9 @@ import { toggleResult } from "../reduxStore/resultSlice";
 import { alterRefresh } from "../reduxStore/refreshSlice";
 import { resetTimeAccuracy } from "../reduxStore/speedAccuracySlice";
 import { GiNextButton } from "react-icons/gi";
+import Cookies from "js-cookie";
+import { setLogin } from "../reduxStore/loginSlice";
+import Profile from "../components/Profile";
 
 function TypingTest() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +48,13 @@ function TypingTest() {
 		dispatch(resetTimeAccuracy());
 		setIsTimerVisible(false);
 	};
+
+	useEffect(() => {
+		const username = Cookies.get("username");
+		if (username) {
+			dispatch(setLogin(username));
+		}
+	}, [dispatch]);
 
 	return (
 		<>
@@ -104,7 +114,12 @@ function TypingTest() {
 					hydrated && !result && !navigating ? "" : "hidden"
 				}`}
 			>
-				<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
+				<Logo
+					className="absolute top-12 left-12"
+					textColour={`${theme}-main`}
+					secondaryColour={`${theme}-main`}
+				/> 	
+				<Profile className="absolute right-10 top-10" />
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="absolute right-1/2 -top-32 translate-x-10">

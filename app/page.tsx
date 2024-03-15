@@ -3,13 +3,16 @@ import TypingArea from "@/app/components/TypingArea";
 import Keyboard from "@/app/components/Keyboard";
 import Navbar from "@/app/components/Navbar";
 import Logo from "@/app/components/Logo";
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./reduxStore/store";
 import "./globals.css";
 import TextSelectorBar from "@/app/components/TextSelectorBar";
 import Refresh from "@/app/components/Refresh";
-import { colour } from "@/assets/colour";
+import Profile from "./components/Profile";
+import { setLogin } from "@/app/reduxStore/loginSlice";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -17,6 +20,14 @@ function Home() {
 	const [hydrated, setHydrated] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [navigating, setNavigating] = useState(false);
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		const username = Cookies.get("username");
+		if (username) {
+			dispatch(setLogin(username));
+		}
+	}, [dispatch])
 
 	return (
 		<>
@@ -34,7 +45,8 @@ function Home() {
 					hydrated && !navigating ? "" : "hidden"
 				}`}
 			>
-				<Logo textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
+				<Logo className="absolute top-12 left-12" textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
+				<Profile className="absolute right-10 top-10" />
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
 					<div className="flex flex-col gap-24">

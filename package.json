@@ -19,6 +19,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/dotenv": "^8.2.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "18.2.22",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.16",
@@ -33,6 +34,7 @@
     "express": "^4.18.2",
     "faker": "^5.5.3",
     "input-otp": "^1.0.1",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.279.0",
     "mongoose": "^8.0.0",
     "nanoid": "^5.0.6",
@@ -61,6 +63,7 @@
     "@types/nodemailer": "^6.4.14",
     "@types/uuid": "^9.0.4",
     "nodemon": "^3.0.2",
+    "tailwind-scrollbar": "^3.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }

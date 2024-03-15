@@ -11,7 +11,7 @@ const config: Config = {
 	safelist: [
 		{
 			pattern:
-				/^(bg|text|border|fill|decoration|from|to)-(dolphin|arch|retro|cheese|husqy|magic|tron|crimson|retrocast|soaring|fruit|sonokai|nebula|honey|earthsong)(-[A-Za-z0-9_-]+)?$/,
+				/^(bg|text|border|fill|decoration|from|to|scrollbar-thumb|scrollbar-track)-(dolphin|arch|retro|cheese|husqy|magic|tron|crimson|retrocast|soaring|fruit|sonokai|nebula|honey|earthsong)(-[A-Za-z0-9_-]+)?$/,
 			variants: ["hover", "group-hover", "aria-selected", "focus"],
 		},
 	],
@@ -47,6 +47,8 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		require('tailwind-scrollbar'),
+	],
 };
 export default config;
