@@ -12,6 +12,7 @@ import {
 } from "@/app/reduxStore/speedAccuracySlice";
 import { incrementWordCount } from "@/app/reduxStore/speedAccuracySlice";
 import { Merriweather_Sans, Martian_Mono } from "next/font/google";
+import { alterRefresh } from "../reduxStore/refreshSlice";
 
 const font = Merriweather_Sans({ subsets: ["latin"] });
 

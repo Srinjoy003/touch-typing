@@ -20,6 +20,20 @@ import { setLogin } from "../reduxStore/loginSlice";
 import Profile from "../components/Profile";
 import { setSpeed, setAccuracy } from "../reduxStore/speedAccuracySlice";
 import { resetsetWordCountSetting } from "../reduxStore/wordCountSlice";
+import { debounce } from "lodash";
+
+type StatType = {
+	username: string;
+	mode: string;
+	speed: number;
+	accuracy: number;
+	rawSpeed: number;
+	wordCount: number;
+	totalChars: number;
+	correctChar: number;
+	errorChar: number;
+	createdAt: Date;
+};
 
 function TypingTest() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +56,6 @@ function TypingTest() {
 
 	const mistakes = totalChar - correctChar;
 	const result = useSelector((state: RootState) => state.result);
-	const time = useSelector((state: RootState) => state.speedAccuracy.time);
 	const wordCount = useSelector(
 		(state: RootState) => state.speedAccuracy.wordCount
 	);
@@ -50,16 +63,10 @@ function TypingTest() {
 		(state: RootState) => state.wordCountSetting
 	);
 
-	const wordTestTime = useSelector(
-		(state: RootState) => state.speedAccuracy.time
-	);
+	const timeTaken = useSelector((state: RootState) => state.speedAccuracy.time);
 	const testType = useSelector((state: RootState) => state.testType);
 	const testStats = useSelector((state: RootState) => state.speedAccuracy);
 	const login = useSelector((state: RootState) => state.login);
-
-	useEffect(() => {
-		console.log(time);
-	}, [time]);
 
 	const dispatch = useDispatch();
 
@@ -73,10 +80,13 @@ function TypingTest() {
 
 	useEffect(() => {
 		if (wordCount === totalWordCount && testType === "word") {
-			dispatch(setSpeed((totalChar / 5 / (wordTestTime / 60)).toFixed(2)));
+			dispatch(setSpeed(Number((totalChar / 5 / (timeTaken / 60)).toFixed(2))));
 
-			if (totalChar === 0) dispatch(setAccuracy((0).toFixed(2)));
-			else dispatch(setAccuracy(((correctChar / totalChar) * 100).toFixed(2)));
+			if (totalChar === 0) dispatch(setAccuracy(Number((0).toFixed(2))));
+			else
+				dispatch(
+					setAccuracy(Number(((correctChar / totalChar) * 100).toFixed(2)))
+				);
 
 			dispatch(toggleResult());
 			setIsTimerVisible(false);
@@ -88,34 +98,45 @@ function TypingTest() {
 		handleResultScreen,
 		setTestStarted,
 		totalChar,
-		wordTestTime,
+		timeTaken,
 		dispatch,
 		correctChar,
 		testType,
 	]);
 
 	const uploadStats = useCallback(async () => {
+		if (!login) return;
 		try {
-			const stats = {
+			const mode = `${testType} ${
+				testType === "time" ? timeTaken : totalWordCount
+			}`;
+			const stats: StatType = {
 				username: login,
-				mode: testType,
-				speed: testStats.speed,
+				mode: mode,
+				rawSpeed: testStats.speed,
 				accuracy: testStats.accuracy,
-				rawSpeed: (testStats.speed * testStats.accuracy) / 100,
+				speed: Number(
+					((testStats.speed * testStats.accuracy) / 100).toFixed(2)
+				),
 				wordCount: testStats.wordCount,
-				chars: `${testStats.totalChar}/${testStats.correctChar}/${
-					testStats.totalChar - testStats.correctChar
-				}`,
+				totalChars: testStats.totalChar,
+				correctChar: testStats.correctChar,
+				errorChar: testStats.totalChar - testStats.correctChar,
+				createdAt: new Date(),
 			};
 
 			console.log("STATS", stats);
-			// const response = await fetch("../api/stats", {
-			// 	method: "POST",
-			// 	body: JSON.stringify("hello"),
-			// 	headers: {
-			// 		"Content-Type": "application/json",
-			// 	},
-			// });
+
+			const response = await fetch("../api/stats", {
+				method: "POST",
+				body: JSON.stringify(stats),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			const responseText = await response.text();
+			console.log(responseText);
 		} catch (error) {
 			console.error("Error sending stats:", error);
 		}
@@ -127,13 +148,16 @@ function TypingTest() {
 		testStats.correctChar,
 		testStats.wordCount,
 		testStats.totalChar,
+		,
+		timeTaken,
+		totalWordCount,
 	]);
 
 	useEffect(() => {
-		if (result && login) {
+		if (result) {
 			uploadStats();
 		}
-	}, [result, uploadStats, login]);
+	}, [result]); //eslint-disable-line
 
 	useEffect(() => {
 		const username = Cookies.get("username");

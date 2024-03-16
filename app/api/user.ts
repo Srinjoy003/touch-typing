@@ -19,6 +19,19 @@ const ForgotPasswordSchema = new mongoose.Schema({
 	token: { type: String, required: true, unique: true },
 });
 
+const StatSchema = new mongoose.Schema({
+	username: { type: String, required: true },
+	mode: { type: String, required: true },
+	speed: { type: Number, required: true },
+	accuracy: { type: Number, required: true },
+	rawSpeed: { type: Number, required: true },
+	wordCount: { type: Number, required: true },
+	totalChars: { type: Number, required: true },
+	correctChar: { type: Number, required: true },
+	errorChar: { type: Number, required: true },
+	createdAt: { type: Date, required: true }
+});
+
 export const Users =
 	mongoose.models.Users || mongoose.model("Users", UserSchema);
 
@@ -29,3 +42,6 @@ export const UnverifiedUsers =
 export const ForgotPasswordUsers =
 	mongoose.models.ForgotPasswordUsers ||
 	mongoose.model("ForgotPasswordUsers", ForgotPasswordSchema);
+
+export const Stats =
+	mongoose.models.Stats || mongoose.model("Stats", StatSchema);

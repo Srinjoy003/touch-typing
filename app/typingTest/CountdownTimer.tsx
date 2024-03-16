@@ -109,16 +109,18 @@ function CountdownTimer({
 				onComplete={(time: number) => {
 					if (testStarted && !result) {
 						dispatch(
-							setSpeed((totalChar / 5 / (wordTestTime / 60)).toFixed(2))
+							setSpeed(Number((totalChar / 5 / (wordTestTime / 60)).toFixed(2)))
 						);
 						dispatch(toggleResult());
 						setIsTimerVisible(false);
 						setTestStarted(false);
 
-						if (totalChar === 0) dispatch(setAccuracy((0).toFixed(2)));
+						if (totalChar === 0) dispatch(setAccuracy(Number((0).toFixed(2))));
 						else
 							dispatch(
-								setAccuracy(((correctChar / totalChar) * 100).toFixed(2))
+								setAccuracy(
+									Number(((correctChar / totalChar) * 100).toFixed(2))
+								)
 							);
 					}
 				}}
