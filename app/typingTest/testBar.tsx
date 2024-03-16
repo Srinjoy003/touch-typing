@@ -4,6 +4,9 @@ import { TbLetterCase } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { setCountdown } from "../reduxStore/countdownSlice";
 import { resetTimeAccuracy } from "../reduxStore/speedAccuracySlice";
+import { setWordCountSetting } from "../reduxStore/wordCountSlice";
+import { setTestType as globalSetTestType } from "../reduxStore/testTypeSlice";
+import { alterRefresh } from "../reduxStore/refreshSlice";
 
 type TestBarProp = {
 	themeSelectorOpen: boolean;
@@ -26,7 +29,7 @@ function TestBar({
 }: TestBarProp) {
 	const [testType, setTestType] = useState(true);
 	const [timeSelected, setTimeSelected] = useState(15);
-	const [wordSelected, setWordSelected] = useState(15);
+	const [wordSelected, setWordSelected] = useState(10);
 
 	const modifiedOuterDivClass = `flex flex-row justify-center gap-0 w-[700px] h-10 rounded-md opacity-100 transition-opacity duration-200`;
 	const modifiedInnerDiv1Class = `flex flex-row h-full w-1/2 items-center justify-center group ${borderColour} `;
@@ -70,20 +73,34 @@ function TestBar({
 		}
 	}, []);
 
+	const dispatch = useDispatch();
+
 	const handleTimeTest = useCallback(() => {
 		setTestType(true);
-	}, []);
+		dispatch(globalSetTestType("time"));
+		dispatch(setCountdown(timeSelected));
+	}, [dispatch, timeSelected]);
 
 	const handleWordTest = useCallback(() => {
 		setTestType(false);
-	}, []);
-
-	const dispatch = useDispatch();
+		dispatch(globalSetTestType("word"));
+		dispatch(setCountdown(1200));
+	}, [dispatch]);
 
 	const handleTimeSelected = useCallback(
 		(time: number) => {
 			setTimeSelected(time);
 			dispatch(setCountdown(time));
+			dispatch(resetTimeAccuracy());
+		},
+		[dispatch]
+	);
+
+	const handleWordSelected = useCallback(
+		(wordCount: number) => {
+			setWordSelected(wordCount);
+			dispatch(setWordCountSetting(wordCount));
+			dispatch(setCountdown(1200 + wordCount));
 			dispatch(resetTimeAccuracy());
 		},
 		[dispatch]
@@ -155,7 +172,7 @@ function TestBar({
 					<button
 						className={buttonClass + wordClass1}
 						onClick={() => {
-							return setWordSelected(10);
+							return handleWordSelected(10);
 						}}
 					>
 						10
@@ -163,7 +180,7 @@ function TestBar({
 					<button
 						className={buttonClass + wordClass2}
 						onClick={() => {
-							return setWordSelected(25);
+							return handleWordSelected(25);
 						}}
 					>
 						25
@@ -171,7 +188,7 @@ function TestBar({
 					<button
 						className={buttonClass + wordClass3}
 						onClick={() => {
-							return setWordSelected(50);
+							return handleWordSelected(50);
 						}}
 					>
 						50
@@ -179,7 +196,7 @@ function TestBar({
 					<button
 						className={buttonClass + wordClass4}
 						onClick={() => {
-							return setWordSelected(100);
+							return handleWordSelected(100);
 						}}
 					>
 						100

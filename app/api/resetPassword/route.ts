@@ -5,8 +5,8 @@ import { UnverifiedUsers, Users } from "../user";
 import bcrypt from "bcrypt";
 import { ForgotPasswordUsers } from "../user";
 
-// Connect to MongoDB
-const mongoURI = "mongodb://0.0.0.0:27017/test";
+
+const mongoURI = process.env.MONGODB_URI as string;
 mongoose.connect(mongoURI);
 
 process.on("SIGINT", async () => {
@@ -17,7 +17,6 @@ process.on("SIGINT", async () => {
 export async function POST(request: NextRequest) {
 	try {
 		const requestBody = await request.json();
-		console.log("Request Body:", requestBody);
 
 		const allowedUser = await ForgotPasswordUsers.findOne({
 			token: requestBody.token,
@@ -48,7 +47,6 @@ export async function POST(request: NextRequest) {
 
 		await user.save();
 
-		console.log("worked")
 
 		return new NextResponse(JSON.stringify(user), {
 			status: 200,

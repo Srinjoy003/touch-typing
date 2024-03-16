@@ -9,6 +9,8 @@ import refreshReducer from "./refreshSlice";
 import speedAccuracyReducer from "./speedAccuracySlice";
 import resultReducer from "./resultSlice";
 import loginReducer from "./loginSlice";
+import wordCountSettingReducer from "./wordCountSlice";
+import testTypeSReducer from "./testTypeSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -20,6 +22,8 @@ export const store = configureStore({
 		speedAccuracy: speedAccuracyReducer,
 		result: resultReducer,
 		login: loginReducer,
+		wordCountSetting: wordCountSettingReducer,
+		testType: testTypeSReducer,
 	},
 });
 

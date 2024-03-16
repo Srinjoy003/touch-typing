@@ -8,8 +8,10 @@ import {
 } from "@/app/reduxStore/selectorSlice";
 import { useDispatch } from "react-redux";
 import { resetTimeAccuracy } from "@/app/reduxStore/speedAccuracySlice";
+import { alterRefresh } from "../reduxStore/refreshSlice";
 
 type SelectorProp = {
+	isTest?: boolean;
 	isTypingTest: boolean;
 	themeSelectorOpen: boolean;
 	borderColour: string;
@@ -35,6 +37,7 @@ function TextSelectorBar({
 	svgColour,
 	svgSelectColour,
 	svgHoverColour,
+	isTest = false,
 }: SelectorProp) {
 	const puncState = useSelector((state: RootState) => state.selector.punc);
 	const numState = useSelector((state: RootState) => state.selector.num);
@@ -44,16 +47,19 @@ function TextSelectorBar({
 	const handlePuncChange = () => {
 		dispatch(togglePunc());
 		dispatch(resetTimeAccuracy());
+		if (isTest) dispatch(alterRefresh());
 	};
 
 	const handleNumChange = () => {
 		dispatch(toggleNum());
 		dispatch(resetTimeAccuracy());
+		if (isTest) dispatch(alterRefresh());
 	};
 
 	const handleCapsChange = () => {
 		dispatch(toggleCaps());
 		dispatch(resetTimeAccuracy());
+		if (isTest) dispatch(alterRefresh());
 	};
 
 	const modifiedInnerDivClass = `flex flex-row gap-2 h-full w-1/3 items-center justify-center group border-2 ${hoverColour} `;

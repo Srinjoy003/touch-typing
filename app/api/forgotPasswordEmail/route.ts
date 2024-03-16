@@ -10,7 +10,6 @@ dotenv.config();
 export async function POST(request: NextRequest) {
 	try {
 		const requestBody = await request.json();
-		console.log("Request Body:", requestBody);
 
 		const user = await Users.findOne({ email: requestBody.email });
 
@@ -40,7 +39,6 @@ export async function POST(request: NextRequest) {
 		};
 
 		await transporter.sendMail(mailOptions);
-		console.log("Email sent successfully");
 
 		const userDetails = {
 			email: requestBody.email,

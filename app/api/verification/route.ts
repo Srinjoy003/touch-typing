@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { UnverifiedUsers, Users } from "../user";
 
-// Connect to MongoDB
-const mongoURI = "mongodb://0.0.0.0:27017/test";
+
+const mongoURI = process.env.MONGODB_URI as string;
 mongoose.connect(mongoURI);
 
 process.on("SIGINT", async () => {
@@ -12,12 +12,9 @@ process.on("SIGINT", async () => {
 	process.exit(0);
 });
 
-// POST function to handle form submissions
 export async function POST(request: NextRequest) {
 	try {
-		// Parse the JSON request body
 		const requestBody = await request.json();
-		console.log("Request Body:", requestBody);
 
 		const user = await UnverifiedUsers.findOne({ userId: requestBody.userId });
 

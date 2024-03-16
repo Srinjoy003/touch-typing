@@ -4,7 +4,7 @@ import { Users } from "../user";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
-const mongoURI = "mongodb://0.0.0.0:27017/test";
+const mongoURI = process.env.MONGODB_URI as string;
 mongoose.connect(mongoURI);
 
 process.on("SIGINT", async () => {
@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
 	try {
 		// Parse the JSON request body
 		const requestBody = await request.json();
-		console.log("Request Body:", requestBody);
 
 		const user = await Users.findOne({ username: requestBody.username });
 
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
 			});
 		}
 
-		console.log("User logged in:", user);
 		const sessionId = generateSessionId();
 
 		return new NextResponse(
@@ -60,7 +58,6 @@ export async function POST(request: NextRequest) {
 	} catch (error) {
 		console.error("Error processing login", error);
 
-		// Return an error response
 		return new NextResponse("Internal Server Error", {
 			status: 500,
 		});

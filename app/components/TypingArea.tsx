@@ -10,8 +10,9 @@ import {
 	incrementCorrectChar,
 	resetTimeAccuracy,
 } from "@/app/reduxStore/speedAccuracySlice";
+import { incrementWordCount } from "@/app/reduxStore/speedAccuracySlice";
+import { Merriweather_Sans, Martian_Mono } from "next/font/google";
 
-import { Merriweather_Sans } from "next/font/google";
 const font = Merriweather_Sans({ subsets: ["latin"] });
 
 type textAreaProp = {
@@ -24,17 +25,15 @@ type textAreaProp = {
 	textColourIncorrect: string;
 	caretColour: string;
 	wordCountColour: string;
+	isTest?: boolean;
 };
 
 type Gram = {
 	[key: string]: {
-	  [probability: number]: string;
-	  sorted?: number[];
+		[probability: number]: string;
+		sorted?: number[];
 	};
-
-  };
-
-
+};
 
 let grams: Gram = {
 	" ": {
@@ -388,11 +387,11 @@ function generateWords(n: number): string[] {
 			// Note: p_list containes the accumulated probabilities of
 			// the followers.
 
-			if(p_list === undefined) p_list = []
+			if (p_list === undefined) p_list = [];
 			let k = 0;
 
-			while(k + 1 < p_list.length && p_list[k] < rand){
-				k++
+			while (k + 1 < p_list.length && p_list[k] < rand) {
+				k++;
 			}
 
 			const char = grams[last][p_list[k]];
@@ -462,35 +461,6 @@ function FinalDiv(
 	isNum: boolean,
 	isCaps: boolean
 ) {
-	// const randomWords = [
-	// 	"apple",
-	// 	"banana",
-	// 	"chocolate",
-	// 	"dog",
-	// 	"elephant",
-	// 	"flower",
-	// 	"guitar",
-	// 	"happiness",
-	// 	"internet",
-	// 	"jazz",
-	// 	"kangaroo",
-	// 	"lighthouse",
-	// 	"mountain",
-	// 	"notebook",
-	// 	"ocean",
-	// 	"penguin",
-	// 	"quasar",
-	// 	"rainbow",
-	// 	"sunset",
-	// 	"tiger",
-	// 	"umbrella",
-	// 	"volcano",
-	// 	"watermelon",
-	// 	"xylophone",
-	// 	"yogurt",
-	// 	"zeppelin",
-	// ];
-
 	const randomWords = generateWords(100);
 	const randomPunc = ["?", "!", ",", ".", "'", ";", ":", ")"];
 	// let wordCount = 36; //36
@@ -578,6 +548,7 @@ function TypingArea({
 	textColourIncorrect,
 	caretColour,
 	wordCountColour,
+	isTest = false,
 }: textAreaProp) {
 	const initialCursorX = -561;
 	const initialCursorY = 0;
@@ -597,6 +568,15 @@ function TypingArea({
 	const punc = useSelector((state: RootState) => state.selector.punc);
 	const num = useSelector((state: RootState) => state.selector.num);
 	const caps = useSelector((state: RootState) => state.selector.caps);
+	const testWordCount = useSelector(
+		(state: RootState) => state.speedAccuracy.wordCount
+	);
+	const testTotalWordCount = useSelector(
+		(state: RootState) => state.wordCountSetting
+	);
+
+	const isWordTest =
+		useSelector((state: RootState) => state.testType) === "word";
 
 	const [finalDiv, setFinalDiv] = useState(() =>
 		CreateFinalDiv(punc, num, caps)
@@ -775,6 +755,7 @@ function TypingArea({
 					setWordCount((curWordCount) => {
 						return curWordCount + 1;
 					});
+					dispatch(incrementWordCount());
 				}
 
 				if (isWrongRef.current) {
@@ -929,7 +910,9 @@ function TypingArea({
 				ref={wordCountRef}
 				className={`absolute text-2xl -top-10 -left-5 translate-x-14 invisible ${wordCountColour}`}
 			>
-				{wordCount} / {totalWords}
+				{!isWordTest || !isWordTest
+					? `${wordCount} / ${totalWords}`
+					: `${testWordCount} / ${testTotalWordCount}`}
 			</div>
 
 			<div className="absolute flex flex-row items-start gap-5 w-fit text-base text-dolphin-bright top-0 left-0 invisible">

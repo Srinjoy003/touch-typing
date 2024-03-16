@@ -3,7 +3,7 @@ import TypingArea from "@/app/components/TypingArea";
 import Keyboard from "@/app/components/Keyboard";
 import Navbar from "@/app/components/Navbar";
 import Logo from "@/app/components/Logo";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TestBar from "./testBar";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../reduxStore/store";
@@ -18,12 +18,15 @@ import { GiNextButton } from "react-icons/gi";
 import Cookies from "js-cookie";
 import { setLogin } from "../reduxStore/loginSlice";
 import Profile from "../components/Profile";
+import { setSpeed, setAccuracy } from "../reduxStore/speedAccuracySlice";
+import { resetsetWordCountSetting } from "../reduxStore/wordCountSlice";
 
 function TypingTest() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [hydrated, setHydrated] = useState(false);
 	const [isTimerVisible, setIsTimerVisible] = useState(false);
 	const [navigating, setNavigating] = useState(false);
+	const [testStarted, setTestStarted] = useState(false);
 
 	const theme = useSelector((state: RootState) => state.theme);
 	const totalChar = useSelector(
@@ -39,15 +42,98 @@ function TypingTest() {
 
 	const mistakes = totalChar - correctChar;
 	const result = useSelector((state: RootState) => state.result);
+	const time = useSelector((state: RootState) => state.speedAccuracy.time);
+	const wordCount = useSelector(
+		(state: RootState) => state.speedAccuracy.wordCount
+	);
+	const totalWordCount = useSelector(
+		(state: RootState) => state.wordCountSetting
+	);
+
+	const wordTestTime = useSelector(
+		(state: RootState) => state.speedAccuracy.time
+	);
+	const testType = useSelector((state: RootState) => state.testType);
+	const testStats = useSelector((state: RootState) => state.speedAccuracy);
+	const login = useSelector((state: RootState) => state.login);
+
+	useEffect(() => {
+		console.log(time);
+	}, [time]);
 
 	const dispatch = useDispatch();
 
-	const handleResultScreen = () => {
+	const handleResultScreen = useCallback(() => {
 		dispatch(toggleResult());
 		dispatch(alterRefresh());
 		dispatch(resetTimeAccuracy());
 		setIsTimerVisible(false);
-	};
+		resetsetWordCountSetting();
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (wordCount === totalWordCount && testType === "word") {
+			dispatch(setSpeed((totalChar / 5 / (wordTestTime / 60)).toFixed(2)));
+
+			if (totalChar === 0) dispatch(setAccuracy((0).toFixed(2)));
+			else dispatch(setAccuracy(((correctChar / totalChar) * 100).toFixed(2)));
+
+			dispatch(toggleResult());
+			setIsTimerVisible(false);
+			setTestStarted(false);
+		}
+	}, [
+		wordCount,
+		totalWordCount,
+		handleResultScreen,
+		setTestStarted,
+		totalChar,
+		wordTestTime,
+		dispatch,
+		correctChar,
+		testType,
+	]);
+
+	const uploadStats = useCallback(async () => {
+		try {
+			const stats = {
+				username: login,
+				mode: testType,
+				speed: testStats.speed,
+				accuracy: testStats.accuracy,
+				rawSpeed: (testStats.speed * testStats.accuracy) / 100,
+				wordCount: testStats.wordCount,
+				chars: `${testStats.totalChar}/${testStats.correctChar}/${
+					testStats.totalChar - testStats.correctChar
+				}`,
+			};
+
+			console.log("STATS", stats);
+			// const response = await fetch("../api/stats", {
+			// 	method: "POST",
+			// 	body: JSON.stringify("hello"),
+			// 	headers: {
+			// 		"Content-Type": "application/json",
+			// 	},
+			// });
+		} catch (error) {
+			console.error("Error sending stats:", error);
+		}
+	}, [
+		login,
+		testStats.speed,
+		testType,
+		testStats.accuracy,
+		testStats.correctChar,
+		testStats.wordCount,
+		testStats.totalChar,
+	]);
+
+	useEffect(() => {
+		if (result && login) {
+			uploadStats();
+		}
+	}, [result, uploadStats, login]);
 
 	useEffect(() => {
 		const username = Cookies.get("username");
@@ -118,7 +204,7 @@ function TypingTest() {
 					className="absolute top-12 left-12"
 					textColour={`${theme}-main`}
 					secondaryColour={`${theme}-main`}
-				/> 	
+				/>
 				<Profile className="absolute right-10 top-10" />
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
@@ -127,6 +213,8 @@ function TypingTest() {
 							themeSelectorOpen={isOpen}
 							isTimerVisible={isTimerVisible}
 							setIsTimerVisible={setIsTimerVisible}
+							testStarted={testStarted}
+							setTestStarted={setTestStarted}
 						/>
 					</div>
 					<div className="flex flex-col gap-24">
@@ -142,6 +230,7 @@ function TypingTest() {
 								svgColour={`fill-${theme}-dull`}
 								svgSelectColour={`fill-${theme}-main`}
 								svgHoverColour={`group-hover:fill-${theme}-bright`}
+								isTest={true}
 							/>
 							<TestBar
 								themeSelectorOpen={isOpen}
@@ -155,6 +244,7 @@ function TypingTest() {
 						</div>
 						<div className={`translate-x-6 mb-10 translate-y-10`}>
 							<TypingArea
+								isTest={true}
 								hydrated={hydrated}
 								setHydrated={setHydrated}
 								themeOpen={isOpen}

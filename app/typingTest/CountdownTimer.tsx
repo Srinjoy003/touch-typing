@@ -6,21 +6,32 @@ import { useState, useCallback, useEffect } from "react";
 import { setSpeed, setAccuracy } from "../reduxStore/speedAccuracySlice";
 import { toggleResult } from "../reduxStore/resultSlice";
 import { colour } from "@/assets/colour";
+import { setTime } from "../reduxStore/speedAccuracySlice";
+import { setCountdown } from "../reduxStore/countdownSlice";
 
 type CountdownTimerProp = {
 	themeSelectorOpen: boolean;
 	isTimerVisible: boolean;
 	setIsTimerVisible: (visible: boolean) => void;
+	testStarted: boolean;
+	setTestStarted: (testStarted: boolean) => void;
 };
 
 function CountdownTimer({
 	themeSelectorOpen,
 	isTimerVisible,
 	setIsTimerVisible,
+	testStarted,
+	setTestStarted,
 }: CountdownTimerProp) {
 	const coundownTime = useSelector((state: RootState) => state.countdown);
 	const result = useSelector((state: RootState) => state.result);
 	const theme = useSelector((state: RootState) => state.theme);
+	const testType = useSelector((state: RootState) => state.testType);
+	const wordTestTime = useSelector(
+		(state: RootState) => state.speedAccuracy.time
+	);
+	const refresh = useSelector((state: RootState) => state.refresh);
 
 	const totalChar = useSelector(
 		(state: RootState) => state.speedAccuracy.totalChar
@@ -29,16 +40,23 @@ function CountdownTimer({
 		(state: RootState) => state.speedAccuracy.correctChar
 	);
 
+	const dispatch = useDispatch();
+
 	const handleVisibility = useCallback(
 		(event: KeyboardEvent) => {
 			const pattern = /^[a-zA-Z0-9\s`~!@#$%^&*()_+={[}\]:;"'<,>.?/\\|,-]$/;
 
 			if (pattern.test(event.key)) {
-				setIsTimerVisible(true);
+				if (testType === "time") setIsTimerVisible(true);
+				setTestStarted(true);
 			}
 		},
-		[setIsTimerVisible]
+		[setIsTimerVisible, testType, setTestStarted]
 	);
+
+	useEffect(() => {
+		setTestStarted(false);
+	}, [refresh, coundownTime, setTestStarted]);
 
 	useEffect(() => {
 		if (!themeSelectorOpen) {
@@ -52,9 +70,7 @@ function CountdownTimer({
 
 	useEffect(() => {
 		setIsTimerVisible(false);
-	}, [coundownTime, setIsTimerVisible]);
-
-	const dispatch = useDispatch();
+	}, [coundownTime, setIsTimerVisible, refresh, testType]);
 
 	const colour1 = colour[
 		`${theme}-bright` as keyof typeof colour
@@ -69,8 +85,6 @@ function CountdownTimer({
 		`${theme}-navbar` as keyof typeof colour
 	] as `#${string}`;
 
-	console.log(colour2);
-
 	return (
 		<div
 			className={`transition-opacity duration-200 ${
@@ -80,18 +94,26 @@ function CountdownTimer({
 			<CountdownCircleTimer
 				isPlaying
 				duration={coundownTime}
-				key={`${coundownTime} ${isTimerVisible}`}
+				key={`${coundownTime} ${testStarted} ${refresh}`}
 				colors={[colour1, colour3]}
 				colorsTime={[coundownTime, 10, 0]}
 				size={120}
 				strokeWidth={8}
 				trailColor={colour4}
 				isSmoothColorTransition={false}
+				onUpdate={(timeRemaining) => {
+					if (testStarted && !result) {
+						dispatch(setTime(coundownTime - timeRemaining));
+					}
+				}}
 				onComplete={(time: number) => {
-					if (isTimerVisible && !result) {
-						dispatch(setSpeed((totalChar / 5 / (time / 60)).toFixed(2)));
+					if (testStarted && !result) {
+						dispatch(
+							setSpeed((totalChar / 5 / (wordTestTime / 60)).toFixed(2))
+						);
 						dispatch(toggleResult());
 						setIsTimerVisible(false);
+						setTestStarted(false);
 
 						if (totalChar === 0) dispatch(setAccuracy((0).toFixed(2)));
 						else
