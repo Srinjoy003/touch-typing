@@ -24,11 +24,11 @@ function DetailedStats({ dataSet }: DetailedStatsProps) {
 								<div
 									key={v4()}
 									className={`${
-										col < 2 ? "w-40" : ""
+										col < 2 ? "w-40" : "w-96 -ml-14"
 									} flex flex-col items-center justify-start gap-4`}
 								>
 									<h3 className={`text-${theme}-dull text-sm`}>{data.label}</h3>
-									<p className={`text-${theme}-bright text-5xl`}>
+									<p className={`text-${theme}-bright text-5xl text-center`}>
 										{data.value}
 									</p>
 								</div>

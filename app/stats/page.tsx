@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../reduxStore/store";
 import Logo from "../components/Logo";
@@ -14,10 +14,36 @@ import Sorter from "./sorter";
 
 export default function App() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [hydrated, setHydrated] = useState(false);
-	const [isTimerVisible, setIsTimerVisible] = useState(false);
 	const [navigating, setNavigating] = useState(false);
+
 	const theme = useSelector((state: RootState) => state.theme);
+	const username = useSelector((state: RootState) => state.login);
+
+	useEffect(() => {
+		const fetchStats = async () => {
+			if (!username) return;
+			try {
+				const response = await fetch(
+					`../api/stats?username=${encodeURIComponent(username)}`,
+					{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+
+				if(response.ok){
+					const responseJson = await response.json()
+					console.log(responseJson)
+				}
+			} catch (error) {
+
+			}
+		};
+
+		fetchStats();
+	}, [username]);
 
 	const timeTestStats = [
 		{ value: 15, speed: 20, accuracy: 90 },
@@ -37,7 +63,7 @@ export default function App() {
 		[
 			{ label: "tests taken", value: "10" },
 			{ label: "words typed", value: "2000" },
-			{ label: "total test time", value: "00:10:59" },
+			{ label: "characters typed", value: "100" },
 		],
 		[
 			{ label: "highest wpm", value: "10" },
@@ -48,11 +74,6 @@ export default function App() {
 			{ label: "highest accuracy", value: "100%" },
 			{ label: "average accuracy", value: "93%" },
 			{ label: "average accuracy(last 10 tests)", value: "90%" },
-		],
-		[
-			{ label: "tests taken", value: "10" },
-			{ label: "words typed", value: "2000" },
-			{ label: "total test time", value: "00:10:59" },
 		],
 	];
 
@@ -127,10 +148,9 @@ export default function App() {
 				textColour={`${theme}-main`}
 				secondaryColour={`${theme}-main`}
 			/>
-			{/* <Profile /> */}
 
 			<main className="mt-40 flex flex-col gap-16 ml-20">
-				<Profile theme={theme} />
+				<Profile username={username} />
 				<div className="flex gap-4">
 					<StatBox dataSet={timeTestStats} unit="seconds" />
 					<StatBox dataSet={wordTestStats} unit="words" />
