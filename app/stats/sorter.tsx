@@ -6,20 +6,21 @@ import { MouseEvent } from "react";
 
 const mono = Martian_Mono({ weight: "400", subsets: ["latin"] });
 
-type sortOptions = "speed" | "raw speed" | "accuracy" | "date";
+export type sortOptions = "speed" | "raw speed" | "accuracy" | "date";
 
 type SorterProps = {
-	filter?: sortOptions;
-	setFilter?: (filter: sortOptions) => void;
+	sorter: sortOptions;
+	setSorter: (filter: sortOptions) => void;
+	setRowCount: (rowCount: number) => void
 };
-function Sorter({ filter, setFilter }: SorterProps) {
+function Sorter({ sorter, setSorter, setRowCount }: SorterProps) {
 	const theme = useSelector((state: RootState) => state.theme);
 	const buttonClassname = `w-48 hover:bg-${theme}-bright hover:text-${theme}-bg rounded-lg py-2 text-sm transition duration-300 `;
-	const [option, setOption] = useState<sortOptions>("date");
 
 	const handleSorterSelection = (event: MouseEvent<HTMLButtonElement>) => {
 		const innerHTML = event.currentTarget.innerHTML as sortOptions;
-		setOption(innerHTML);
+		setSorter(innerHTML);
+		setRowCount(10)
 	};
 
 	return (
@@ -34,7 +35,7 @@ function Sorter({ filter, setFilter }: SorterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "speed"
+							sorter === "speed"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -47,7 +48,7 @@ function Sorter({ filter, setFilter }: SorterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "raw speed"
+							sorter === "raw speed"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -60,7 +61,7 @@ function Sorter({ filter, setFilter }: SorterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "accuracy"
+							sorter === "accuracy"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -73,7 +74,7 @@ function Sorter({ filter, setFilter }: SorterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "date"
+							sorter === "date"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`

@@ -7,7 +7,7 @@ const mono = Martian_Mono({ weight: "400", subsets: ["latin"] });
 
 type StatBoxProps = {
 	unit: string;
-	dataSet: { value: number; speed: number; accuracy: number }[];
+	dataSet: { value: string; speed: string; accuracy: string }[];
 };
 function StatBox({ unit, dataSet }: StatBoxProps) {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -28,7 +28,7 @@ function StatBox({ unit, dataSet }: StatBoxProps) {
 							</h3>
 							<p className={`text-${theme}-bright text-4xl`}>{data.speed}</p>
 							<p className={`text-${theme}-bright text-xl text-opacity-50`}>
-								{data.accuracy}%
+								{data.accuracy}
 							</p>
 						</div>
 					);

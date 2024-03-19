@@ -15,14 +15,30 @@ type DataTableProps = {
 		mode: string;
 		date: string;
 	}[];
+
+	rowCount: number;
+	setRowCount: (callback: (currentRowCount: number) => number) => void;
 };
-function DataTable({ dataSet }: DataTableProps) {
+function DataTable({ dataSet, rowCount, setRowCount }: DataTableProps) {
 	const theme = useSelector((state: RootState) => state.theme);
 	const innerClass = `w-28`;
 
+	const handleLoadRows = () => {
+		setRowCount((currentRowCount: number) => currentRowCount + 10);
+	};
+
+	if (dataSet.length === 0) {
+		return (
+			<div
+				className={`w-2/3 flex flex-col items-center justify-center h-96 ${mono.className} text-${theme}-bright mb-28`}
+			>
+				<h3>No data found. Check your filters.</h3>
+			</div>
+		);
+	}
 	return (
 		<div
-			className={`w-fit flex flex-col items-center justify-start ${mono.className}`}
+			className={`w-fit flex flex-col items-center justify-start ${mono.className} mb-28`}
 		>
 			<div
 				className={`rounded-lg text-${theme}-dull flex items-center justify-start gap-20 px-10 text-xs mb-2`}
@@ -51,11 +67,14 @@ function DataTable({ dataSet }: DataTableProps) {
 					</div>
 				);
 			})}
-			<button
-				className={`bg-${theme}-navbar text-${theme}-bright hover:bg-${theme}-bright hover:text-${theme}-bg mt-8 w-full rounded-lg py-2 text-sm`}
-			>
-				load more
-			</button>
+			{rowCount == dataSet.length && (
+				<button
+					className={`bg-${theme}-navbar text-${theme}-bright hover:bg-${theme}-bright hover:text-${theme}-bg mt-8 w-full rounded-lg py-2 text-sm`}
+					onClick={handleLoadRows}
+				>
+					load more
+				</button>
+			)}
 		</div>
 	);
 }

@@ -1,27 +1,16 @@
-import { useState, CSSProperties } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
-
-const override: CSSProperties = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
+import { RootState } from "../reduxStore/store";
+import { useSelector } from "react-redux";
 
 function Loading() {
+	const theme = useSelector((state: RootState) => state.theme);
 
-  return (
-    <div className="">
-      
-      <ClipLoader
-        loading={true}
-        color="#ffffff"
-        cssOverride={override}
-        size={60}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
-  );
+	return (
+		<div className={`flex justify-center items-center h-full bg-${theme}-bg`}>
+			<div
+				className={`animate-spin rounded-full h-28 w-28 border-[10px] border-x-${theme}-main border-y-${theme}-bg`}
+			></div>
+		</div>
+	);
 }
 
 export default Loading;

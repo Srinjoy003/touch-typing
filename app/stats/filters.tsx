@@ -5,24 +5,23 @@ import { RootState } from "../reduxStore/store";
 import { MouseEvent } from "react";
 
 const mono = Martian_Mono({ weight: "400", subsets: ["latin"] });
-type filterOptions =
+export type filterOptions =
 	| "all time"
 	| "last 3 months"
 	| "last month"
 	| "last week"
 	| "last day";
 type FilterProps = {
-	filter?: filterOptions;
-	setFilter?: (filter: filterOptions) => void;
+	filter: filterOptions;
+	setFilter: (filter: filterOptions) => void;
 };
 function Filters({ filter, setFilter }: FilterProps) {
 	const theme = useSelector((state: RootState) => state.theme);
 	const buttonClassname = `w-48 hover:bg-${theme}-bright hover:text-${theme}-bg rounded-lg py-2 text-sm transition duration-300 `;
-	const [option, setOption] = useState<filterOptions>("all time");
 
 	const handleFilterSelection = (event: MouseEvent<HTMLButtonElement>) => {
 		const innerHTML = event.currentTarget.innerHTML as filterOptions;
-		setOption(innerHTML);
+		setFilter(innerHTML);
 	};
 
 	return (
@@ -37,7 +36,7 @@ function Filters({ filter, setFilter }: FilterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "last day"
+							filter === "last day"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -50,7 +49,7 @@ function Filters({ filter, setFilter }: FilterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "last week"
+							filter === "last week"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -63,7 +62,7 @@ function Filters({ filter, setFilter }: FilterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "last month"
+							filter === "last month"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -76,7 +75,7 @@ function Filters({ filter, setFilter }: FilterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "last 3 months"
+							filter === "last 3 months"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`
@@ -89,7 +88,7 @@ function Filters({ filter, setFilter }: FilterProps) {
 					className={
 						buttonClassname +
 						`${
-							option === "all time"
+							filter === "all time"
 								? `bg-${theme}-main text-${theme}-bg`
 								: `bg-${theme}-navbar text-${theme}-bright`
 						}`

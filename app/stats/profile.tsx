@@ -6,8 +6,15 @@ import { RootState } from "../reduxStore/store";
 
 const mono = Martian_Mono({ weight: "400", subsets: ["latin"] });
 
-type ProfileProps = { username: string | null };
-function Profile({ username }: ProfileProps) {
+type ProfileProps = {
+	username: string | null;
+	profileStats: {
+		testTaken: string;
+		avgSpeed: string;
+		avgAccuracy: string;
+	};
+};
+function Profile({ username, profileStats }: ProfileProps) {
 	const theme = useSelector((state: RootState) => state.theme);
 
 	const calculateFontSize = () => {
@@ -57,17 +64,25 @@ function Profile({ username }: ProfileProps) {
 
 			<div className="h-full flex gap-32 items-center justify-start ml-5">
 				<div className="text-center">
-					<h3 className={`text-${theme}-dull text-sm`}>tests taken</h3>
-					<p className={`text-${theme}-bright text-3xl`}>100</p>
+					<h3 className={`text-${theme}-dull text-sm mb-2`}>tests taken</h3>
+					<p className={`text-${theme}-bright text-3xl`}>
+						{profileStats.testTaken}
+					</p>
 				</div>
 
 				<div className="text-center">
-					<h3 className={`text-${theme}-dull text-sm`}>total test time</h3>
-					<p className={`text-${theme}-bright text-3xl`}>10:10:10</p>
+					<h3 className={`text-${theme}-dull text-sm mb-2`}>
+						average accuracy
+					</h3>
+					<p className={`text-${theme}-bright text-3xl`}>
+						{profileStats.avgAccuracy}
+					</p>
 				</div>
 				<div className="text-center">
-					<h3 className={`text-${theme}-dull text-sm`}>average speed</h3>
-					<p className={`text-${theme}-bright text-3xl`}>40</p>
+					<h3 className={`text-${theme}-dull text-sm mb-2`}>average speed</h3>
+					<p className={`text-${theme}-bright text-3xl`}>
+						{profileStats.avgSpeed}
+					</p>
 				</div>
 			</div>
 		</div>

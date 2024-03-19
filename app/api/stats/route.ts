@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { Stats, Users } from "../user";
+import DetailedStats from "@/app/stats/detailedStats";
+import { DataSet } from "@/app/stats/organizeData";
+import { calculateFilter, getSorter } from "./helper";
 
 const mongoURI = process.env.MONGODB_URI as string;
 mongoose.connect(mongoURI);
@@ -13,7 +16,11 @@ process.on("SIGINT", async () => {
 export async function GET(request: NextRequest) {
 	try {
 		const username = request.nextUrl.searchParams.get("username");
-		console.log("Username", username);
+		const filter = request.nextUrl.searchParams.get("filter");
+		const sorter = request.nextUrl.searchParams.get("sorter");
+		const rowCount = Number(request.nextUrl.searchParams.get("rowCount"));
+
+
 
 		const user = await Users.findOne({ username: username });
 
@@ -23,11 +30,36 @@ export async function GET(request: NextRequest) {
 			});
 		}
 
+		if (!filter || !sorter || !rowCount){
+			return new NextResponse("Invalid Filter and Sorter", {
+				status: 404,
+			});
+		}
+
+		const startDate = calculateFilter(filter)
+		const sortField = getSorter(sorter)
+
 		const timeValues = [15, 30, 60, 120];
 		const wordValues = [10, 25, 80, 20];
 
 		const timeStats: { [key: string]: any } = {};
 		const wordStats: { [key: string]: any } = {};
+
+		const profileStats = await Stats.aggregate([
+			{
+				$match: {
+					username: username,
+				},
+			},
+			{
+				$group: {
+					_id: null,
+					testTaken: { $sum: 1 }, 
+					avgSpeed: { $avg: "$rawSpeed" },
+					avgAccuracy: { $avg: "$accuracy" },
+				},
+			},
+		]);
 
 		for (const value of timeValues) {
 			const stats = await Stats.aggregate([
@@ -72,10 +104,11 @@ export async function GET(request: NextRequest) {
 			}
 		}
 
-		const overallStats = await Stats.aggregate([
+		const detailedStats = await Stats.aggregate([
 			{
 				$match: {
 					username: username,
+					createdAt: { $gte: startDate }
 				},
 			},
 			{
@@ -137,19 +170,18 @@ export async function GET(request: NextRequest) {
 					username: username,
 				},
 			},
-			{ $sort: { createdAt: -1 } }, // Sort by createdAt in descending order
-			{ $limit: 10 }, // Limit to last 10 documents
+			{ $sort: {  [sortField]: -1 } }, // Sort by createdAt in descending order
+			{ $limit: rowCount }, // Limit to last 10 documents
 		]);
 
-		// console.log(timeStats);
-		// console.log(wordStats);
-		// console.log(last10Entries);
+		
 
-		const responseData = {
+		const responseData: DataSet = {
 			timeStats: timeStats,
 			wordStats: wordStats,
-			overallStats: overallStats[0],
+			detailedStats: detailedStats[0],
 			lastEntries: lastEntries,
+			profileStats: profileStats[0]
 		};
 
 		return new NextResponse(JSON.stringify(responseData), { status: 200 });
@@ -174,7 +206,6 @@ export async function POST(request: NextRequest) {
 			});
 		}
 
-		console.log(requestBody);
 		const newStat = new Stats(requestBody);
 		await newStat.save();
 
