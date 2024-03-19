@@ -11,7 +11,12 @@ import DetailedStats from "./detailedStats";
 import Filters from "./filters";
 import DataTable from "./dataTable";
 import Sorter from "./sorter";
-import { organizeData, DataSet, TableStats, ProfileStats } from "./organizeData";
+import {
+	organizeData,
+	DataSet,
+	TableStats,
+	ProfileStats,
+} from "./organizeData";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../reduxStore/loginSlice";
@@ -37,10 +42,11 @@ export default function App() {
 		{ value: "100", speed: "-", accuracy: "-" },
 	]);
 
-	
-	const [profileStats, setProfileStats] = useState(
-		{ testTaken: "-", avgSpeed: "-", avgAccuracy: "-" },
-		);
+	const [profileStats, setProfileStats] = useState({
+		testTaken: "-",
+		avgSpeed: "-",
+		avgAccuracy: "-",
+	});
 
 	const [detailedStats, setDetailedStats] = useState([
 		[
@@ -89,9 +95,7 @@ export default function App() {
 						username
 					)}&filter=${encodeURIComponent(filter)}&sorter=${encodeURIComponent(
 						sorter
-					)}&rowCount=${encodeURIComponent(
-						rowCount
-					)}`,
+					)}&rowCount=${encodeURIComponent(rowCount)}`,
 					{
 						method: "GET",
 						headers: {
@@ -109,14 +113,14 @@ export default function App() {
 						wordTestStats,
 						detailedTestStats,
 						tableStats,
-						profileTestStats
+						profileTestStats,
 					} = organizeData(responseJson);
 
 					setTimeTestStats(timeTestStats);
 					setWordTestStats(wordTestStats);
 					setDetailedStats(detailedTestStats);
 					setTableStats(tableStats);
-					setProfileStats(profileTestStats)
+					setProfileStats(profileTestStats);
 				}
 			} catch (error) {
 				console.error(error);
@@ -131,100 +135,6 @@ export default function App() {
 		fetchStats();
 	}, [username, filter, sorter, rowCount]);
 
-	// const timeTestStats = [
-	// 	{ value: 15, speed: 20, accuracy: 90 },
-	// 	{ value: 30, speed: 30, accuracy: 100 },
-	// 	{ value: 60, speed: 80, accuracy: 90 },
-	// 	{ value: 120, speed: 20, accuracy: 90 },
-	// ];
-
-	// const wordTestStats = [
-	// 	{ value: 10, speed: 20, accuracy: 90 },
-	// 	{ value: 25, speed: 30, accuracy: 100 },
-	// 	{ value: 50, speed: 80, accuracy: 90 },
-	// 	{ value: 100, speed: 20, accuracy: 90 },
-	// ];
-
-	// const detailedStats = [
-	// 	[
-	// 		{ label: "tests taken", value: "10" },
-	// 		{ label: "words typed", value: "2000" },
-	// 		{ label: "characters typed", value: "100" },
-	// 	],
-	// 	[
-	// 		{ label: "highest wpm", value: "10" },
-	// 		{ label: "average wpm", value: "80" },
-	// 		{ label: "average wpm(last 10 tests)", value: "100" },
-	// 	],
-	// 	[
-	// 		{ label: "highest accuracy", value: "100%" },
-	// 		{ label: "average accuracy", value: "93%" },
-	// 		{ label: "average accuracy(last 10 tests)", value: "90%" },
-	// 	],
-	// ];
-
-	// const tableStats = [
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// 	{
-	// 		wpm: "20",
-	// 		raw: "40",
-	// 		accuracy: "90%",
-	// 		chars: "40/20/20",
-	// 		mode: "words 50",
-	// 		date: "10:10:10",
-	// 	},
-	// ];
-
-	const paragraphs = Array.from({ length: 100 }, (_, index) => (
-		<p key={index}>Paragraph {index + 1}</p>
-	));
 	if (loading) return <Loading />;
 	else
 		return (
@@ -238,14 +148,18 @@ export default function App() {
 				/>
 
 				<main className="mt-40 flex flex-col gap-16 ml-20">
-					<Profile username={username} profileStats={profileStats}/>
+					<Profile username={username} profileStats={profileStats} />
 					<div className="flex gap-4">
 						<StatBox dataSet={timeTestStats} unit="seconds" />
 						<StatBox dataSet={wordTestStats} unit="words" />
 					</div>
 					<Filters filter={filter} setFilter={setFilter} />
 					<DetailedStats dataSet={detailedStats} />
-					<Sorter sorter={sorter} setSorter={setSorter} setRowCount={setRowCount}/>
+					<Sorter
+						sorter={sorter}
+						setSorter={setSorter}
+						setRowCount={setRowCount}
+					/>
 					<DataTable
 						dataSet={tableStats}
 						rowCount={rowCount}
@@ -262,7 +176,7 @@ export default function App() {
 					borderTheme={`border-${theme}-dull border-opacity-50`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 					hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright`}
-					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
+					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-${theme}-bright aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 				/>
 
 				{/* {paragraphs} */}

@@ -7,6 +7,8 @@ import { Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent } from "@/app/components/ui/dialog";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/reduxStore/store";
 
 const Command = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive>,
@@ -40,19 +42,28 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 const CommandInput = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive.Input>,
 	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-	<div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-		<Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-		<CommandPrimitive.Input
-			ref={ref}
-			className={cn(
-				"flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-slate-400",
-				className
-			)}
-			{...props}
-		/>
-	</div>
-));
+>(({ className, ...props }, ref) => {
+	const theme = useSelector((state: RootState) => state.theme);
+
+	return (
+		<div
+			className={`flex items-center border-b px-3 border-${theme}-dull`}
+			cmdk-input-wrapper=""
+		>
+			<Search
+				className={`mr-2 h-4 w-4 shrink-0 opacity-50 text-${theme}-dull`}
+			/>
+			<CommandPrimitive.Input
+				ref={ref}
+				className={cn(
+					`flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-${theme}-dull placeholder:text-opacity-50 disabled:cursor-not-allowed disabled:opacity-50`,
+					className
+				)}
+				{...props}
+			/>
+		</div>
+	);
+});
 
 CommandInput.displayName = CommandPrimitive.Input.displayName;
 

@@ -135,7 +135,7 @@ export function ThemeSelector({
 	const [hoverTimeout, setHoverTimeout] = useState<null | NodeJS.Timeout>(null);
 	const selectedTheme = useRef("arcadia");
 
-	const modifiedClass = `w-full justify-between h-28 focus:outline-none ${addClass}`;
+	const modifiedClass = `w-full justify-between h-28 focus-visible:outline-none ${addClass}`;
 	const bgTheme = themeSelectorTheme.split(" ")[0];
 
 	const dispatch = useDispatch();
@@ -188,9 +188,7 @@ export function ThemeSelector({
 							</g>
 						</g>
 					</svg>
-					{
-						/*value ? frameworks.find((framework) => framework.value === value)?.label : */ "Theme"
-					}
+					{"Theme"}
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>

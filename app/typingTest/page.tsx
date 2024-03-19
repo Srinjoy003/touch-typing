@@ -21,6 +21,7 @@ import Profile from "../components/Profile";
 import { setSpeed, setAccuracy } from "../reduxStore/speedAccuracySlice";
 import { resetsetWordCountSetting } from "../reduxStore/wordCountSlice";
 import { debounce } from "lodash";
+import Loading from "../components/Loading";
 
 type StatType = {
 	username: string;
@@ -170,12 +171,10 @@ function TypingTest() {
 		<>
 			<div
 				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
-					hydrated && !navigating ? "hidden" : ""
+					hydrated ? "hidden" : ""
 				}`}
 			>
-				<div
-					className={`absolute left-1/2 top-1/2 block w-[64px] h-[64px] rounded-full border-[6px] border-solid border-x-${theme}-wrong border-y-transparent animate-spin`}
-				></div>
+				<Loading />
 			</div>
 
 			<div
@@ -221,7 +220,7 @@ function TypingTest() {
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated && !result && !navigating ? "" : "hidden"
+					hydrated && !result  ? "" : "hidden"
 				}`}
 			>
 				<Logo
@@ -305,7 +304,7 @@ function TypingTest() {
 					borderTheme={`border-${theme}-dull`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 					hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
-					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
+					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-${theme}-bright aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 				/>
 			</div>
 		</>

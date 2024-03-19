@@ -13,6 +13,7 @@ import Profile from "./components/Profile";
 import { setLogin } from "@/app/reduxStore/loginSlice";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
+import Loading from "./components/Loading";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -20,32 +21,34 @@ function Home() {
 	const [hydrated, setHydrated] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [navigating, setNavigating] = useState(false);
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const username = Cookies.get("username");
 		if (username) {
 			dispatch(setLogin(username));
 		}
-	}, [dispatch])
+	}, [dispatch]);
 
 	return (
 		<>
 			<div
 				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
-					hydrated && !navigating ? "hidden" : ""
+					hydrated ? "hidden" : ""
 				}`}
 			>
-				<div
-					className={`absolute left-1/2 top-1/2 block w-[64px] h-[64px] rounded-full border-[6px] border-solid border-x-${theme}-wrong border-y-transparent animate-spin`}
-				></div>
+				<Loading />
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated && !navigating ? "" : "hidden"
+					hydrated ? "" : "hidden"
 				}`}
 			>
-				<Logo className="absolute top-12 left-12" textColour={`${theme}-main`} secondaryColour={`${theme}-main`} />
+				<Logo
+					className="absolute top-12 left-12"
+					textColour={`${theme}-main`}
+					secondaryColour={`${theme}-main`}
+				/>
 				<Profile className="absolute right-10 top-10" />
 
 				<div className="flex flex-col items-start h-fit justify-start gap-28 translate-y-10 translate-x-20">
@@ -102,7 +105,7 @@ function Home() {
 					borderTheme={`border-${theme}-dull`}
 					svgFill={`fill-${theme}-dull group-hover:fill-${theme}-bright`}
 					hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright `}
-					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-slate-300 aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
+					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-${theme}-bright aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 				/>
 			</div>
 		</>

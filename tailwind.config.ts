@@ -12,7 +12,13 @@ const config: Config = {
 		{
 			pattern:
 				/^(bg|text|border|border-x|border-y|fill|decoration|from|to|scrollbar-thumb|scrollbar-track)-(dolphin|arch|retro|cheese|husqy|magic|tron|crimson|retrocast|soaring|fruit|sonokai|nebula|honey|earthsong)(-[A-Za-z0-9_-]+)?$/,
-			variants: ["hover", "group-hover", "aria-selected", "focus"],
+			variants: [
+				"hover",
+				"group-hover",
+				"aria-selected",
+				"focus",
+				"placeholder",
+			],
 		},
 	],
 
@@ -47,8 +53,6 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [
-		require('tailwind-scrollbar'),
-	],
+	plugins: [require("tailwind-scrollbar")],
 };
 export default config;

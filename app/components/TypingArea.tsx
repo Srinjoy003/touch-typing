@@ -667,6 +667,7 @@ function TypingArea({
 	]);
 
 	useEffect(() => {
+		if (!hydrated) return;
 		setFinalDiv(() => CreateFinalDiv(punc, num, caps));
 		charCountRef.current = 0;
 		correctCharCountRef.current = 0;
@@ -683,13 +684,24 @@ function TypingArea({
 			const wordCountDiv = wordCountRef.current as HTMLDivElement;
 			wordCountDiv.classList.add("invisible");
 		}
-	}, [refresher, punc, num, caps, CreateFinalDiv, initialCursorX, dispatch]);
+	}, [
+		refresher,
+		punc,
+		num,
+		caps,
+		CreateFinalDiv,
+		initialCursorX,
+		dispatch,
+		hydrated,
+	]);
 
 	useEffect(() => {
 		moveCursor();
 	}, [translateX, translateY, moveCursor]);
 
 	useEffect(() => {
+		if (!hydrated) return;
+
 		const textDiv: HTMLDivElement | null = textDivRef.current;
 
 		if (textDiv) {
