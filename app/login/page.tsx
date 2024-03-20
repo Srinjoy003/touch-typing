@@ -10,6 +10,9 @@ import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../reduxStore/loginSlice";
+
 
 type LogInSchema = {
 	username: string;
@@ -22,7 +25,10 @@ type ForgotPasswordSchema = {
 
 function Login() {
 	const theme = useSelector((state: RootState) => state.theme);
+	const username = useSelector((state: RootState) => state.login);
+
 	const router = useRouter();
+	const dispatch = useDispatch();
 	const [forgotPassword, setForgotPassword] = useState<boolean>(false);
 	const [emailSent, setEmailSent] = useState<boolean>(false);
 	const [logging, setLogging] = useState<boolean>(false);
@@ -41,6 +47,44 @@ function Login() {
 		reset: passwordReset,
 		formState: { errors: passwordErrors, isSubmitting: isSubmittingPassword },
 	} = useForm<ForgotPasswordSchema>();
+
+	useEffect(() => {
+		console.log("hello")
+		if(username){
+			router.push("/")
+		}
+	}, [username, router])
+
+	useEffect(() => {
+		if(username) return
+		const login = async () => {
+			const encryptedUsername = Cookies.get("username");
+			const encryptiondData = { encryptedUsername };
+
+			if (encryptedUsername) {
+				try {
+					const response = await fetch("../api/decryption", {
+						method: "POST",
+						body: JSON.stringify(encryptiondData),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					});
+
+					if (response.ok) {
+						const responseData = await response.json();
+						const username = responseData.username;
+						dispatch(setLogin(username));
+					} else {
+						const errorMessage = await response.text();
+						console.log(errorMessage);
+					}
+				} catch (error) {}
+			}
+		};
+
+		login();
+	}, [dispatch, username]);
 
 	const handleForgotPassword = async (data: ForgotPasswordSchema) => {
 		const response = await fetch("../api/forgotPasswordEmail", {
@@ -72,11 +116,26 @@ function Login() {
 			});
 
 			if (response.ok) {
-				const responseData = await response.json(); // Parse response body as JSON
+				const responseData = await response.json();
 				const username = responseData.username;
-				Cookies.set("username", username, { expires: 30 });
-				router.push('/');
+				const encryptiondData = {username}
+				const encryptionResponse = await fetch("../api/encryption", {
+					method: "POST",
+					body: JSON.stringify(encryptiondData),
+					headers: {
+						"Content-Type": "application/json",
+					},
+				});
 
+				if (encryptionResponse.ok) {
+					const encryptionResponseData = await encryptionResponse.json();
+					const encryptedUsername = encryptionResponseData.encryptedUsername;
+					Cookies.set("username", encryptedUsername, { expires: 30 });
+					router.push("/");
+				} else {
+					const errorMessage = await encryptionResponse.text();
+					toast.error(errorMessage);
+				}
 			} else {
 				const errorMessage = await response.text();
 				toast.error(errorMessage);

@@ -77,11 +77,35 @@ export default function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const username = Cookies.get("username");
-		if (username) {
-			dispatch(setLogin(username));
-		}
-	}, [dispatch]);
+		if (username) return;
+		const login = async () => {
+			const encryptedUsername = Cookies.get("username");
+			const encryptiondData = { encryptedUsername };
+
+			if (encryptedUsername) {
+				try {
+					const response = await fetch("../api/decryption", {
+						method: "POST",
+						body: JSON.stringify(encryptiondData),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					});
+
+					if (response.ok) {
+						const responseData = await response.json();
+						const username = responseData.username;
+						dispatch(setLogin(username));
+					} else {
+						const errorMessage = await response.text();
+						console.log(errorMessage);
+					}
+				} catch (error) {}
+			}
+		};
+
+		login();
+	}, [dispatch, username]);
 
 	useEffect(() => {
 		const fetchStats = async () => {

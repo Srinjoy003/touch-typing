@@ -19,16 +19,43 @@ function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
 
 	const [hydrated, setHydrated] = useState(false);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [navigating, setNavigating] = useState(false);
 	const dispatch = useDispatch();
+	const username = useSelector((state: RootState) => state.login);
+
 
 	useEffect(() => {
-		const username = Cookies.get("username");
-		if (username) {
-			dispatch(setLogin(username));
-		}
-	}, [dispatch]);
+		if(username) return
+		const login = async () => {
+			const encryptedUsername = Cookies.get("username");
+			const encryptiondData = { encryptedUsername };
+
+			if (encryptedUsername) {
+				try {
+					const response = await fetch("../api/decryption", {
+						method: "POST",
+						body: JSON.stringify(encryptiondData),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					});
+
+					if (response.ok) {
+						const responseData = await response.json();
+						const username = responseData.username;
+						dispatch(setLogin(username));
+					} else {
+						const errorMessage = await response.text();
+						console.log(errorMessage);
+					}
+				} catch (error) {}
+			}
+		};
+
+		login();
+	}, [dispatch, username]);
 
 	return (
 		<>

@@ -67,7 +67,7 @@ function TypingTest() {
 	const timeTaken = useSelector((state: RootState) => state.speedAccuracy.time);
 	const testType = useSelector((state: RootState) => state.testType);
 	const testStats = useSelector((state: RootState) => state.speedAccuracy);
-	const login = useSelector((state: RootState) => state.login);
+	const username = useSelector((state: RootState) => state.login);
 
 	const dispatch = useDispatch();
 
@@ -78,6 +78,37 @@ function TypingTest() {
 		setIsTimerVisible(false);
 		resetsetWordCountSetting();
 	}, [dispatch]);
+
+	useEffect(() => {
+		if (username) return;
+		const login = async () => {
+			const encryptedUsername = Cookies.get("username");
+			const encryptiondData = { encryptedUsername };
+
+			if (encryptedUsername) {
+				try {
+					const response = await fetch("../api/decryption", {
+						method: "POST",
+						body: JSON.stringify(encryptiondData),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					});
+
+					if (response.ok) {
+						const responseData = await response.json();
+						const username = responseData.username;
+						dispatch(setLogin(username));
+					} else {
+						const errorMessage = await response.text();
+						console.log(errorMessage);
+					}
+				} catch (error) {}
+			}
+		};
+
+		login();
+	}, [dispatch, username]);
 
 	useEffect(() => {
 		if (wordCount === totalWordCount && testType === "word") {
@@ -106,13 +137,13 @@ function TypingTest() {
 	]);
 
 	const uploadStats = useCallback(async () => {
-		if (!login) return;
+		if (!username) return;
 		try {
 			const mode = `${testType} ${
 				testType === "time" ? timeTaken : totalWordCount
 			}`;
 			const stats: StatType = {
-				username: login,
+				username: username,
 				mode: mode,
 				rawSpeed: testStats.speed,
 				accuracy: testStats.accuracy,
@@ -142,7 +173,7 @@ function TypingTest() {
 			console.error("Error sending stats:", error);
 		}
 	}, [
-		login,
+		username,
 		testStats.speed,
 		testType,
 		testStats.accuracy,
@@ -159,13 +190,6 @@ function TypingTest() {
 			uploadStats();
 		}
 	}, [result]); //eslint-disable-line
-
-	useEffect(() => {
-		const username = Cookies.get("username");
-		if (username) {
-			dispatch(setLogin(username));
-		}
-	}, [dispatch]);
 
 	return (
 		<>
@@ -220,7 +244,7 @@ function TypingTest() {
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated && !result  ? "" : "hidden"
+					hydrated && !result ? "" : "hidden"
 				}`}
 			>
 				<Logo

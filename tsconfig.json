@@ -29,7 +29,8 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		"backend/database/db.mjs",
-		"app/api/user.ts"
+		"app/api/user.ts",
+		"app/login/encryption.ts"
 	],
 	"exclude": ["node_modules"]
 }
