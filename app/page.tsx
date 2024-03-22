@@ -14,6 +14,7 @@ import { setLogin } from "@/app/reduxStore/loginSlice";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import Loading from "./components/Loading";
+import { usePathname } from "next/navigation";
 
 function Home() {
 	const theme = useSelector((state: RootState) => state.theme);
@@ -25,9 +26,8 @@ function Home() {
 	const dispatch = useDispatch();
 	const username = useSelector((state: RootState) => state.login);
 
-
 	useEffect(() => {
-		if(username) return
+		if (username) return;
 		const login = async () => {
 			const encryptedUsername = Cookies.get("username");
 			const encryptiondData = { encryptedUsername };
@@ -61,14 +61,14 @@ function Home() {
 		<>
 			<div
 				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
-					hydrated ? "hidden" : ""
+					hydrated && !navigating ? "hidden" : ""
 				}`}
 			>
 				<Loading />
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated ? "" : "hidden"
+					hydrated && !navigating ? "" : "hidden"
 				}`}
 			>
 				<Logo

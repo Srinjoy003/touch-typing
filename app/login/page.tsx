@@ -49,7 +49,6 @@ function Login() {
 	} = useForm<ForgotPasswordSchema>();
 
 	useEffect(() => {
-		console.log("hello")
 		if(username){
 			router.push("/")
 		}
@@ -99,7 +98,6 @@ function Login() {
 			setEmailSent(true);
 		} else {
 			const errorMessage = await response.text();
-			console.log(errorMessage);
 			toast.error(errorMessage);
 		}
 	};

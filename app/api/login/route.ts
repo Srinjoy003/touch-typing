@@ -18,7 +18,6 @@ function generateSessionId() {
 
 export async function POST(request: NextRequest) {
 	try {
-		// Parse the JSON request body
 		const requestBody = await request.json();
 
 		const user = await Users.findOne({ username: requestBody.username });

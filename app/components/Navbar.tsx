@@ -4,8 +4,9 @@ import React from "react";
 import { useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ThemeSelector } from "./ui/themeSelector";
-import { useDispatch } from "react-redux";
-import { setLoading } from "@/app/reduxStore/loadingSlice";
+import { usePathname } from "next/navigation";
+import { RootState } from "../reduxStore/store";
+import { useSelector } from "react-redux";
 
 type NavbarProp = {
 	themeOpen: boolean;
@@ -16,7 +17,7 @@ type NavbarProp = {
 	svgFill: string;
 	hoverColour: string;
 	themeSelectorColour: string;
-	modifyClass?: string
+	modifyClass?: string;
 };
 
 function Navbar({
@@ -28,9 +29,10 @@ function Navbar({
 	svgFill,
 	hoverColour,
 	themeSelectorColour,
-	modifyClass
+	modifyClass,
 }: NavbarProp) {
 	const navbarRef = useRef(null);
+	const username = useSelector((state: RootState) => state.login);
 
 	const handleVisibility = useCallback((event: MouseEvent | KeyboardEvent) => {
 		if (navbarRef.current) {
@@ -67,19 +69,24 @@ function Navbar({
 
 	const firstClass = " rounded-t-lg";
 	const lastClass = " rounded-none rounded-b-lg";
+	const pathname = usePathname();
+
+	const handleClick = (event: any) => {
+		const targetHref = event.currentTarget.getAttribute("href");
+		
+		if (targetHref !== pathname) {
+			setNavigating(true);
+		}
+	};
 
 	return (
 		<div
 			ref={navbarRef}
-			className={`flex flex-col items-center justify-center text-base h-80 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme} ${modifyClass ?? ""}`}
+			className={`flex flex-col items-center justify-center text-base h-80 w-44 first:rounded-2xl overflow-hidden opacity-100 transition-opacity duration-200 ${textColour} ${borderTheme} ${
+				modifyClass ?? ""
+			}`}
 		>
-			<Link
-				className={innerClass + firstClass}
-				href="/"
-				onClick={() => {
-					setNavigating(true);
-				}}
-			>
+			<Link className={innerClass + firstClass} href="/" onClick={handleClick}>
 				<svg
 					className={svgFill}
 					width="30px"
@@ -99,8 +106,8 @@ function Navbar({
 
 			<Link
 				className={innerClass}
-				href="/stats"
-				onClick={() => setNavigating(true)}
+				href={`${username ? "/stats" : "/login"}`}
+				onClick={handleClick}
 			>
 				<svg
 					className={svgFill}
@@ -117,11 +124,7 @@ function Navbar({
 				<p>Stats</p>
 			</Link>
 
-			<Link
-				className={innerClass}
-				href="/typingTest"
-				onClick={() => setNavigating(true)}
-			>
+			<Link className={innerClass} href="/typingTest" onClick={handleClick}>
 				<svg
 					className={svgFill}
 					width="30px"

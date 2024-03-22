@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { UnverifiedUsers, Users } from "../user";
 
-
 const mongoURI = process.env.MONGODB_URI as string;
 mongoose.connect(mongoURI);
 
@@ -24,10 +23,8 @@ export async function POST(request: NextRequest) {
 			});
 		}
 
-		console.log(requestBody);
-
 		if (requestBody.verificationCode !== user.verificationCode) {
-			return new NextResponse("Incorrect Code.", {
+			return new NextResponse("Incorrect verification Code.", {
 				status: 404,
 			});
 		}
@@ -52,7 +49,6 @@ export async function POST(request: NextRequest) {
 	} catch (error) {
 		console.error("Error processing form submission:", error);
 
-		// Return an error response
 		return new NextResponse("Internal Server Error", {
 			status: 500,
 		});

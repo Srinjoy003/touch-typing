@@ -159,7 +159,7 @@ export default function App() {
 		fetchStats();
 	}, [username, filter, sorter, rowCount]);
 
-	if (loading) return <Loading />;
+	if (loading || navigating) return <Loading />;
 	else
 		return (
 			<main
@@ -203,7 +203,6 @@ export default function App() {
 					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-${theme}-bright aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 				/>
 
-				{/* {paragraphs} */}
 			</main>
 		);
 }

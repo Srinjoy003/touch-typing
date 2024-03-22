@@ -195,7 +195,7 @@ function TypingTest() {
 		<>
 			<div
 				className={`bg-${theme}-bg text-${theme}-wrong w-screen h-full ${
-					hydrated ? "hidden" : ""
+					hydrated && !navigating ? "hidden" : ""
 				}`}
 			>
 				<Loading />
@@ -244,7 +244,7 @@ function TypingTest() {
 			</div>
 			<div
 				className={`bg-${theme}-bg flex flex-row items-center justify-end w-full h-full gap-32 ${
-					hydrated && !result ? "" : "hidden"
+					hydrated && !result && !navigating ? "" : "hidden"
 				}`}
 			>
 				<Logo

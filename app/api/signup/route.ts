@@ -63,7 +63,6 @@ export async function POST(request: NextRequest) {
 
 		
 		await transporter.sendMail(mailOptions);
-		console.log("Email sent successfully");
 
 		const userDetails = {
 			userId: requestBody.userId,
@@ -76,7 +75,6 @@ export async function POST(request: NextRequest) {
 
 		await newUser.save();
 
-		console.log("Unverified Form data saved to MongoDB", newUser);
 
 		return new NextResponse(JSON.stringify(newUser), {
 			status: 200,
@@ -85,7 +83,6 @@ export async function POST(request: NextRequest) {
 			},
 		});
 	} catch (error) {
-		console.error("Error processing form submission:", error);
 
 		return new NextResponse("Internal Server Error", {
 			status: 500,

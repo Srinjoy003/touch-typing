@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from "uuid";
 import { OTPInput } from "input-otp";
 import { Slot, FakeCaret, FakeDash } from "./verification";
 import Link from "next/link";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type SignInSchema = {
 	username: string;
@@ -18,7 +20,6 @@ type SignInSchema = {
 
 function Signup() {
 	const theme = useSelector((state: RootState) => state.theme);
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const {
 		register,
 		handleSubmit,
@@ -30,12 +31,12 @@ function Signup() {
 	const [startVerification, setStartVerification] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [userId, setUserId] = useState<string | null>(null);
+	const [verified, setVerified] = useState<boolean>(false);
 
 	const onSubmit = async (data: SignInSchema) => {
 		if (data.password !== data.confirmPassword) {
-			setErrorMessage(
-				"The password entered does not match the confirmed password."
-			);
+			toast.error("The password and the confirmed password do not match");
+
 			return;
 		}
 
@@ -56,12 +57,10 @@ function Signup() {
 			});
 
 			if (response.ok) {
-				setErrorMessage(null);
 				setStartVerification(true);
 			} else {
 				const errorMessage = await response.text();
-				setErrorMessage(errorMessage);
-				setErrorMessage("Incorrect Code");
+				toast.error(errorMessage);
 			}
 			console.log(response);
 		} catch (error) {
@@ -84,10 +83,13 @@ function Signup() {
 
 			if (response.ok) {
 				const result = await response.json();
+				setVerified(true);
+
 
 				console.log(result);
 			} else {
-				console.error("Error:", response.status, response.statusText);
+				const errorMessage = await response.text();
+				toast.error(errorMessage);
 			}
 		} catch (error) {
 			console.error("An error occurred:", error);
@@ -150,15 +152,16 @@ function Signup() {
 					placeholder="Confirm Password"
 				/>
 				{errors?.confirmPassword?.message}
-				{errorMessage && <p>{errorMessage}</p>}
 				<button
 					className={`${
 						isSubmitting ? `bg-${theme}-navbar` : `bg-${theme}-bg`
 					} px-7 py-3 text-${theme}-main rounded-full shadow-lg border-${theme}-main border-2 hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright mt-5`}
 					type="submit"
+					disabled={isSubmitting}
 				>
 					Submit
 				</button>
+
 				<p className="text-sm">
 					Already have an account?{" "}
 					<Link
@@ -169,9 +172,10 @@ function Signup() {
 					</Link>
 				</p>
 				{isLoading && <p>Processing Verification...</p>}
+				<ToastContainer position="top-center" hideProgressBar />
 			</form>
 		);
-	else
+	else if (!verified)
 		return (
 			<main
 				className={`w-full h-full min-w-fit bg-${theme}-bg flex flex-col item-center justify-center text-${theme}-dull items-center gap-8`}
@@ -211,7 +215,29 @@ function Signup() {
 				/>
 
 				{isLoading && <p>Processing Verification...</p>}
-				{errorMessage && <p>{errorMessage}</p>}
+				<ToastContainer position="top-center" hideProgressBar />
+			</main>
+		);
+	else
+		return (
+			<main
+				className={`w-full h-full min-w-fit bg-${theme}-bg flex flex-col item-center justify-center text-${theme}-dull items-center gap-8`}
+			>
+				<h1
+					className={`text-center text-${theme}-wrong text-6xl font-bold mb-10`}
+				>
+					Sign Up
+				</h1>
+				<p className={`text-lg text-${theme}-bright ml-10 mr-10`}>
+					Your account has been succesfully created.
+				</p>
+
+				<Link
+					href="/login"
+					className={`underline text-${theme}-main hover:text-opacity-70`}
+				>
+					Log In Here
+				</Link>
 			</main>
 		);
 }
