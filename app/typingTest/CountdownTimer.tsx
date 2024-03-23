@@ -5,7 +5,7 @@ import { RootState } from "../reduxStore/store";
 import { useState, useCallback, useEffect } from "react";
 import { setSpeed, setAccuracy } from "../reduxStore/speedAccuracySlice";
 import { toggleResult } from "../reduxStore/resultSlice";
-import { colour } from "@/assets/colour";
+import { colour } from "@/app/colour";
 import { setTime } from "../reduxStore/speedAccuracySlice";
 import { setCountdown } from "../reduxStore/countdownSlice";
 

@@ -157,7 +157,6 @@ function TypingTest() {
 				createdAt: new Date(),
 			};
 
-			console.log("STATS", stats);
 
 			const response = await fetch("../api/stats", {
 				method: "POST",
@@ -167,8 +166,7 @@ function TypingTest() {
 				},
 			});
 
-			const responseText = await response.text();
-			console.log(responseText);
+		
 		} catch (error) {
 			console.error("Error sending stats:", error);
 		}

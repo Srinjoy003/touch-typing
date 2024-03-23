@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
 
 		await newUser.save();
 
-		console.log("Form data saved to MongoDB", newUser);
 
 		return new NextResponse(JSON.stringify(newUser), {
 			status: 200,

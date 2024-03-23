@@ -131,7 +131,6 @@ export default function App() {
 				if (response.ok) {
 					const responseJson: DataSet = await response.json();
 
-					console.log(organizeData(responseJson));
 					const {
 						timeTestStats,
 						wordTestStats,
@@ -202,7 +201,6 @@ export default function App() {
 					hoverColour={`hover:bg-${theme}-navbar hover:border-${theme}-dull hover:text-${theme}-bright`}
 					themeSelectorColour={`bg-${theme}-bg text-${theme}-dull hover:bg-${theme}-bright aria-selected:bg-${theme}-bright aria-selected:text-${theme}-bg`}
 				/>
-
 			</main>
 		);
 }

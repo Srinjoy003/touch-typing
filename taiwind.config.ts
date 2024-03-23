@@ -25,7 +25,6 @@ module.exports = {
 					from: { height: "var(--radix-accordion-content-height)" },
 					to: { height: 0 },
 				},
-				
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -33,5 +32,5 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	// plugins: [require("tailwindcss-animate")],
 };

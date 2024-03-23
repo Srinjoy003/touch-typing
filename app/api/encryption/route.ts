@@ -6,7 +6,6 @@ const encryptionKey = process.env.ENCRYPTION_KEY as string;
 export async function POST(request: NextRequest) {
 	try {
 		const requestBody = await request.json();
-        console.log("hello")
 		const encryptedUsername = encrypt(requestBody.username, encryptionKey);
 
 

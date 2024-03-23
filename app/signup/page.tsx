@@ -62,7 +62,6 @@ function Signup() {
 				const errorMessage = await response.text();
 				toast.error(errorMessage);
 			}
-			console.log(response);
 		} catch (error) {
 			console.error("Error:", error);
 		} finally {
@@ -86,7 +85,6 @@ function Signup() {
 				setVerified(true);
 
 
-				console.log(result);
 			} else {
 				const errorMessage = await response.text();
 				toast.error(errorMessage);

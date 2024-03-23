@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { colour } from "./assets/colour";
+import { colour } from "./app/colour";
 
 const config: Config = {
 	content: [
@@ -25,7 +25,7 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				...colour,
+				...colour
 			},
 
 			keyframes: {
