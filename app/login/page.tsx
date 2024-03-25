@@ -103,6 +103,7 @@ function Login() {
 	};
 
 	const onSubmit = async (data: LogInSchema) => {
+		const tick = performance.now()
 		try {
 			setLogging(true);
 			const response = await fetch("../api/login", {
@@ -142,6 +143,9 @@ function Login() {
 			console.error("Error:", error);
 		} finally {
 			setLogging(false);
+			const tock = performance.now()
+			console.log("Time for response", tock-tick)
+
 		}
 	};
 
