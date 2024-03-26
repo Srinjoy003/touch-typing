@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
 const mongoURI = process.env.MONGODB_URI as string;
-// mongoose.connect(mongoURI);
+mongoose.connect(mongoURI);
 
 process.on("SIGINT", async () => {
 	await mongoose.connection.close();
@@ -18,11 +18,10 @@ function generateSessionId() {
 
 export async function POST(request: NextRequest) {
 	try {
-		mongoose.connect(mongoURI);
 
 		const requestBody = await request.json();
 
-		// const user = await Users.findOne({ username: requestBody.username });
+		const user = await Users.findOne({ username: requestBody.username });
 
 		return new NextResponse(
 			JSON.stringify({
