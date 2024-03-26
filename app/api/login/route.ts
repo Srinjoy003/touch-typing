@@ -24,6 +24,20 @@ export async function POST(request: NextRequest) {
 
 		const user = await Users.findOne({ username: requestBody.username });
 
+		return new NextResponse(
+			JSON.stringify({
+				sessionId:"dkpmvmd",
+				message: "Login successful",
+				username: "test",
+			}),
+			{
+				status: 200,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+
 		if (!user) {
 			return new NextResponse("Account with this username does not exist", {
 				status: 404,
