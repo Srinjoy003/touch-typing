@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
 		const requestBody = await request.json();
 
-		const user = await Users.findOne({ username: requestBody.username });
+		// const user = await Users.findOne({ username: requestBody.username });
 
 		return new NextResponse(
 			JSON.stringify({
@@ -38,22 +38,22 @@ export async function POST(request: NextRequest) {
 			}
 		);
 
-		if (!user) {
-			return new NextResponse("Account with this username does not exist", {
-				status: 404,
-			});
-		}
+		// if (!user) {
+		// 	return new NextResponse("Account with this username does not exist", {
+		// 		status: 404,
+		// 	});
+		// }
 
-		const passwordMatch = await bcrypt.compare(
-			requestBody.password,
-			user.password
-		);
+		// const passwordMatch = await bcrypt.compare(
+		// 	requestBody.password,
+		// 	user.password
+		// );
 
-		if (!passwordMatch) {
-			return new NextResponse("Username and password do not match", {
-				status: 401,
-			});
-		}
+		// if (!passwordMatch) {
+		// 	return new NextResponse("Username and password do not match", {
+		// 		status: 401,
+		// 	});
+		// }
 
 		const sessionId = generateSessionId();
 
