@@ -6,6 +6,8 @@ import { Users, ForgotPasswordUsers } from "../user";
 import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
+const mongoURI = process.env.MONGODB_URI as string;
+mongoose.connect(mongoURI);
 
 export async function POST(request: NextRequest) {
 	try {
@@ -29,7 +31,9 @@ export async function POST(request: NextRequest) {
 			},
 		});
 
-		const resetPasswordLink = `http://localhost:3000/resetPassword?token=${token}`;
+		const domain = request.headers.get("host");
+
+		const resetPasswordLink = `http://${domain}/resetPassword?token=${token}`;
 
 		const mailOptions = {
 			from: process.env.EMAIL_USER as string,
