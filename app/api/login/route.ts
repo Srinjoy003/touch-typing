@@ -16,36 +16,62 @@ function generateSessionId() {
 	return uuidv4();
 }
 
+// export async function POST(request: NextRequest) {
+// 	try {
+// 		const requestBody = await request.json();
+
+// 		const user = await Users.findOne({ username: requestBody.username });
+
+// 		if (!user) {
+// 			return new NextResponse("Account with this username does not exist", {
+// 				status: 404,
+// 			});
+// 		}
+
+// 		const passwordMatch = await bcrypt.compare(
+// 			requestBody.password,
+// 			user.password
+// 		);
+
+// 		if (!passwordMatch) {
+// 			return new NextResponse("Username and password do not match", {
+// 				status: 401,
+// 			});
+// 		}
+
+// 		const sessionId = generateSessionId();
+
+// 		return new NextResponse(
+// 			JSON.stringify({
+// 				sessionId,
+// 				message: "Login successful",
+// 				username: requestBody.username,
+// 			}),
+// 			{
+// 				status: 200,
+// 				headers: {
+// 					"Content-Type": "application/json",
+// 				},
+// 			}
+// 		);
+// 	} catch (error) {
+// 		console.error("Error processing login", error);
+
+// 		return new NextResponse("Internal Server Error", {
+// 			status: 500,
+// 		});
+// 	}
+// }
+
 export async function POST(request: NextRequest) {
 	try {
-		const requestBody = await request.json();
-
-		const user = await Users.findOne({ username: requestBody.username });
-
-		if (!user) {
-			return new NextResponse("Account with this username does not exist", {
-				status: 404,
-			});
-		}
-
-		const passwordMatch = await bcrypt.compare(
-			requestBody.password,
-			user.password
-		);
-
-		if (!passwordMatch) {
-			return new NextResponse("Username and password do not match", {
-				status: 401,
-			});
-		}
-
-		const sessionId = generateSessionId();
+		
 
 		return new NextResponse(
 			JSON.stringify({
-				sessionId,
+				sessionId:"duabcnbwud",
 				message: "Login successful",
-				username: requestBody.username,
+				username: "TestUsername"
 			}),
 			{
 				status: 200,
