@@ -8,7 +8,7 @@ Key Ninja is a web application designed to test and track your typing speed. Als
 
 ## Built with 
 
-- [Next](https://nextjs.org/)
+- [NextJS](https://nextjs.org/)
 - [Typescript](https://www.typescriptlang.org/)
 - [MongoDB](https://www.mongodb.com/)
 - [TailwindCSS](https://tailwindcss.com/)
